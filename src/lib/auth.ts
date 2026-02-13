@@ -10,7 +10,7 @@ export const auth = betterAuth({
 	baseURL: appConfig.app.url,
 	trustedOrigins: ["http://localhost:8080", "http://localhost:3000"],
 	emailAndPassword: {
-		enabled: true
+		enabled: true,
 	},
 
 	socialProviders: {
@@ -20,7 +20,7 @@ export const auth = betterAuth({
 			tenantId: appConfig.auth.azure.tenantId,
 			authority: "https://login.microsoftonline.com",
 			prompt: "select_account",
-      redirectURI: "http://localhost:3000/sso-test"
+			redirectURI: "http://localhost:3000/sso-test",
 		},
 	},
 })

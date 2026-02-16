@@ -1,8 +1,10 @@
 // src/server.ts
 import app from "./app"
 import Logger from "./utils/logger"
+import { appConfig } from "../config/appConfig"
 
-const PORT = 8000
+const PORT = appConfig.app.port
+
 
 app.listen(PORT, () => {
 	Logger.info(`Microgenesis Central Hub API running on port ${PORT}`)

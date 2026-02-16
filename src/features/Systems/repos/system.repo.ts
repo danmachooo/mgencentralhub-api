@@ -1,68 +1,75 @@
+import Logger from "@/lib/logger"
 import { prisma } from "@/lib/prisma"
-import type { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSystemInput } from "@/schema"
+import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
 
-export async function createSystem(creator: CreatorIdentifier, data: CreateSystemInput) {
-	return prisma.$transaction(async tx => {
-		const systemCreated = await tx.system.create({
-			data: {
-				name: data.name,
-				description: data.description,
-				url: data.url,
-				image: data.image,
-				status: data.status,
-				creatorId: creator.id,
-				departmentMap: {
-					create: data.departmentIds.map(departmentId => ({
-						departmentId,
-					})),
-				},
-			},
-			select: {
-				id: true,
-			},
-		})
-		return systemCreated
-	})
+export async function createSystem(id: string, data: CreateSystemInput) {
+    Logger.info("I was here.")
+
+    return 1
+
+	// return prisma.$transaction(async tx => {
+	// 	const systemCreated = await tx.system.create({
+	// 		data: {
+	// 			name: data.name,
+	// 			description: data.description,
+	// 			url: data.url,
+	// 			image: data.image,
+	// 			status: data.status,
+	// 			creatorId: id,
+	// 			departmentMap: {
+	// 				create: data.departmentIds.map(departmentId => ({
+	// 					departmentId,
+	// 				})),
+	// 			},
+	// 		},
+	// 		select: {
+	// 			id: true,
+	// 		},
+	// 	})
+	// 	return systemCreated
+	// })
 }
 
-export async function updateSystem(system: SystemIdentifier, data: UpdateSystemInput) {
-	return prisma.$transaction(async tx => {
-		const systemUpdated = await tx.system.update({
-			where: {
-				id: system.id,
-			},
-			data: {
-				name: data.name ?? undefined,
-				description: data.description ?? undefined,
-				url: data.url ?? undefined,
-				image: data.image ?? undefined,
-				status: data.status ?? undefined,
-			},
-			select: {
-				id: true,
-			},
-		})
+export async function updateSystem(id: string, data: UpdateSystemInput) {
+    Logger.info("I was here.")
+    return 1
+	// return prisma.$transaction(async tx => {
+	// 	const systemUpdated = await tx.system.update({
+	// 		where: {
+	// 			id: id,
+	// 		},
+	// 		data: {
+	// 			name: data.name ?? undefined,
+	// 			description: data.description ?? undefined,
+	// 			url: data.url ?? undefined,
+	// 			image: data.image ?? undefined,
+	// 			status: data.status ?? undefined,
+	// 		},
+	// 		select: {
+	// 			id: true,
+	// 		},
+	// 	})
 
-		if (data.departmentIds) {
-			await tx.systemDepartmentMap.deleteMany({
-				where: {
-					systemId: system.id,
-				},
-			})
+	// 	if (data.departmentIds) {
+	// 		await tx.systemDepartmentMap.deleteMany({
+	// 			where: {
+	// 				systemId: id,
+	// 			},
+	// 		})
 
-			if (data.departmentIds.length > 0) {
-				await tx.systemDepartmentMap.createMany({
-					data: data.departmentIds.map(departmentId => ({
-						systemId: system.id,
-						departmentId,
-					})),
-					skipDuplicates: true,
-				})
-			}
-		}
+	// 		if (data.departmentIds.length > 0) {
+	// 			await tx.systemDepartmentMap.createMany({
+	// 				data: data.departmentIds.map(departmentId => ({
+	// 					systemId: id,
+	// 					departmentId,
+	// 				})),
+	// 				skipDuplicates: true,
+	// 			})
+	// 		}
+	// 	}
 
-		return systemUpdated
-	})
+	// 	return systemUpdated
+	// })
 }
 
 export async function listActiveCompanySystemsForAdmin() {

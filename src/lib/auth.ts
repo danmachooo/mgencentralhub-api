@@ -3,8 +3,8 @@ import { prismaAdapter } from "better-auth/adapters/prisma"
 import { prisma } from "./prisma"
 import { appConfig } from "@/config/appConfig"
 
-const backendURL = appConfig.app.url;
-const frontendURL = appConfig.frontend.url;
+const backendURL = appConfig.app.url
+const frontendURL = appConfig.frontend.url
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {

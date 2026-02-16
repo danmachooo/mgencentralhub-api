@@ -11,7 +11,7 @@
 		"rootDir": "src",
 		"baseUrl": ".",
 		"types": ["node"],
-		"paths": { "@/*" : ["src/*"]}
+		"paths": { "@/*": ["src/*"] }
 	},
 	"include": ["src/**/*.ts"]
 }

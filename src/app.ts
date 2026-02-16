@@ -10,7 +10,7 @@ const app = express()
 
 const frontendURL = appConfig.frontend.url
 
-// 1) CORS first
+// Define cors
 app.use(
 	cors({
 		origin: frontendURL,
@@ -20,18 +20,18 @@ app.use(
 	})
 )
 
-// 2) Body parsers before routes
+// Body parsers
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// 3) Routes
+// Routes
 app.use("/api/auth", toNodeHandler(auth))
 app.use("/api", routes)
 
-// 4) 404 handler AFTER routes
+// route not found handler
 app.use(notFoundHandler)
 
-// 5) Error handler LAST
+// global errorhandler
 app.use(errorHandler)
 
 export default app

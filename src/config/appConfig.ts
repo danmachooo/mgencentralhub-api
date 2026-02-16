@@ -43,6 +43,6 @@ export const appConfig = {
 		},
 	},
 	frontend: {
-		url : env.FRONTEND_URL
-	}
+		url: env.FRONTEND_URL,
+	},
 } as const

@@ -1,6 +1,6 @@
 import type { ErrorDetails } from "./errorDetails.type"
 
-export interface ErrorResponse {
+export type ErrorResponse = {
 	success: false
 	message: string
 	errors?: ErrorDetails

@@ -1,32 +1,10 @@
-import { Request, Response, NextFunction } from "express"
-import { HttpContext } from "../types/shared"
-/**
- * Wraps an asynchronous route handler to automatically
- * forward rejected promises and thrown errors to Express'
- * error-handling middleware.
- *
- * This utility eliminates repetitive `try/catch` blocks
- * in controllers and ensures consistent error propagation.
- *
- * Design:
- * - Controllers receive a single `HttpContext` object
- * - Errors are passed to `next()` for centralized handling
- *
- * Example:
- * ```ts
- * router.get(
- *   "/teams/:teamId",
- *   asyncHandler(async ({ req, res }) => {
- *     const team = await getTeam(req.params.teamId);
- *     res.json(team);
- *   }),
- * );
- * ```
- *
- * @param fn - Asynchronous route handler accepting an `HttpContext`.
- * @returns An Express-compatible request handler.
- */
+import type { RequestHandler } from "express"
+import type { HttpContext } from "@/types/shared"
+
 export const asyncHandler =
-	(fn: (http: HttpContext) => Promise<void | unknown>) => (req: Request, res: Response, next: NextFunction) => {
-		Promise.resolve(fn({ req, res })).catch(next)
+	(fn: (http: HttpContext) => Promise<unknown> | unknown): RequestHandler =>
+	(req, res, next) => {
+		const http: HttpContext = { req, res, next }
+
+		Promise.resolve(fn(http)).catch(next)
 	}

@@ -1,11 +1,11 @@
 import { z } from "zod"
 
-export * from './Systems/createSystem.schema'
-export * from './Systems/updateSystem.schema'
-export * from './Systems/Personal/createPersonalSystem.schema'
-export * from './Systems/Personal/updatePersonalSystem.schema'
-export * from './Departments/createDepartment.schema'
-export * from './Departments/updateDepartment.schema'
+export * from "./Systems/createSystem.schema"
+export * from "./Systems/updateSystem.schema"
+export * from "./Systems/Personal/createPersonalSystem.schema"
+export * from "./Systems/Personal/updatePersonalSystem.schema"
+export * from "./Departments/createDepartment.schema"
+export * from "./Departments/updateDepartment.schema"
 
 import { createDepartmentSchema } from "./Departments/createDepartment.schema"
 import { updateDepartmentSchema } from "./Departments/updateDepartment.schema"
@@ -13,7 +13,6 @@ import { createSystemSchema } from "./Systems/createSystem.schema"
 import { createPersonalSystemSchema } from "./Systems/Personal/createPersonalSystem.schema"
 import { updatePersonalSystemSchema } from "./Systems/Personal/updatePersonalSystem.schema"
 import { updateSystemSchema } from "./Systems/updateSystem.schema"
-
 
 //Infer schema to be a type
 

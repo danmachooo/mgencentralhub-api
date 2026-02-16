@@ -1,42 +1,31 @@
+import type { ErrorDetails, ErrorResponse } from "@/types/error"
+import type { ErrorRequestHandler } from "express"
 import { Prisma } from "@prisma/client"
 import { AppError } from "@/errors"
-import { ErrorDetails, ErrorResponse } from "@/types/error"
 import { appConfig } from "@/config/appConfig"
-import { ErrorRequestHandler } from "express"
-import z from "zod"
+import { z } from "zod"
 import Logger from "@/lib/logger"
-
 
 const isDevelopment = appConfig.app.nodeEnv === "development"
 
-export const errorHandler: ErrorRequestHandler = (err, req, res) => {
+export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 	let statusCode = 500
 	let message = "Internal server error"
 	let errors: ErrorDetails | undefined = undefined
 
-	// --- Zod validation errors ---
 	if (err instanceof z.ZodError) {
 		statusCode = 400
 		message = "Validation error"
 		errors = err.issues
-	}
-
-	// --- Custom AppError instances ---
-	else if (err instanceof AppError) {
+	} else if (err instanceof AppError) {
 		statusCode = err.statusCode
 		message = err.message
-	}
-
-	// --- Prisma errors (reliable detection) ---
-	else if (isPrismaKnownRequestError(err)) {
+	} else if (isPrismaKnownRequestError(err)) {
 		const prismaError = handlePrismaKnownError(err)
 		statusCode = prismaError.statusCode
 		message = prismaError.message
 		errors = prismaError.errors
-	}
-
-	// --- JWT errors ---
-	else if (err instanceof Error && err.name === "JsonWebTokenError") {
+	} else if (err instanceof Error && err.name === "JsonWebTokenError") {
 		statusCode = 401
 		message = "Invalid token"
 	} else if (err instanceof Error && err.name === "TokenExpiredError") {
@@ -44,10 +33,8 @@ export const errorHandler: ErrorRequestHandler = (err, req, res) => {
 		message = "Token expired"
 	}
 
-	// Normalize to an Error object for consistent logging/stack handling
 	const errObj = err instanceof Error ? err : new Error(String(err))
 
-	// Log error details
 	if (statusCode >= 500) {
 		Logger.error("Server error:", {
 			message: errObj.message,
@@ -71,7 +58,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res) => {
 		success: false,
 		message,
 		...(errors ? { errors } : {}),
-		...(isDevelopment && { stack: errObj.stack }),
+		...(!isDevelopment && { stack: errObj.stack }),
 	}
 
 	return res.status(statusCode).json(response)
@@ -89,13 +76,9 @@ function handlePrismaKnownError(err: Prisma.PrismaClientKnownRequestError): {
 	switch (err.code) {
 		case "P2002": {
 			const target = err.meta?.target
-
-			// `target` can be string[] or string depending on Prisma version/adapter
 			const fields = Array.isArray(target) ? target.map(String) : target ? [String(target)] : []
-
 			const joined = fields.length ? fields.join(", ") : "field"
 
-			// Domain-specific message: "one team per owner"
 			if (fields.includes("ownerId")) {
 				return {
 					statusCode: 409,
@@ -112,27 +95,15 @@ function handlePrismaKnownError(err: Prisma.PrismaClientKnownRequestError): {
 		}
 
 		case "P2025":
-			return {
-				statusCode: 404,
-				message: "Record not found",
-			}
+			return { statusCode: 404, message: "Record not found" }
 
 		case "P2003":
-			return {
-				statusCode: 400,
-				message: "Invalid reference: related record does not exist",
-			}
+			return { statusCode: 400, message: "Invalid reference: related record does not exist" }
 
 		case "P2014":
-			return {
-				statusCode: 400,
-				message: "The change violates a required relation",
-			}
+			return { statusCode: 400, message: "The change violates a required relation" }
 
 		default:
-			return {
-				statusCode: 500,
-				message: "Database error occurred",
-			}
+			return { statusCode: 500, message: "Database error occurred" }
 	}
 }

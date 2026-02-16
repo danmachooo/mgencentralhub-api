@@ -6,7 +6,7 @@ export default [
 	...tseslint.configs.recommended,
 	{
 		files: ["**/*.ts"],
-		ignores: ["dist/**", "node_modules/**"],
+		ignores: ["dist/**", "node_modules/**", "generated/**", "**/generated", "prisma.config.ts"],
 		languageOptions: {
 			parserOptions: {
 				project: true,

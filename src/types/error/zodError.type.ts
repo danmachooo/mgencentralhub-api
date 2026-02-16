@@ -1,3 +1,3 @@
-import type { z } from "zod"
+import type { ZodError } from "zod"
 
-export type ZodErrors = z.ZodError["issues"]
+export type ZodErrors = ZodError["issues"]

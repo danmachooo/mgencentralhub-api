@@ -1,15 +1,14 @@
-import { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSystemInput } from "@/schema";
-import { createSystem, updateSystem } from "../repos/system.repo";
+import type { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSystemInput } from "@/schema"
+import { createSystem, updateSystem } from "../repos/system.repo"
 
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
-    const { id } = creator
+	const { id } = creator
 
-    return await createSystem(id, data)
-    
+	return await createSystem(id, data)
 }
 
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
-    const { id } = system
+	const { id } = system
 
-    return await updateSystem(id, data)
+	return await updateSystem(id, data)
 }

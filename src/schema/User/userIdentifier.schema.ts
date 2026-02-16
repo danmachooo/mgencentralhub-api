@@ -1,5 +1,5 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const userIdentifierSchema = z.object({
-    id: z.uuid().min(1)
+	id: z.uuid().min(1),
 })

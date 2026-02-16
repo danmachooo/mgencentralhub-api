@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import type { NextFunction, Request, Response } from "express"
 import { toFetchHeaders } from "../helpers/shared/toFetchHeaders.helper"
 import { auth } from "../lib/auth"
 /**
@@ -43,7 +43,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
 			headers: toFetchHeaders(req.headers),
 		})
 
-		if (!session?.user?.id) {
+		if (!session?.user.id) {
 			return res.status(401).json({ success: false, message: "Unauthorized" })
 		}
 

@@ -2,7 +2,7 @@ import { SystemStatus } from "@prisma/client"
 import { z } from "zod"
 
 export const creatorIdentifierSchema = z.object({
-    id: z.uuid().min(1)
+	id: z.uuid().min(1),
 })
 
 export const createSystemSchema = z.object({
@@ -14,5 +14,5 @@ export const createSystemSchema = z.object({
 		error: "URL must be https.",
 	}),
 	status: z.enum(SystemStatus).default(SystemStatus.ACTIVE),
-    departmentIds: z.array(z.uuid()).min(1)
+	departmentIds: z.array(z.uuid()).min(1),
 })

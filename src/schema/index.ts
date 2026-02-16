@@ -1,4 +1,4 @@
-import { z } from "zod"
+import type { z } from "zod"
 
 export * from "./Systems/createSystem.schema"
 export * from "./Systems/updateSystem.schema"
@@ -8,17 +8,17 @@ export * from "./Departments/createDepartment.schema"
 export * from "./Departments/updateDepartment.schema"
 export * from "./User/userIdentifier.schema"
 
-import { createDepartmentSchema } from "./Departments/createDepartment.schema"
-import { updateDepartmentSchema } from "./Departments/updateDepartment.schema"
-import { createSystemSchema } from "./Systems/createSystem.schema"
-import { createPersonalSystemSchema } from "./Systems/Personal/createPersonalSystem.schema"
-import { updatePersonalSystemSchema } from "./Systems/Personal/updatePersonalSystem.schema"
-import { updateSystemSchema } from "./Systems/updateSystem.schema"
+import type { createDepartmentSchema } from "./Departments/createDepartment.schema"
+import type { updateDepartmentSchema } from "./Departments/updateDepartment.schema"
+import type { createSystemSchema } from "./Systems/createSystem.schema"
+import type { createPersonalSystemSchema } from "./Systems/Personal/createPersonalSystem.schema"
+import type { updatePersonalSystemSchema } from "./Systems/Personal/updatePersonalSystem.schema"
+import type { updateSystemSchema } from "./Systems/updateSystem.schema"
 
 // Identifiers schema
-import { creatorIdentifierSchema } from "./Systems/createSystem.schema"
-import { systemIdentifierSchema } from "./Systems/updateSystem.schema"
-import { userIdentifierSchema } from "./User/userIdentifier.schema"
+import type { creatorIdentifierSchema } from "./Systems/createSystem.schema"
+import type { systemIdentifierSchema } from "./Systems/updateSystem.schema"
+import type { userIdentifierSchema } from "./User/userIdentifier.schema"
 
 //Infer schema to be a type
 

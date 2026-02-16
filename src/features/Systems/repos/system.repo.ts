@@ -65,6 +65,19 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 	})
 }
 
+export async function getSystem(id: string) {
+	const system = await prisma.system.findUnique({
+		where: {
+			id,
+		},
+		select: {
+			id: true,
+		},
+	})
+
+	return system
+}
+
 export async function listActiveCompanySystemsForAdmin() {
 	return await prisma.system.findMany({
 		where: {

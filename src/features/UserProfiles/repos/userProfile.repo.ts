@@ -7,6 +7,7 @@ export async function getUserContext(user: UserIdentifier) {
 			userId: user.id,
 		},
 		select: {
+			userId: true,
 			role: true,
 			departmentId: true,
 		},

@@ -19,6 +19,7 @@ import type { updateSystemSchema } from "./Systems/updateSystem.schema"
 import type { creatorIdentifierSchema } from "./Systems/createSystem.schema"
 import type { systemIdentifierSchema } from "./Systems/updateSystem.schema"
 import type { userIdentifierSchema } from "./User/userIdentifier.schema"
+import type { departmentIdentifierSchema } from "./Departments/departmentIdentifier.schema"
 
 //Infer schema to be a type
 
@@ -26,6 +27,7 @@ import type { userIdentifierSchema } from "./User/userIdentifier.schema"
 export type CreatorIdentifier = z.infer<typeof creatorIdentifierSchema>
 export type SystemIdentifier = z.infer<typeof systemIdentifierSchema>
 export type UserIdentifier = z.infer<typeof userIdentifierSchema>
+export type DepartmentIdentifier = z.infer<typeof departmentIdentifierSchema>
 
 // General System
 export type CreateSystemInput = z.infer<typeof createSystemSchema>

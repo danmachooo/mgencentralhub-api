@@ -1,0 +1,34 @@
+import { asyncHandler } from "@/middlewares"
+import { createDepartmentSchema, updateDepartmentSchema } from "@/schema"
+import type { HttpContext } from "@/types/shared"
+import { createCompanyDepartment, updateCompanyDepartment } from "../services/department.service"
+import { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
+
+export const createDepartmentHandler = asyncHandler(async (http: HttpContext) => {
+	const body = createDepartmentSchema.parse(http.req.body)
+
+	const createdDepartment = await createCompanyDepartment(body)
+
+	return http.res.status(201).json({
+		success: true,
+		message: "Department has been created.",
+		data: {
+			id: createdDepartment.id,
+		},
+	})
+})
+
+export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) => {
+	const department = departmentIdentifierSchema.parse(http.req.params)
+	const body = updateDepartmentSchema.parse(http.req.body)
+
+	const updatedDepartment = await updateCompanyDepartment(department, body)
+
+	return http.res.status(200).json({
+		success: true,
+		message: "Department has been updated.",
+		data: {
+			id: updatedDepartment.id,
+		},
+	})
+})

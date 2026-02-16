@@ -6,9 +6,9 @@ import { mockCreator } from "@/helpers/shared/mockCreator.helper"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const creator = mockCreator
-	const data = createSystemSchema.parse(http.req.body)
+	const body = createSystemSchema.parse(http.req.body)
 
-	const systemCreated = await createCompanySystem(creator, data)
+	const systemCreated = await createCompanySystem(creator, body)
 
 	return http.res.status(201).json({
 		success: true,
@@ -21,9 +21,9 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = systemIdentifierSchema.parse(http.req.params)
-	const data = updateSystemSchema.parse(http.req.body)
+	const body = updateSystemSchema.parse(http.req.body)
 
-	const systemUpdated = await updateCompanySystem(system, data)
+	const systemUpdated = await updateCompanySystem(system, body)
 
 	return http.res.status(201).json({
 		success: true,

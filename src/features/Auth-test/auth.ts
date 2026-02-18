@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth"
 import { toFetchHeaders } from "../../helpers/shared/toFetchHeaders.helper"
 import { signInSchema, signUpSchema } from "@/features/Auth-test/schema"
 import { asyncHandler } from "@/middlewares"
-import type { HttpContext } from "../../types/shared/httpContext.type"
+import type { HttpContext } from "@/types/shared/httpContext.type"
 import type { IncomingHttpHeaders } from "http"
 
 type User = {

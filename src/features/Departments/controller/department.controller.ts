@@ -1,7 +1,7 @@
 import { asyncHandler } from "@/middlewares"
 import { createDepartmentSchema, updateDepartmentSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"
-import { createCompanyDepartment, updateCompanyDepartment } from "../services/department.service"
+import { createCompanyDepartment, updateCompanyDepartment } from "@/features/Departments/services/department.service"
 import { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
 
 export const createDepartmentHandler = asyncHandler(async (http: HttpContext) => {

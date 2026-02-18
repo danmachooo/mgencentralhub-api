@@ -1,7 +1,7 @@
 import type { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSystemInput } from "@/schema"
-import { createSystem, getSystem, updateSystem } from "../repos/system.repo"
 import { getUserAccessContext } from "@/features/UserProfiles/services/userProfile.service"
 import { NotFoundError } from "@/errors"
+import { createSystem, getSystem, updateSystem } from "@/features/Systems/repos/system.repo"
 
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
 	const ctx = await getUserAccessContext(creator)

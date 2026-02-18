@@ -1,5 +1,5 @@
 import type { CreateDepartmentInput, DepartmentIdentifier, UpdateDepartmentInput } from "@/schema"
-import { createDepartment, updateDepartment } from "../repos/department.repo"
+import { createDepartment, updateDepartment } from "@/features/Departments/repos/department.repo"
 
 export async function createCompanyDepartment(data: CreateDepartmentInput) {
 	return await createDepartment(data)

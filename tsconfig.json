@@ -1,17 +1,21 @@
 {
-	"compilerOptions": {
-		"target": "ES2022",
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"outDir": "dist",
-		"rootDir": "src",
-		"baseUrl": ".",
-		"types": ["node"],
-		"paths": { "@/*": ["src/*"] }
-	},
-	"include": ["src/**/*.ts"]
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "outDir": "dist",
+    "rootDir": "src",
+
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
+
+    "types": ["node"],
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"]
 }

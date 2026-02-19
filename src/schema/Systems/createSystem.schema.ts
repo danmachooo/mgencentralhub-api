@@ -2,7 +2,7 @@ import { SystemStatus } from "@prisma/client"
 import { z } from "zod"
 
 export const creatorIdentifierSchema = z.object({
-	id: z.uuid().min(1),
+	id: z.string().min(1),
 })
 
 export const createSystemSchema = z.object({

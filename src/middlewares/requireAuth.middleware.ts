@@ -3,6 +3,7 @@ import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/toFetchHeaders.helper"
+import { logger } from "@/lib"
 
 /**
  * Authentication middleware that enforces a valid user session.
@@ -51,6 +52,8 @@ export const requireAuth = asyncHandler(async (http: HttpContext) => {
 
 	// Attach authenticated user context for downstream handlers
 	http.req.user = session.user
+
+	logger.info("Require auth check passed: ", http.req.user.id)
 
 	http.next()
 })

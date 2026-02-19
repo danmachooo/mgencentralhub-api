@@ -1,11 +1,13 @@
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { createCompanySystem, updateCompanySystem } from "@/features/Systems/services/system.service"
-import { createSystemSchema, systemIdentifierSchema, updateSystemSchema } from "@/schema"
-import { mockCreator } from "@/helpers/shared"
+import { createSystemSchema, creatorIdentifierSchema, systemIdentifierSchema, updateSystemSchema } from "@/schema"
+import { logger } from "@/lib"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
-	const creator = mockCreator
+	logger.info("Http Request Session: ", http.req.user)
+	const creator = creatorIdentifierSchema.parse( http.req.user)
+	logger.info("Parsing id passed: ", creator)
 	const body = createSystemSchema.parse(http.req.body)
 
 	const systemCreated = await createCompanySystem(creator, body)

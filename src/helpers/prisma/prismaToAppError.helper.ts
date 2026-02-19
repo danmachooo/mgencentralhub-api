@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client"
-import { AppError } from "@/errors"
+import { AppError, ConflictError, NotFoundError, ValidationError } from "@/errors"
 
 type PrismaErrorOptions = {
 	entity?: string
@@ -19,24 +19,21 @@ export function prismaToAppError(err: Prisma.PrismaClientKnownRequestError, opts
 			const pretty = fields.map(f => labels[f] ?? f)
 			const joined = pretty.length ? pretty.join(", ") : "field"
 
-			return new AppError(
-				409,
+			return new ConflictError(
 				entity ? `${entity} with this ${joined} already exists` : `Duplicate value for ${joined}`
 			)
 		}
 
 		case "P2025":
-			return new AppError(404, opts?.notFoundMessage ?? (entity ? `${entity} not found` : "Record not found"))
+			return new NotFoundError(opts?.notFoundMessage ?? (entity ? `${entity} not found` : "Record not found"))
 
 		case "P2003":
-			return new AppError(
-				400,
+			return new ValidationError(
 				entity ? `Invalid reference while saving ${entity}` : "Invalid reference: related record does not exist"
 			)
 
 		case "P2014":
-			return new AppError(
-				400,
+			return new ValidationError(
 				entity
 					? `Operation violates a required relation for ${entity}`
 					: "Operation violates a required relation"

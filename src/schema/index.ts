@@ -7,6 +7,7 @@ export * from "@/schema/Systems/Personal/updatePersonalSystem.schema"
 export * from "@/schema/Departments/createDepartment.schema"
 export * from "@/schema/Departments/updateDepartment.schema"
 export * from "@/schema/User/userIdentifier.schema"
+export * from "@/schema/User/createUserProfile.schema"
 
 import type { createDepartmentSchema } from "@/schema/Departments/createDepartment.schema"
 import type { updateDepartmentSchema } from "@/schema/Departments/updateDepartment.schema"
@@ -14,6 +15,7 @@ import type { createSystemSchema } from "@/schema/Systems/createSystem.schema"
 import type { createPersonalSystemSchema } from "@/schema/Systems/Personal/createPersonalSystem.schema"
 import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updatePersonalSystem.schema"
 import type { updateSystemSchema } from "@/schema/Systems/updateSystem.schema"
+import type {createUserProfileSchema} from "@/schema/User/createUserProfile.schema"
 
 // Identifiers schema
 import type { creatorIdentifierSchema } from "@/schema/Systems/createSystem.schema"
@@ -40,3 +42,7 @@ export type UpdatePersonalSystemInput = z.infer<typeof updatePersonalSystemSchem
 // Departments
 export type CreateDepartmentInput = z.infer<typeof createDepartmentSchema>
 export type UpdateDepartmentInput = z.infer<typeof updateDepartmentSchema>
+
+
+//User Profile
+export type CreateUserProfileInput = z.infer<typeof createUserProfileSchema>

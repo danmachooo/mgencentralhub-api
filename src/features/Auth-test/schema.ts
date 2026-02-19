@@ -1,4 +1,5 @@
-import { z } from "zod"
+import { UserRole } from "@prisma/client"
+import { email, z } from "zod"
 
 const signInSchema = z.object({
 	email: z.email(),
@@ -7,6 +8,8 @@ const signInSchema = z.object({
 
 const signUpSchema = signInSchema.extend({
 	name: z.string().min(1),
+	role: z.enum(["EMPLOYEE", "ADMIN"]),
+	department: z.uuid().min(1)
 })
 
 export { signInSchema, signUpSchema }

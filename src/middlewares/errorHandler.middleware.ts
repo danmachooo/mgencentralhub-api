@@ -5,7 +5,9 @@ import { appConfig } from "@/config/appConfig"
 import { z } from "zod"
 import { logger } from "@/lib"
 import { isApiError, getApiErrorStatus, isBodyParserJsonError } from "@/helpers/errorHandlerMiddleware"
-import { handlePrismaKnownError, isPrismaKnownRequestError, isPrismaValidationError } from "@/helpers/prisma"
+
+import { isPrismaKnownRequestError, isPrismaValidationError } from "@/helpers/prisma"
+import { handlePrismaKnownError } from "@/helpers/prisma"
 
 const isDevelopment = appConfig.app.nodeEnv === "development"
 
@@ -24,45 +26,53 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 		errors = err.issues
 	}
 
-	// 2) Custom AppError instances
+	// 2) Domain/App errors (what we expect most of the time)
 	else if (err instanceof AppError) {
 		statusCode = err.statusCode
 		message = err.message
-		// If your AppError supports details, add it here:
-		// errors = err.details
+
+		// If you added `details` to AppError, map it to API `errors` when it matches your ErrorDetails shape
+		// (Keep this conservative to avoid leaking random internals.)
+		if (err.details && typeof err.details === "object") {
+			errors = err.details as ErrorDetails
+		}
 	}
 
-	// 3) Prisma known request errors (constraint, not found, etc.)
+	// 3) Prisma known request errors (fallback: service should have mapped these)
 	else if (isPrismaKnownRequestError(err)) {
 		const prismaError = handlePrismaKnownError(err)
 		statusCode = prismaError.statusCode
 		message = prismaError.message
 		errors = prismaError.errors
+
+		// Optional: log loudly so you notice missed mappings in services
+		logger.error("Unmapped Prisma error reached middleware", {
+			code: err.code,
+			meta: err.meta,
+			url: req.url,
+			method: req.method,
+		})
 	}
 
-	// 4) Prisma validation errors (bad input shape)
+	// 4) Prisma validation errors (fallback)
 	else if (isPrismaValidationError(errObj)) {
 		statusCode = 400
 		message = "Invalid input"
 	}
 
-	// 5) Better Auth / APIError (client-side issues often)
+	// 5) Better Auth / APIError
 	else if (isApiError(errObj)) {
-		// Prefer status code if the error provides one
 		const apiStatus = getApiErrorStatus(errObj)
 		statusCode = apiStatus ?? 400
-
-		// Keep Better Auth message (it’s usually helpful)
 		message = errObj.message
 
-		// Optional: re-map some messages to cleaner ones
 		if (/headers is required/i.test(errObj.message)) {
 			statusCode = 401
 			message = "Unauthorized (missing session cookie)"
 		}
 	}
 
-	// 6) Invalid JSON body (Express body-parser)
+	// 6) Invalid JSON body (body-parser)
 	else if (isBodyParserJsonError(errObj)) {
 		statusCode = 400
 		message = "Invalid JSON in request body"

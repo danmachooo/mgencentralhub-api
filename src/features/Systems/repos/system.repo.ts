@@ -1,8 +1,12 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
+import { Prisma } from "@prisma/client"
 
 export async function createSystem(id: string, data: CreateSystemInput) {
-	return prisma.$transaction(async tx => {
+	const departmentIds = [...new Set(data.departmentIds ?? [])]
+
+	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+
 		const systemCreated = await tx.system.create({
 			data: {
 				name: data.name,
@@ -12,9 +16,7 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 				status: data.status,
 				creatorId: id,
 				departmentMap: {
-					create: data.departmentIds.map(departmentId => ({
-						departmentId,
-					})),
+					create: departmentIds.map(departmentId => ({ departmentId })),
 				},
 			},
 			select: {
@@ -26,7 +28,7 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 }
 
 export async function updateSystem(id: string, data: UpdateSystemInput) {
-	return prisma.$transaction(async tx => {
+	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 		const systemUpdated = await tx.system.update({
 			where: {
 				id: id,

@@ -25,7 +25,7 @@ export class NotFoundError extends AppError {
 	 * @param message - Optional custom error message.
 	 *                  Defaults to "Resource not found".
 	 */
-	constructor(message: string = "Resource not found") {
-		super(404, message)
+	constructor(message: string = "Resource not found", details?: unknown) {
+		super(404, message, details)
 	}
 }

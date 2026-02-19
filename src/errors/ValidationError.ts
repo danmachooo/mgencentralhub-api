@@ -26,7 +26,7 @@ export class ValidationError extends AppError {
 	 * @param message - Optional custom error message.
 	 *                  Defaults to "Validation failed".
 	 */
-	constructor(message: string = "Validation failed") {
-		super(400, message)
+	constructor(message: string = "Validation failed", details?: unknown) {
+		super(400, message, details)
 	}
 }

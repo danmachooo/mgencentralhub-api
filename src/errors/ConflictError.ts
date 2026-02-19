@@ -26,7 +26,7 @@ export class ConflictError extends AppError {
 	 * @param message - Optional custom error message.
 	 *                  Defaults to "Resource already exists".
 	 */
-	constructor(message: string = "Resource already exists") {
-		super(409, message)
+	constructor(message: string = "Resource already exists", details?: unknown) {
+		super(409, message, details)
 	}
 }

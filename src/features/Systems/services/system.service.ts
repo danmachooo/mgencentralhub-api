@@ -2,13 +2,27 @@ import type { CreateSystemInput, CreatorIdentifier, SystemIdentifier, UpdateSyst
 import { getUserAccessContext } from "@/features/UserProfiles/services/userProfile.service"
 import { NotFoundError } from "@/errors"
 import { createSystem, getSystem, updateSystem } from "@/features/Systems/repos/system.repo"
+import { withPrismaErrorHandling } from "@/helpers/prisma"
 
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
 	const ctx = await getUserAccessContext(creator)
 
 	if (!ctx) throw new NotFoundError("User was not found.")
 
-	return await createSystem(ctx.userId, data)
+	// return await createSystem(ctx.userId, data)
+
+	return withPrismaErrorHandling(
+		() => 
+			createSystem(ctx.userId, data),
+		{
+			entity: "System",
+			uniqueFieldLabels: {
+				name: "system name",
+				url: "system url"
+			},
+			notFoundMessage: "System not found."
+		}
+	)
 }
 
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
@@ -16,5 +30,18 @@ export async function updateCompanySystem(system: SystemIdentifier, data: Update
 
 	if (!_system) throw new NotFoundError("System was not found.")
 
-	return await updateSystem(_system.id, data)
+	// return await updateSystem(_system.id, data)
+
+	return withPrismaErrorHandling(
+		() =>
+			updateSystem(_system.id, data),
+		{
+			entity: "System",
+			uniqueFieldLabels: {
+				name: "system name",
+				url: "system url"
+			},
+			notFoundMessage: "System not found."
+		}
+	)
 }

@@ -25,7 +25,7 @@ export class ForbiddenError extends AppError {
 	 * @param message - Optional custom error message.
 	 *                  Defaults to "Forbidden".
 	 */
-	constructor(message: string = "Forbidden") {
-		super(403, message)
+	constructor(message: string = "Forbidden", details?: unknown) {
+		super(403, message, details)
 	}
 }

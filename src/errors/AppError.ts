@@ -24,11 +24,13 @@ export class AppError extends Error {
 	 * @param isOperational - Indicates whether this error is expected
 	 *                        and safe to handle gracefully.
 	 *                        Defaults to `true`.
+	 * @param details - Indicates the details of the error
 	 */
 	constructor(
 		public statusCode: number,
 		public message: string,
-		public isOperational: boolean = true
+		public details?: unknown,
+		public isOperational: boolean = true,
 	) {
 		super(message)
 

@@ -30,7 +30,7 @@ export class UnauthorizedError extends AppError {
 	 * @param message - Optional custom error message.
 	 *                  Defaults to "Unauthorized".
 	 */
-	constructor(message: string = "Unauthorized") {
-		super(401, message)
+	constructor(message: string = "Unauthorized", details?: unknown) {
+		super(401, message, details)
 	}
 }

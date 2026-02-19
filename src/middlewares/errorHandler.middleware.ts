@@ -1,10 +1,17 @@
 import type { ErrorDetails, ErrorResponse } from "@/types/error"
 import type { ErrorRequestHandler } from "express"
-import { Prisma } from "@prisma/client"
 import { AppError } from "@/errors"
 import { appConfig } from "@/config/appConfig"
 import { z } from "zod"
 import Logger from "@/lib/logger"
+import {
+	isPrismaKnownRequestError,
+	handlePrismaKnownError,
+	isPrismaValidationError,
+	isApiError,
+	getApiErrorStatus,
+	isBodyParserJsonError,
+} from "@/helpers/errorHandlerMiddleware"
 
 const isDevelopment = appConfig.app.nodeEnv === "development"
 
@@ -104,77 +111,4 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 	}
 
 	return res.status(statusCode).json(response)
-}
-
-function isPrismaKnownRequestError(err: unknown): err is Prisma.PrismaClientKnownRequestError {
-	return err instanceof Prisma.PrismaClientKnownRequestError
-}
-
-function isPrismaValidationError(err: Error): boolean {
-	return (
-		err.name === "PrismaClientValidationError" ||
-		err instanceof Prisma.PrismaClientValidationError
-	)
-}
-
-// Better Auth (and other libs) commonly throw { name: "APIError" }
-function isApiError(err: Error): boolean {
-	return err.name === "APIError"
-}
-
-// Try to read a status code if present (different libs use different keys)
-function getApiErrorStatus(err: Error): number | undefined {
-	const anyErr = err as any
-	return (
-		typeof anyErr.statusCode === "number" ? anyErr.statusCode :
-		typeof anyErr.status === "number" ? anyErr.status :
-		typeof anyErr.code === "number" ? anyErr.code :
-		undefined
-	)
-}
-
-// Express JSON parse errors often look like SyntaxError + type = 'entity.parse.failed'
-function isBodyParserJsonError(err: Error): boolean {
-	const anyErr = err as any
-	return err instanceof SyntaxError && anyErr.type === "entity.parse.failed"
-}
-
-function handlePrismaKnownError(err: Prisma.PrismaClientKnownRequestError): {
-	statusCode: number
-	message: string
-	errors?: ErrorDetails
-} {
-	switch (err.code) {
-		case "P2002": {
-			const target = err.meta?.target
-			const fields = Array.isArray(target) ? target.map(String) : target ? [String(target)] : []
-			const joined = fields.length ? fields.join(", ") : "field"
-
-			if (fields.includes("ownerId")) {
-				return {
-					statusCode: 409,
-					message: "This user already has a team (one team per owner).",
-					errors: { fields },
-				}
-			}
-
-			return {
-				statusCode: 409,
-				message: `A record with this ${joined} already exists`,
-				errors: { fields },
-			}
-		}
-
-		case "P2025":
-			return { statusCode: 404, message: "Record not found" }
-
-		case "P2003":
-			return { statusCode: 400, message: "Invalid reference: related record does not exist" }
-
-		case "P2014":
-			return { statusCode: 400, message: "The change violates a required relation" }
-
-		default:
-			return { statusCode: 500, message: "Database error occurred" }
-	}
 }

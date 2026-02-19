@@ -1,8 +1,8 @@
 import { toFetchHeaders } from "../helpers/shared/toFetchHeaders.helper"
 import { auth } from "../lib/auth"
-import { asyncHandler } from './asyncHandler.middleware';
-import type { HttpContext } from "@/types/shared";
-import { UnauthorizedError } from "@/errors";
+import { asyncHandler } from "./asyncHandler.middleware"
+import type { HttpContext } from "@/types/shared"
+import { UnauthorizedError } from "@/errors"
 /**
  * Authentication middleware that enforces a valid user session.
  *
@@ -38,7 +38,7 @@ import { UnauthorizedError } from "@/errors";
  *
  * @returns A JSON 401 response if unauthorized, otherwise calls `next()`.
  */
-export const requireAuth = asyncHandler(async(http: HttpContext) => {
+export const requireAuth = asyncHandler(async (http: HttpContext) => {
 	// NOTE: Adjust API name if your Better Auth instance differs
 	const session = await auth.api.getSession({
 		headers: toFetchHeaders(http.req.headers),
@@ -52,5 +52,4 @@ export const requireAuth = asyncHandler(async(http: HttpContext) => {
 	http.req.user = session.user
 
 	http.next()
-	
 })

@@ -1,4 +1,4 @@
-import type { PrismaUniqueConstraintErrors } from "./prismaUniqueConstraintError.type"
-import type { ZodErrors } from "./zodError.type"
+import type { PrismaUniqueConstraintErrors } from "@/types/error"
+import type { ZodErrors } from "@/types/error"
 
 export type ErrorDetails = ZodErrors | PrismaUniqueConstraintErrors

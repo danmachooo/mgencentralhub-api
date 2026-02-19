@@ -1,8 +1,8 @@
 import { Router } from "express"
-import HealthRouter from "./health.route"
-import SystemRouter from "./Systems/system.route"
-import DepartmentRouter from "./Departments/department.route"
-import AuthTestRouter from "./AuthTest/authTest.route"
+import HealthRouter from "@/routes/health.route"
+import SystemRouter from "@/routes/Systems/system.route"
+import DepartmentRouter from "@/routes/Departments/department.route"
+import AuthTestRouter from "@/routes/AuthTest/authTest.route"
 
 const router = Router()
 

@@ -1,25 +1,25 @@
 import type { z } from "zod"
 
-export * from "./Systems/createSystem.schema"
-export * from "./Systems/updateSystem.schema"
-export * from "./Systems/Personal/createPersonalSystem.schema"
-export * from "./Systems/Personal/updatePersonalSystem.schema"
-export * from "./Departments/createDepartment.schema"
-export * from "./Departments/updateDepartment.schema"
-export * from "./User/userIdentifier.schema"
+export * from "@/schema/Systems/createSystem.schema"
+export * from "@/schema/Systems/updateSystem.schema"
+export * from "@/schema/Systems/Personal/createPersonalSystem.schema"
+export * from "@/schema/Systems/Personal/updatePersonalSystem.schema"
+export * from "@/schema/Departments/createDepartment.schema"
+export * from "@/schema/Departments/updateDepartment.schema"
+export * from "@/schema/User/userIdentifier.schema"
 
-import type { createDepartmentSchema } from "./Departments/createDepartment.schema"
-import type { updateDepartmentSchema } from "./Departments/updateDepartment.schema"
-import type { createSystemSchema } from "./Systems/createSystem.schema"
-import type { createPersonalSystemSchema } from "./Systems/Personal/createPersonalSystem.schema"
-import type { updatePersonalSystemSchema } from "./Systems/Personal/updatePersonalSystem.schema"
-import type { updateSystemSchema } from "./Systems/updateSystem.schema"
+import type { createDepartmentSchema } from "@/schema/Departments/createDepartment.schema"
+import type { updateDepartmentSchema } from "@/schema/Departments/updateDepartment.schema"
+import type { createSystemSchema } from "@/schema/Systems/createSystem.schema"
+import type { createPersonalSystemSchema } from "@/schema/Systems/Personal/createPersonalSystem.schema"
+import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updatePersonalSystem.schema"
+import type { updateSystemSchema } from "@/schema/Systems/updateSystem.schema"
 
 // Identifiers schema
-import type { creatorIdentifierSchema } from "./Systems/createSystem.schema"
-import type { systemIdentifierSchema } from "./Systems/updateSystem.schema"
-import type { userIdentifierSchema } from "./User/userIdentifier.schema"
-import type { departmentIdentifierSchema } from "./Departments/departmentIdentifier.schema"
+import type { creatorIdentifierSchema } from "@/schema/Systems/createSystem.schema"
+import type { systemIdentifierSchema } from "@/schema/Systems/updateSystem.schema"
+import type { userIdentifierSchema } from "@/schema/User/userIdentifier.schema"
+import type { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
 
 //Infer schema to be a type
 

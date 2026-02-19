@@ -94,15 +94,15 @@ const transports = [
  *
  * Intended usage:
  * ```ts
- * Logger.info("Server started", { port: 3000 });
- * Logger.error("Database connection failed", { error });
+ * logger.info("Server started", { port: 3000 });
+ * logger.error("Database connection failed", { error });
  * ```
  */
-const Logger = winston.createLogger({
+const logger = winston.createLogger({
 	level: process.env.NODE_ENV === "development" ? "debug" : "info",
 	levels,
 	format,
 	transports,
 })
 
-export default Logger
+export { logger }

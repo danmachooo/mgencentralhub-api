@@ -1,1 +1,1 @@
-export * from "./httpContext.type"
+export * from "@/types/shared/httpContext.type"

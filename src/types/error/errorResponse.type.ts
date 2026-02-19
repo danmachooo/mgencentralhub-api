@@ -1,4 +1,4 @@
-import type { ErrorDetails } from "./errorDetails.type"
+import type { ErrorDetails } from "@/types/error"
 
 export type ErrorResponse = {
 	success: false

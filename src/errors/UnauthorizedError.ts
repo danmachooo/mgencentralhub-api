@@ -1,4 +1,4 @@
-import { AppError } from "./AppError"
+import { AppError } from "@/errors/AppError"
 
 /**
  * Error representing an authentication failure.

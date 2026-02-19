@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
-import { auth } from "./lib/auth"
-import routes from "./routes"
+import { auth } from "@/lib"
+import routes from "@/routes"
 import { errorHandler, notFoundHandler } from "./middlewares"
 import { appConfig } from "./config/appConfig"
 
@@ -34,4 +34,4 @@ app.use(notFoundHandler)
 // global errorhandler
 app.use(errorHandler)
 
-export default app
+export { app }

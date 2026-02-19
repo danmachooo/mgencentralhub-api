@@ -3,15 +3,9 @@ import type { ErrorRequestHandler } from "express"
 import { AppError } from "@/errors"
 import { appConfig } from "@/config/appConfig"
 import { z } from "zod"
-import Logger from "@/lib/logger"
-import {
-	isPrismaKnownRequestError,
-	handlePrismaKnownError,
-	isPrismaValidationError,
-	isApiError,
-	getApiErrorStatus,
-	isBodyParserJsonError,
-} from "@/helpers/errorHandlerMiddleware"
+import { logger } from "@/lib"
+import { isApiError, getApiErrorStatus, isBodyParserJsonError } from "@/helpers/errorHandlerMiddleware"
+import { handlePrismaKnownError, isPrismaKnownRequestError, isPrismaValidationError } from "@/helpers/prisma"
 
 const isDevelopment = appConfig.app.nodeEnv === "development"
 
@@ -85,7 +79,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 
 	// Logging
 	if (statusCode >= 500) {
-		Logger.error("Server error:", {
+		logger.error("Server error:", {
 			message: errObj.message,
 			stack: errObj.stack,
 			url: req.url,
@@ -95,7 +89,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 			query: req.query,
 		})
 	} else {
-		Logger.warn("Client error:", {
+		logger.warn("Client error:", {
 			message: errObj.message,
 			statusCode,
 			url: req.url,

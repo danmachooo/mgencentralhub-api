@@ -1,21 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "CommonJS",
+		"moduleResolution": "Node",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
 
-    "outDir": "dist",
-    "rootDir": "src",
+		"outDir": "dist",
+		"rootDir": "src",
 
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
+		"baseUrl": ".",
+		"paths": { "@/*": ["src/*"] },
 
-    "types": ["node"],
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts"]
+		"types": ["node"],
+		"sourceMap": true
+	},
+	"include": ["src/**/*.ts"]
 }

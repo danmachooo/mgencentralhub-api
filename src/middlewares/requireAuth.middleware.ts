@@ -1,9 +1,8 @@
-import { auth } from "../lib/auth"
-import { asyncHandler } from "./asyncHandler.middleware"
+import { auth } from "@/lib/auth"
+import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/toFetchHeaders.helper"
-
 
 /**
  * Authentication middleware that enforces a valid user session.

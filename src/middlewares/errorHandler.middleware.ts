@@ -31,8 +31,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 		statusCode = err.statusCode
 		message = err.message
 
-		// If you added `details` to AppError, map it to API `errors` when it matches your ErrorDetails shape
-		// (Keep this conservative to avoid leaking random internals.)
 		if (err.details && typeof err.details === "object") {
 			errors = err.details as ErrorDetails
 		}

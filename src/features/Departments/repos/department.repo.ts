@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateDepartmentInput, UpdateDepartmentInput } from "@/schema"
+import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
+import type { Prisma } from "@prisma/client"
 
 export async function createDepartment(data: CreateDepartmentInput) {
 	return await prisma.department.create({
@@ -30,15 +32,29 @@ export async function updateDepartment(id: string, data: UpdateDepartmentInput) 
 	})
 }
 
-export async function getDepartments() {
-	return await prisma.department.findMany({
-		select: {
-			id: true,
-			name: true,
-			description: true,
-			createdAt: true,
-		},
-	})
+export async function getDepartments(where: Prisma.DepartmentWhereInput, options: PrismaQueryOptions) {
+	const [departments, total] = await Promise.all([
+		prisma.department.findMany({
+			where,
+			...options,
+			select: {
+				id: true,
+				name: true,
+				description: true,
+				createdAt: true,
+			},
+		}),
+		prisma.department.count({
+			where: {
+				id: where.id,
+			},
+		}),
+	])
+
+	return {
+		departments,
+		total,
+	}
 }
 
 export async function getDepartmentByID(id: string) {

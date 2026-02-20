@@ -6,7 +6,7 @@ import {
 	updateDepartment,
 } from "@/features/Departments/repos/department.repo"
 import { getPrismaPagination, withPrismaErrorHandling } from "@/helpers/prisma"
-import { Prisma } from "@prisma/client"
+import type{ Prisma } from "@prisma/client"
 
 export async function createCompanyDepartment(data: CreateDepartmentInput) {
 	return withPrismaErrorHandling(() => createDepartment(data), {
@@ -25,8 +25,8 @@ export async function updateCompanyDepartment(department: DepartmentIdentifier, 
 export async function getCompanyDepartments(query: DepartmentQueryInput) {
 	const options = getPrismaPagination(query)
 	const where: Prisma.DepartmentWhereInput = {
-		...(query.name && {name: {contains: query.name, mode: "insensitive"}}),
-		
+		...(query.name && { name: { contains: query.name, mode: "insensitive" } }),
+
 		...(query.search && {
 			OR: [
 				{ name: { contains: query.search, mode: "insensitive" } },
@@ -34,7 +34,7 @@ export async function getCompanyDepartments(query: DepartmentQueryInput) {
 			],
 		}),
 	}
-	
+
 	return withPrismaErrorHandling(() => getDepartments(where, options), {
 		entity: "Department",
 	})

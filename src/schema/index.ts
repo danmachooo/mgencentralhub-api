@@ -21,7 +21,7 @@ import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updat
 import type { updateSystemSchema } from "@/schema/Systems/updateSystem.schema"
 import type { createUserProfileSchema } from "@/schema/User/createUserProfile.schema"
 import type { systemQuerySchema } from "@/schema/Systems/systemQuery.schema"
-import type  { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
+import type { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
 
 // Identifiers schema
 import type { creatorIdentifierSchema } from "@/schema/Systems/createSystem.schema"
@@ -50,7 +50,6 @@ export type UpdatePersonalSystemInput = z.infer<typeof updatePersonalSystemSchem
 export type CreateDepartmentInput = z.infer<typeof createDepartmentSchema>
 export type UpdateDepartmentInput = z.infer<typeof updateDepartmentSchema>
 export type DepartmentQueryInput = z.infer<typeof departmentQuerySchema>
-
 
 //User Profile
 export type CreateUserProfileInput = z.infer<typeof createUserProfileSchema>

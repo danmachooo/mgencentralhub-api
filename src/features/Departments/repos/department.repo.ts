@@ -45,7 +45,7 @@ export async function getDepartments(where: Prisma.DepartmentWhereInput, options
 			},
 		}),
 		prisma.department.count({
-			where
+			where,
 		}),
 	])
 

@@ -41,13 +41,11 @@ export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) =>
 })
 
 export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContext) => {
-
 	const query = departmentQuerySchema.parse(http.req.query)
 
-	const {departments, total} = await getCompanyDepartments(query)
+	const { departments, total } = await getCompanyDepartments(query)
 
 	return sendPaginatedResponse(http, { data: departments, total }, query, "Departments retrieved successfully")
-
 })
 
 export const getCompanyDepartmentbyIDHandler = asyncHandler(async (http: HttpContext) => {

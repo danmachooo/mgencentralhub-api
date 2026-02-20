@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateUserProfileInput, UserIdentifier } from "@/schema"
+import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
+import type { Prisma } from "@prisma/client"
 
 export async function getUserContext(user: UserIdentifier) {
 	return prisma.userProfile.findUnique({
@@ -22,4 +24,8 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 			departmentId: userProfile.departmentId,
 		},
 	})
+}
+
+export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {
+	
 }

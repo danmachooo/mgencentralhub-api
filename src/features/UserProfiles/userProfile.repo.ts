@@ -26,4 +26,37 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 	})
 }
 
-export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {}
+export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {
+	const [users, total] = await Promise.all([
+		prisma.userProfile.findMany({
+			where,
+			...options,
+			select: {
+				userId: true,
+				createdAt: true,
+				role: true,
+				department: {
+					select: {
+						name: true
+					}
+				},
+				user: {
+					select: {
+						email: true,
+						name: true,
+						image: true,
+						
+					}
+				}
+			}
+		}),
+		prisma.userProfile.count({
+			where
+		})
+	])
+
+	return {
+		users, total
+	}
+
+}

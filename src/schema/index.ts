@@ -12,6 +12,7 @@ export * from "@/schema/User/createUserProfile.schema"
 export * from "@/schema/shared/requestQuery.schema"
 export * from "@/schema/Systems/systemQuery.schema"
 export * from "@/schema/Departments/departmentQuery.schema"
+export * from "@/schema/User/userQuery.schema"
 
 import type { createDepartmentSchema } from "@/schema/Departments/createDepartment.schema"
 import type { updateDepartmentSchema } from "@/schema/Departments/updateDepartment.schema"
@@ -22,6 +23,7 @@ import type { updateSystemSchema } from "@/schema/Systems/updateSystem.schema"
 import type { createUserProfileSchema } from "@/schema/User/createUserProfile.schema"
 import type { systemQuerySchema } from "@/schema/Systems/systemQuery.schema"
 import type { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
+import type { userProfileQuerySchema } from "@/schema/User/userQuery.schema"
 
 // Identifiers schema
 import type { creatorIdentifierSchema } from "@/schema/Systems/createSystem.schema"
@@ -53,3 +55,4 @@ export type DepartmentQueryInput = z.infer<typeof departmentQuerySchema>
 
 //User Profile
 export type CreateUserProfileInput = z.infer<typeof createUserProfileSchema>
+export type UserProfileQuery = z.infer<typeof userProfileQuerySchema>

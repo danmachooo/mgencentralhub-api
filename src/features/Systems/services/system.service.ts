@@ -17,8 +17,6 @@ export async function createCompanySystem(creator: CreatorIdentifier, data: Crea
 
 	if (!ctx) throw new NotFoundError("User was not found.")
 
-	// return await createSystem(ctx.userId, data)
-
 	return withPrismaErrorHandling(() => createSystem(ctx.userId, data), {
 		entity: "System",
 		uniqueFieldLabels: {

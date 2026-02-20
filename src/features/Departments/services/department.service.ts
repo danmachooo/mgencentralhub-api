@@ -25,8 +25,8 @@ export async function updateCompanyDepartment(department: DepartmentIdentifier, 
 export async function getCompanyDepartments(query: DepartmentQueryInput) {
 	const options = getPrismaPagination(query)
 	const where: Prisma.DepartmentWhereInput = {
-		name: query.name,
-
+		...(query.name && {name: {contains: query.name, mode: "insensitive"}}),
+		
 		...(query.search && {
 			OR: [
 				{ name: { contains: query.search, mode: "insensitive" } },
@@ -37,7 +37,8 @@ export async function getCompanyDepartments(query: DepartmentQueryInput) {
 	
 	return withPrismaErrorHandling(() => getDepartments(where, options), {
 		entity: "Department",
-	})}
+	})
+}
 
 export async function getCompanyDepartmentbyID(department: DepartmentIdentifier) {
 	const { id } = department

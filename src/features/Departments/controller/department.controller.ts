@@ -42,7 +42,7 @@ export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) =>
 
 export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContext) => {
 
-	const query = departmentQuerySchema.parse(http.req.params)
+	const query = departmentQuerySchema.parse(http.req.query)
 
 	const {departments, total} = await getCompanyDepartments(query)
 

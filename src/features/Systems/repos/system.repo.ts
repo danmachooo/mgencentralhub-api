@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
+import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
 
 export async function createSystem(id: string, data: CreateSystemInput) {
@@ -105,26 +106,30 @@ export async function getSystemById(id: string) {
 	return system
 }
 
-export async function getSystems() {
-	const system = await prisma.system.findMany({
-		where: {
-			status: "ACTIVE"
-		},
-		select: {
-			id: true,
-			name: true,
-			description: true,
-			status: true,
-			url: true,
-			createdAt: true,
-			updatedAt: true,
-			departmentMap: {
-				select: {
-					departmentId: true,
+export async function getSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
+	const [systems, total] = await Promise.all([
+		prisma.system.findMany({
+			where,
+			...options,
+			select: {
+				id: true,
+				name: true,
+				description: true,
+				status: true,
+				url: true,
+				createdAt: true,
+				updatedAt: true,
+				departmentMap: {
+					select: {
+						departmentId: true,
+					},
 				},
 			},
-		},
-	})
-	return system
-}
+		}),
+		prisma.system.count({
+			where: { status: where.status },
+		}),
+	])
 
+	return { systems, total }
+}

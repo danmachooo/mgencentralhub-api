@@ -9,7 +9,7 @@ export async function createDepartment(data: CreateDepartmentInput) {
 		},
 		select: {
 			id: true,
-			createdAt: true
+			createdAt: true,
 		},
 	})
 }
@@ -37,20 +37,20 @@ export async function getDepartments() {
 			name: true,
 			description: true,
 			createdAt: true,
-		}
+		},
 	})
 }
 
 export async function getDepartmentByID(id: string) {
 	return await prisma.department.findUniqueOrThrow({
 		where: {
-			id
+			id,
 		},
 		select: {
 			id: true,
 			name: true,
 			description: true,
 			createdAt: true,
-		}
+		},
 	})
 }

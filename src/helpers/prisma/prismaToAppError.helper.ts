@@ -1,6 +1,5 @@
 import type { Prisma } from "@prisma/client"
 import { AppError, ConflictError, NotFoundError, ValidationError } from "@/errors"
-import { logger } from "@/lib"
 
 type PrismaErrorOptions = {
 	entity?: string

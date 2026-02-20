@@ -74,7 +74,6 @@ Once received, place it at the project root:
 > - Any new environment variable must be declared in:
 >     - `src/config/env.ts`
 >     - `src/config/appConfig.ts`
->
 > - Do **not** read directly from `process.env` outside config files
 
 ---

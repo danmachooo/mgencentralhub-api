@@ -1,7 +1,36 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
-import type { Prisma } from "@prisma/client"
+import type { Prisma, System } from "@prisma/client"
+
+const ACTIVE_ONLY: Prisma.SystemWhereInput = {
+	deletedAt: null,
+}
+
+const DELETED_ONLY: Prisma.SystemWhereInput = {
+	deletedAt: null,
+}
+
+const SYSTEM_SHAPE: Prisma.SystemSelect = {
+	id: true,
+	name: true,
+	description: true,
+	systemFlag: {
+		select: {
+			id: true,
+			name: true,
+			description: true,
+		},
+	},
+	url: true,
+	createdAt: true,
+	updatedAt: true,
+	departmentMap: {
+		select: {
+			departmentId: true,
+		},
+	},
+}
 
 export async function createSystem(id: string, data: CreateSystemInput) {
 	const departmentIds = [...new Set(data.departmentIds)]
@@ -13,7 +42,7 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 				description: data.description,
 				url: data.url,
 				image: data.image,
-				status: data.status,
+				statusId: data.statusId,
 				creatorId: id,
 				departmentMap: {
 					create: departmentIds.map(departmentId => ({ departmentId })),
@@ -21,6 +50,7 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 			},
 			select: {
 				id: true,
+				createdAt: true,
 			},
 		})
 		return systemCreated
@@ -40,10 +70,11 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 				description: data.description,
 				url: data.url,
 				image: data.image,
-				status: data.status,
+				statusId: data.statusId,
 			},
 			select: {
 				id: true,
+				updatedAt: true,
 			},
 		})
 
@@ -69,67 +100,90 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 	})
 }
 
-export async function isSystemExist(id: string) {
-	const found = await prisma.system.findUniqueOrThrow({
+export async function restoreSystem(id: string) {
+	return await prisma.system.update({
 		where: {
 			id,
+			NOT: { deletedAt: null },
 		},
-		select: {
-			id: true,
+		data: {
+			deletedAt: null,
 		},
+		select: SYSTEM_SHAPE,
 	})
-
-	return !!found
 }
 
-export async function getSystemById(id: string) {
+export async function softDeleteSystem(id: string) {
+	return await prisma.system.update({
+		where: {
+			id,
+			deletedAt: null,
+		},
+		data: {
+			deletedAt: new Date(),
+		},
+	})
+}
+
+export async function hardDeleteSystem(id: string) {
+	return await prisma.system.delete({
+		where: { id },
+	})
+}
+
+export async function listSystemById(id: string) {
 	const system = await prisma.system.findUniqueOrThrow({
 		where: {
 			id,
 		},
-		select: {
-			id: true,
-			name: true,
-			description: true,
-			status: true,
-			url: true,
-			createdAt: true,
-			updatedAt: true,
-			departmentMap: {
-				select: {
-					departmentId: true,
-				},
-			},
-		},
+		select: SYSTEM_SHAPE,
 	})
 
 	return system
 }
 
-export async function getSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
+export async function listSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
+	const finalWhereQuery: Prisma.SystemWhereInput = {
+		...where,
+		...ACTIVE_ONLY,
+	}
+
 	const [systems, total] = await Promise.all([
 		prisma.system.findMany({
-			where,
+			where: finalWhereQuery,
 			...options,
-			select: {
-				id: true,
-				name: true,
-				description: true,
-				status: true,
-				url: true,
-				createdAt: true,
-				updatedAt: true,
-				departmentMap: {
-					select: {
-						departmentId: true,
-					},
-				},
-			},
+
+			select: SYSTEM_SHAPE,
 		}),
 		prisma.system.count({
-			where: { status: where.status },
+			where: finalWhereQuery,
 		}),
 	])
 
 	return { systems, total }
+}
+
+export async function listSoftDeletedSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
+	const finalQuery: Prisma.SystemWhereInput = {
+		...where,
+		...DELETED_ONLY,
+	}
+
+	const [systems, total] = await Promise.all([
+		prisma.system.findMany({
+			where: finalQuery,
+			select: SYSTEM_SHAPE,
+		}),
+
+		prisma.system.count({
+			where: {
+				...DELETED_ONLY,
+			},
+		}),
+	])
+
+	return {
+		systems,
+		total,
+	}
 }

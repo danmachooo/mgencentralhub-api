@@ -49,9 +49,9 @@ export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContex
 })
 
 export const getCompanyDepartmentbyIDHandler = asyncHandler(async (http: HttpContext) => {
-	const _department = departmentIdentifierSchema.parse(http.req.params)
+	const { id } = departmentIdentifierSchema.parse(http.req.params)
 
-	const department = await getCompanyDepartmentbyID(_department)
+	const department = await getCompanyDepartmentbyID({ id })
 
 	return http.res.status(200).json({
 		success: true,

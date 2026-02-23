@@ -1,8 +1,7 @@
 import { z } from "zod"
-import { UserRole } from "@prisma/client"
 
 export const createUserProfileSchema = z.object({
 	id: z.string().min(1),
-	role: z.enum(UserRole).default("EMPLOYEE"),
+	roleId: z.uuid().min(1),
 	departmentId: z.uuid().min(1),
 })

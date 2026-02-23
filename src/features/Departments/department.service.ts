@@ -1,25 +1,36 @@
-import type { CreateDepartmentInput, DepartmentIdentifier, DepartmentQueryInput, UpdateDepartmentInput } from "@/schema"
+import type {
+	CreateDepartmentInput,
+	CreateManyDepartmentInput,
+	DepartmentIdentifier,
+	DepartmentQueryInput,
+	UpdateDepartmentInput,
+} from "@/schema"
 import {
 	createDepartment,
-	getDepartmentByID,
-	getDepartments,
+	createManyDepartments,
+	listDepartmentById,
+	listDepartments,
 	updateDepartment,
 } from "@/features/Departments/department.repo"
-import { getPrismaPagination, withPrismaErrorHandling } from "@/helpers/prisma"
+import { getPrismaPagination, PrismaErrorHandler, withPrismaErrorHandling } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 
+const departmentErrors = new PrismaErrorHandler({
+	entity: "Department",
+})
+
 export async function createCompanyDepartment(data: CreateDepartmentInput) {
-	return withPrismaErrorHandling(() => createDepartment(data), {
-		entity: "Department",
-	})
+	return departmentErrors.exec(() => createDepartment(data))
+}
+
+export async function createManyCompanyDepartment(data: CreateManyDepartmentInput) {
+	return departmentErrors.exec(() => createManyDepartments(data))
 }
 
 export async function updateCompanyDepartment(department: DepartmentIdentifier, data: UpdateDepartmentInput) {
 	const { id } = department
 
-	return withPrismaErrorHandling(() => updateDepartment(id, data), {
-		entity: "Department",
-	})
+	return departmentErrors.exec(() => updateDepartment(id, data))
 }
 
 export async function getCompanyDepartments(query: DepartmentQueryInput) {
@@ -35,15 +46,11 @@ export async function getCompanyDepartments(query: DepartmentQueryInput) {
 		}),
 	}
 
-	return withPrismaErrorHandling(() => getDepartments(where, options), {
-		entity: "Department",
-	})
+	return departmentErrors.exec(() => listDepartments(where, options))
 }
 
 export async function getCompanyDepartmentbyID(department: DepartmentIdentifier) {
 	const { id } = department
 
-	return withPrismaErrorHandling(() => getDepartmentByID(id), {
-		entity: "Department",
-	})
+	return departmentErrors.exec(() => listDepartmentById(id))
 }

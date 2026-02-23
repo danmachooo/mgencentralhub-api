@@ -20,7 +20,7 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 	return prisma.userProfile.create({
 		data: {
 			userId: userProfile.id,
-			role: userProfile.role,
+			roleId: userProfile.roleId,
 			departmentId: userProfile.departmentId,
 		},
 	})
@@ -37,26 +37,25 @@ export async function getUsers(where: Prisma.UserProfileWhereInput, options: Pri
 				role: true,
 				department: {
 					select: {
-						name: true
-					}
+						name: true,
+					},
 				},
 				user: {
 					select: {
 						email: true,
 						name: true,
 						image: true,
-						
-					}
-				}
-			}
+					},
+				},
+			},
 		}),
 		prisma.userProfile.count({
-			where
-		})
+			where,
+		}),
 	])
 
 	return {
-		users, total
+		users,
+		total,
 	}
-
 }

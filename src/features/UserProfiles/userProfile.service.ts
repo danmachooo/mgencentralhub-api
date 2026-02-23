@@ -1,44 +1,45 @@
 import type { CreateUserProfileInput, UserIdentifier, UserProfileQuery } from "@/schema"
 import { createUserProfile, getUserContext, getUsers } from "@/features/UserProfiles/userProfile.repo"
-import { getPrismaPagination, withPrismaErrorHandling } from "@/helpers/prisma"
+import { getPrismaPagination, PrismaErrorHandler, withPrismaErrorHandling } from "@/helpers/prisma"
 import { Prisma } from "@prisma/client"
 
-export async function getUserAccessContext(user: UserIdentifier) {
-	const accessContext = await getUserContext(user)
+const userProfileErrors = new PrismaErrorHandler({
+	entity: "User Profile",
+	notFoundMessage: "User profile not found.",
+})
 
-	return accessContext
+export async function getUserAccessContext(user: UserIdentifier) {
+	return userProfileErrors.exec(() => getUserContext(user))
 }
 
 export async function createUser(userProfile: CreateUserProfileInput) {
-	const profile = await createUserProfile(userProfile)
-	return profile
+	return userProfileErrors.exec(() => createUserProfile(userProfile))
 }
 
 export async function getUserInfo(query: UserProfileQuery) {
 	const options = getPrismaPagination(query)
 
 	const where: Prisma.UserProfileWhereInput = {
-		role: query.role,
+		role: {
+			name: query.role, //this needs to be id or raw name
+		},
 		...(query.search && {
 			OR: [
-				{ 
+				{
 					user: {
 						name: {
 							contains: query.search,
-							mode: "insensitive"
+							mode: "insensitive",
 						},
 						email: {
 							contains: query.search,
-							mode: "insensitive"
+							mode: "insensitive",
 						},
-					}
-			 	}
+					},
+				},
 			],
 		}),
 	}
 
-	return withPrismaErrorHandling(() => getUsers(where, options), {
-		entity: "User Profile",
-		notFoundMessage: "User Profile not found."
-	})
+	return userProfileErrors.exec(() => getUsers(where, options))
 }

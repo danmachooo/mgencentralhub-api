@@ -3,8 +3,12 @@ import type { HttpContext } from "@/types/shared"
 import {
 	createCompanySystem,
 	getCompanySystems,
-	getCompanySystemByID,
+	getCompanySystemById,
 	updateCompanySystem,
+	getDeletedCompanySystems,
+	restoreCompanySystem,
+	softDeleteCompanySystem,
+	hardDeleteCompanySystem,
 } from "@/features/Systems/system.service"
 import {
 	createSystemSchema,
@@ -45,6 +49,20 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 	})
 })
 
+export const restoreCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	const restoredSystem = await restoreCompanySystem(system)
+
+	return http.res.status(200).json({
+		success: true,
+		message: "System has been restored.",
+		data: {
+			restoredSystem,
+		},
+	})
+})
+
 export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
 	const query = systemQuerySchema.parse(http.req.query)
 
@@ -53,10 +71,10 @@ export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) =
 	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
 })
 
-export const getCompanySystemByIDHandler = asyncHandler(async (http: HttpContext) => {
+export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
 	const { id } = systemIdentifierSchema.parse(http.req.params)
 
-	const system = await getCompanySystemByID({ id })
+	const system = await getCompanySystemById({ id })
 
 	return http.res.status(200).json({
 		success: true,
@@ -64,5 +82,35 @@ export const getCompanySystemByIDHandler = asyncHandler(async (http: HttpContext
 		data: {
 			system,
 		},
+	})
+})
+
+export const getDeletedCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const query = systemQuerySchema.parse(http.req.query)
+
+	const { systems, total } = await getDeletedCompanySystems(query)
+
+	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
+})
+
+export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	await softDeleteCompanySystem(system)
+
+	return http.res.status(404).json({
+		success: true,
+		message: "System has been deleted.",
+	})
+})
+
+export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	await hardDeleteCompanySystem(system)
+
+	return http.res.status(410).json({
+		success: true,
+		message: "System has been deleted.",
 	})
 })

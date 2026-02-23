@@ -4,7 +4,6 @@ import { signInSchema, signUpSchema } from "@/features/Auth-test/schema"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/httpContext.type"
 import type { IncomingHttpHeaders } from "http"
-import type { UserRole } from "@prisma/client"
 import { createUser } from "@/features/UserProfiles/userProfile.service"
 
 type User = {
@@ -12,7 +11,7 @@ type User = {
 	email: string
 	password: string
 	departmentId: string
-	role: UserRole
+	role: String
 }
 
 type SignUpParams = User

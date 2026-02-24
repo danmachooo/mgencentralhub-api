@@ -1,7 +1,24 @@
 import { prisma } from "@/lib/prisma"
-import type { CreateDepartmentInput, UpdateDepartmentInput } from "@/schema"
+import type { CreateDepartmentInput, CreateManyDepartmentInput, UpdateDepartmentInput } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
+
+const ACTIVE_ONLY: Prisma.DepartmentWhereInput = {
+	deletedAt: null,
+}
+
+const DELETED_ONLY: Prisma.DepartmentWhereInput = {
+	NOT: {
+		deletedAt: null,
+	},
+}
+
+const DEPARTMENT_SHAPE: Prisma.DepartmentSelect = {
+	id: true,
+	name: true,
+	description: true,
+	createdAt: true,
+}
 
 export async function createDepartment(data: CreateDepartmentInput) {
 	return await prisma.department.create({
@@ -13,6 +30,17 @@ export async function createDepartment(data: CreateDepartmentInput) {
 			id: true,
 			createdAt: true,
 		},
+	})
+}
+
+export async function createManyDepartments(data: CreateManyDepartmentInput) {
+	return await prisma.department.createManyAndReturn({
+		data,
+		select: {
+			id: true,
+			createdAt: true,
+		},
+		skipDuplicates: true,
 	})
 }
 
@@ -32,20 +60,50 @@ export async function updateDepartment(id: string, data: UpdateDepartmentInput) 
 	})
 }
 
-export async function getDepartments(where: Prisma.DepartmentWhereInput, options: PrismaQueryOptions) {
+export async function restoreDepartment(id: string) {
+	return await prisma.department.findUniqueOrThrow({
+		where: {
+			id,
+		},
+		select: DEPARTMENT_SHAPE,
+	})
+}
+
+export async function softDeleteDepartment(id: string) {
+	return await prisma.department.update({
+		where: {
+			id,
+			deletedAt: null,
+		},
+		data: {
+			deletedAt: new Date(),
+		},
+	})
+}
+
+export async function hardDeleteDepartment(id: string) {
+	return await prisma.department.delete({
+		where: {
+			id,
+		},
+	})
+}
+
+export async function listDepartments(where: Prisma.DepartmentWhereInput, options: PrismaQueryOptions) {
+	const finalWhere = {
+		...ACTIVE_ONLY,
+		...where,
+	}
+
 	const [departments, total] = await Promise.all([
 		prisma.department.findMany({
-			where,
+			where: finalWhere,
 			...options,
-			select: {
-				id: true,
-				name: true,
-				description: true,
-				createdAt: true,
-			},
+			select: DEPARTMENT_SHAPE,
 		}),
 		prisma.department.count({
-			where,
+			where: finalWhere,
+			...options,
 		}),
 	])
 
@@ -55,16 +113,35 @@ export async function getDepartments(where: Prisma.DepartmentWhereInput, options
 	}
 }
 
-export async function getDepartmentByID(id: string) {
+export async function listDepartmentById(id: string) {
 	return await prisma.department.findUniqueOrThrow({
 		where: {
 			id,
 		},
-		select: {
-			id: true,
-			name: true,
-			description: true,
-			createdAt: true,
-		},
+		select: DEPARTMENT_SHAPE,
 	})
+}
+
+export async function listSoftDeletedDepartments(where: Prisma.DepartmentWhereInput, options: PrismaQueryOptions) {
+	const finalWhere = {
+		...DELETED_ONLY,
+		...where,
+	}
+
+	const [departments, total] = await Promise.all([
+		prisma.department.findMany({
+			where: finalWhere,
+			...options,
+			select: DEPARTMENT_SHAPE,
+		}),
+		prisma.department.count({
+			where: finalWhere,
+			...options,
+		}),
+	])
+
+	return {
+		departments,
+		total,
+	}
 }

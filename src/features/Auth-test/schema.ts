@@ -1,4 +1,3 @@
-import { UserRole } from "@prisma/client"
 import { z } from "zod"
 
 const signInSchema = z.object({
@@ -8,7 +7,7 @@ const signInSchema = z.object({
 
 const signUpSchema = signInSchema.extend({
 	name: z.string().min(1),
-	role: z.enum(UserRole).default("EMPLOYEE"),
+	roleId: z.string().min(1),
 	departmentId: z.uuid().min(1),
 })
 

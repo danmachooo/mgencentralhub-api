@@ -1,4 +1,3 @@
-import { PersonalSystemStatus } from "@prisma/client"
 import { z } from "zod"
 
 export const createPersonalSystemSchema = z.object({
@@ -9,5 +8,4 @@ export const createPersonalSystemSchema = z.object({
 		protocol: /^https$/,
 		error: "URL must be https.",
 	}),
-	status: z.enum(PersonalSystemStatus).default(PersonalSystemStatus.ACTIVE),
 })

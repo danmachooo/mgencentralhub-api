@@ -120,7 +120,6 @@ model UserProfile {
 
 model SystemFlag {
   id          String @id @default(uuid()) @db.Uuid
-  key         String
   name        String
   description String @db.Text
 
@@ -130,7 +129,6 @@ model SystemFlag {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime?
 
-  @@unique([key])
   @@unique([name])
   @@index([deletedAt])
   @@map("system_flags")

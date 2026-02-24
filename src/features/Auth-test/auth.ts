@@ -4,7 +4,6 @@ import { signInSchema, signUpSchema } from "@/features/Auth-test/schema"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/httpContext.type"
 import type { IncomingHttpHeaders } from "http"
-import type { UserRole } from "@prisma/client"
 import { createUser } from "@/features/UserProfiles/userProfile.service"
 
 type User = {
@@ -12,7 +11,7 @@ type User = {
 	email: string
 	password: string
 	departmentId: string
-	role: UserRole
+	roleId: string
 }
 
 type SignUpParams = User
@@ -29,7 +28,7 @@ export async function signUp(user: SignUpParams) {
 
 	const userInfoForProfile = {
 		id: signUpResult.user.id,
-		role: user.role,
+		roleId: user.roleId,
 		departmentId: user.departmentId,
 	}
 
@@ -60,14 +59,14 @@ export async function getSession(headers: IncomingHttpHeaders) {
 }
 
 export const signUpHandler = asyncHandler(async (http: HttpContext) => {
-	const { name, email, password, departmentId, role } = signUpSchema.parse(http.req.body)
+	const { name, email, password, departmentId, roleId } = signUpSchema.parse(http.req.body)
 
 	await signUp({
 		name,
 		email,
 		password,
 		departmentId,
-		role,
+		roleId,
 	})
 
 	return http.res.status(201).json({

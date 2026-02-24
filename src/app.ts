@@ -25,7 +25,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Routes
-app.use("/", (_, res) => {
+app.get("/", (_, res) => {
 	return res.status(200).json({
 		success: true,
 		message: "I am running :))",

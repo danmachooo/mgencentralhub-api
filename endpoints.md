@@ -11,7 +11,7 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 - Routes under `/api/systems`, `/api/departments`, `/api/users`, and `/api/roles` require auth via `requireAuth` middleware.
 - Authenticated routes expect a valid Better Auth session cookie.
-
+  
 ## Common Response Envelopes
 
 ### Success (non-paginated)

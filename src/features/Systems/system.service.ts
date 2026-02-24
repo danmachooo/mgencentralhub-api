@@ -42,7 +42,7 @@ export async function createCompanySystem(creator: CreatorIdentifier, data: Crea
 }
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
 	await listSystemById(system.id)
-	
+
 	return systemErrors.exec(() => updateSystem(system.id, data))
 }
 

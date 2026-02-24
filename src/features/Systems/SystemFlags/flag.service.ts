@@ -10,7 +10,12 @@ import {
 	updateSystemFlag,
 } from "@/features/Systems/SystemFlags/flag.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
-import type { CreateManySystemFlagInput, CreateSystemFlagInput, SystemFlagIdentifier, UpdateSystemFlagInput } from "@/schema"
+import type {
+	CreateManySystemFlagInput,
+	CreateSystemFlagInput,
+	SystemFlagIdentifier,
+	UpdateSystemFlagInput,
+} from "@/schema"
 
 const systemFlagErrors = new PrismaErrorHandler({
 	entity: "System Flag",

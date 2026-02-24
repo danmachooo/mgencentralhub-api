@@ -12,7 +12,7 @@ import {
 import { asyncHandler } from "@/middlewares"
 import { createSystemFlagSchema, systemFlagIdentifierSchema, updateSystemFlagSchema } from "@/schema"
 import { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/createManySystemFlag.schema"
-import { HttpContext } from "@/types/shared"
+import type { HttpContext } from "@/types/shared"
 
 export const createSystemFlagHandler = asyncHandler(async (http: HttpContext) => {
 	const systemFlag = createSystemFlagSchema.parse(http.req.body)

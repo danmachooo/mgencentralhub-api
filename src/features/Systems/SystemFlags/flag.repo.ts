@@ -1,6 +1,6 @@
 import { prisma } from "@/lib"
-import { CreateManySystemFlagInput, CreateSystemFlagInput, UpdateSystemFlagInput } from "@/schema"
-import { Prisma } from "@prisma/client"
+import type { CreateManySystemFlagInput, CreateSystemFlagInput, UpdateSystemFlagInput } from "@/schema"
+import type { Prisma } from "@prisma/client"
 
 const ACTIVE_ONLY: Prisma.SystemFlagWhereInput = {
 	deletedAt: null,

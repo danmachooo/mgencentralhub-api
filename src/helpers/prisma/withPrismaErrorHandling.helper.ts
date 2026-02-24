@@ -13,7 +13,3 @@ export async function withPrismaErrorHandling<T>(
 		throw err
 	}
 }
-
-class PrismaErrorHandling<T> {
-	constructor(fn: () => Promise<T>, opts: Parameters<typeof prismaToAppError>[1]) {}
-}

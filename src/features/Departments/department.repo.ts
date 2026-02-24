@@ -103,6 +103,7 @@ export async function listDepartments(where: Prisma.DepartmentWhereInput, option
 		}),
 		prisma.department.count({
 			where: finalWhere,
+			...options,
 		}),
 	])
 
@@ -121,11 +122,26 @@ export async function listDepartmentById(id: string) {
 	})
 }
 
-export async function listSoftDeletedDepartments() {
-	return await prisma.department.findMany({
-		where: {
-			...DELETED_ONLY,
-		},
-		select: DEPARTMENT_SHAPE,
-	})
+export async function listSoftDeletedDepartments(where: Prisma.DepartmentWhereInput, options: PrismaQueryOptions) {
+	const finalWhere = {
+		...DELETED_ONLY,
+		...where,
+	}
+
+	const [departments, total] = await Promise.all([
+		prisma.department.findMany({
+			where: finalWhere,
+			...options,
+			select: DEPARTMENT_SHAPE,
+		}),
+		prisma.department.count({
+			where: finalWhere,
+			...options,
+		}),
+	])
+
+	return {
+		departments,
+		total,
+	}
 }

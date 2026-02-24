@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
-import type { Prisma, System } from "@prisma/client"
+import type { Prisma } from "@prisma/client"
 
 const ACTIVE_ONLY: Prisma.SystemWhereInput = {
 	deletedAt: null,
@@ -157,6 +157,7 @@ export async function listSystems(where: Prisma.SystemWhereInput, options: Prism
 		}),
 		prisma.system.count({
 			where: finalWhereQuery,
+			...options,
 		}),
 	])
 
@@ -164,21 +165,20 @@ export async function listSystems(where: Prisma.SystemWhereInput, options: Prism
 }
 
 export async function listSoftDeletedSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
-	const finalQuery: Prisma.SystemWhereInput = {
+	const finalWhere: Prisma.SystemWhereInput = {
 		...where,
 		...DELETED_ONLY,
 	}
 
 	const [systems, total] = await Promise.all([
 		prisma.system.findMany({
-			where: finalQuery,
+			where: finalWhere,
 			select: SYSTEM_SHAPE,
 		}),
 
 		prisma.system.count({
-			where: {
-				...DELETED_ONLY,
-			},
+			where: finalWhere,
+			...options,
 		}),
 	])
 

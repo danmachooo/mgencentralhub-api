@@ -1,7 +1,7 @@
 import type { CreateUserProfileInput, UserIdentifier, UserProfileQuery } from "@/schema"
 import { createUserProfile, getUserContext, getUsers } from "@/features/UserProfiles/userProfile.repo"
-import { getPrismaPagination, PrismaErrorHandler, withPrismaErrorHandling } from "@/helpers/prisma"
-import { Prisma } from "@prisma/client"
+import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
+import type { Prisma } from "@prisma/client"
 
 const userProfileErrors = new PrismaErrorHandler({
 	entity: "User Profile",

@@ -41,10 +41,8 @@ export async function createCompanySystem(creator: CreatorIdentifier, data: Crea
 	return systemErrors.exec(() => createSystem(ctx.userId, data))
 }
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
-	const isFound = await listSystemById(system.id)
-
-	if (!isFound) throw new NotFoundError("System was not found.")
-
+	await listSystemById(system.id)
+	
 	return systemErrors.exec(() => updateSystem(system.id, data))
 }
 

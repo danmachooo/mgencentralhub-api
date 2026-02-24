@@ -7,7 +7,7 @@ const signInSchema = z.object({
 
 const signUpSchema = signInSchema.extend({
 	name: z.string().min(1),
-	role: z.string().min(1),
+	roleId: z.string().min(1),
 	departmentId: z.uuid().min(1),
 })
 

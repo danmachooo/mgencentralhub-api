@@ -2,7 +2,7 @@ import { getUserInfo } from "@/features/UserProfiles/userProfile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
 import { userProfileQuerySchema } from "@/schema"
-import { HttpContext } from "@/types/shared"
+import type { HttpContext } from "@/types/shared"
 
 export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 	const query = userProfileQuerySchema.parse(http.req.query)

@@ -11,7 +11,7 @@ import {
 } from "@/features/UserRole/userRole.service"
 import { asyncHandler } from "@/middlewares"
 import { createManyRoleSchema, createRoleSchema, updateRoleSchema } from "@/schema"
-import { HttpContext } from "@/types/shared"
+import type { HttpContext } from "@/types/shared"
 import { roleIdentifierSchema } from "@/schema/Role/roleIdentifier.schema"
 
 export const createUserRoleHandler = asyncHandler(async (http: HttpContext) => {

@@ -10,7 +10,7 @@ import {
 	updateRole,
 } from "@/features/UserRole/userRole.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
-import { CreateRoleInput, RoleIdentifier, UpdateRoleInput } from "@/schema"
+import type { CreateRoleInput, RoleIdentifier, UpdateRoleInput } from "@/schema"
 
 const roleErrors = new PrismaErrorHandler({
 	entity: "Role",

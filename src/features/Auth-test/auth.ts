@@ -11,7 +11,7 @@ type User = {
 	email: string
 	password: string
 	departmentId: string
-	role: String
+	roleId: string
 }
 
 type SignUpParams = User
@@ -28,7 +28,7 @@ export async function signUp(user: SignUpParams) {
 
 	const userInfoForProfile = {
 		id: signUpResult.user.id,
-		role: user.role,
+		roleId: user.roleId,
 		departmentId: user.departmentId,
 	}
 
@@ -59,14 +59,14 @@ export async function getSession(headers: IncomingHttpHeaders) {
 }
 
 export const signUpHandler = asyncHandler(async (http: HttpContext) => {
-	const { name, email, password, departmentId, role } = signUpSchema.parse(http.req.body)
+	const { name, email, password, departmentId, roleId } = signUpSchema.parse(http.req.body)
 
 	await signUp({
 		name,
 		email,
 		password,
 		departmentId,
-		role,
+		roleId,
 	})
 
 	return http.res.status(201).json({

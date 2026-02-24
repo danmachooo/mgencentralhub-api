@@ -1,6 +1,6 @@
 import { prisma } from "@/lib"
-import { CreateManyRoleInput, CreateRoleInput, UpdateRoleInput } from "@/schema"
-import { Prisma } from "@prisma/client"
+import type { CreateManyRoleInput, CreateRoleInput, UpdateRoleInput } from "@/schema"
+import type { Prisma } from "@prisma/client"
 
 const ACTIVE_ONLY: Prisma.RoleWhereInput = {
 	deletedAt: null,

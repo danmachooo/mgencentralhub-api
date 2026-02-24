@@ -6,7 +6,6 @@ import type {
 	UpdateSystemInput,
 } from "@/schema"
 import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
-import { NotFoundError } from "@/errors"
 import {
 	createSystem,
 	hardDeleteSystem,
@@ -35,9 +34,6 @@ const systemErrors = new PrismaErrorHandler({
 
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
 	const ctx = await getUserAccessContext(creator)
-
-	if (!ctx) throw new NotFoundError("User was not found.")
-
 	return systemErrors.exec(() => createSystem(ctx.userId, data))
 }
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {

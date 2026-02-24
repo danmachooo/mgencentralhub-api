@@ -25,10 +25,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Routes
-app.use("/", (req, res) => {
+app.use("/", (_, res) => {
 	return res.status(200).json({
 		success: true,
-		message: "I am running :))"
+		message: "I am running :))",
 	})
 })
 app.use("/api/auth", toNodeHandler(auth))

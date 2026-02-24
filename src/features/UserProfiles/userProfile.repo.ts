@@ -4,7 +4,7 @@ import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
 
 export async function getUserContext(user: UserIdentifier) {
-	return prisma.userProfile.findUnique({
+	return prisma.userProfile.findUniqueOrThrow({
 		where: {
 			userId: user.id,
 		},

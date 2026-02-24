@@ -5,11 +5,13 @@ export * from "@/schema/Systems/createSystem.schema"
 export * from "@/schema/Systems/updateSystem.schema"
 export * from "@/schema/Systems/systemQuery.schema"
 export * from "@/schema/Systems/systemIdentifier.schema"
+export * from "@/schema/Systems/creatorIdentifier.schema"
 
 // Export here all Personal System Schema
 export * from "@/schema/Systems/Personal/createPersonalSystem.schema"
 export * from "@/schema/Systems/Personal/updatePersonalSystem.schema"
-// export * from "@/schema/Systems/Personal/personalIdentifier.schema" //uncomment after defining
+export * from "@/schema/Systems/Personal/personalSystemIdentifier.schema" //uncomment after defining
+export * from "@/schema/Systems/Personal/personalSystemQuery.schema"
 
 // Export here all System Flags schema
 export * from "@/schema/Systems/SystemFlag/createSystemFlag.schema"
@@ -48,6 +50,7 @@ import type { departmentQuerySchema } from "@/schema/Departments/departmentQuery
 
 import type { createPersonalSystemSchema } from "@/schema/Systems/Personal/createPersonalSystem.schema"
 import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updatePersonalSystem.schema"
+import type { personalSystemQuerySchema } from "@/schema/Systems/Personal/personalSystemQuery.schema"
 
 import type { createUserProfileSchema } from "@/schema/User/createUserProfile.schema"
 import type { userProfileQuerySchema } from "@/schema/User/userQuery.schema"
@@ -61,8 +64,9 @@ import type { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/cre
 import type { updateSystemFlagSchema } from "@/schema/Systems/SystemFlag/updateSystemFlag.schema"
 
 // Identifiers schema
-import type { creatorIdentifierSchema } from "@/schema/Systems/createSystem.schema"
+import type { creatorIdentifierSchema } from "@/schema/Systems/creatorIdentifier.schema"
 import type { systemIdentifierSchema } from "@/schema/Systems/systemIdentifier.schema"
+import type { personalSystemIdentifierSchema } from "@/schema/Systems/Personal/personalSystemIdentifier.schema"
 import type { userIdentifierSchema } from "@/schema/User/userIdentifier.schema"
 import type { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
 import type { roleIdentifierSchema } from "@/schema/Role/roleIdentifier.schema"
@@ -90,6 +94,8 @@ export type SystemFlagIdentifier = z.infer<typeof systemFlagIdentifierSchema>
 // Personal System
 export type CreatePersonalSystemInput = z.infer<typeof createPersonalSystemSchema>
 export type UpdatePersonalSystemInput = z.infer<typeof updatePersonalSystemSchema>
+export type PersonalSystemQueryInput = z.infer<typeof personalSystemQuerySchema>
+export type PersonalSystemIdentifier = z.infer<typeof personalSystemIdentifierSchema>
 
 // Departments
 export type CreateDepartmentInput = z.infer<typeof createDepartmentSchema>

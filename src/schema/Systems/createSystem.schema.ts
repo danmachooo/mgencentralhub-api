@@ -1,9 +1,5 @@
 import { z } from "zod"
 
-export const creatorIdentifierSchema = z.object({
-	id: z.string().min(1),
-})
-
 export const createSystemSchema = z.object({
 	name: z.string().min(1),
 	description: z.string().min(1),

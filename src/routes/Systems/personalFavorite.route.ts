@@ -1,5 +1,4 @@
 import { Router } from "express"
-import {} from "@/features/Systems/system.controller"
 import {
 	getFavoritePersonalSystemsHandler,
 	toggleFavoritePersonalSystemHandler,

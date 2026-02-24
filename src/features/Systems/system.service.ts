@@ -8,7 +8,11 @@ import type {
 import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
 import {
 	createSystem,
+	flipFavoriteSystem,
 	hardDeleteSystem,
+	isFavoriteSystem,
+	listFavoriteSystemById,
+	listFavoriteSystems,
 	listSoftDeletedSystems,
 	listSystemById,
 	listSystems,
@@ -42,6 +46,26 @@ export async function updateCompanySystem(system: SystemIdentifier, data: Update
 	return systemErrors.exec(() => updateSystem(system.id, data))
 }
 
+export async function toggleFavoriteSystem(user: CreatorIdentifier, system: SystemIdentifier) {
+	return systemErrors.exec(() => flipFavoriteSystem(user.id, system.id))
+}
+
+export async function checkIfSystemIsFavorite(user: CreatorIdentifier, system: SystemIdentifier) {
+	return systemErrors.exec(() => isFavoriteSystem(user.id, system.id))
+}
+
+export async function restoreCompanySystem(system: SystemIdentifier) {
+	return systemErrors.exec(() => restoreSystem(system.id))
+}
+
+export async function softDeleteCompanySystem(system: SystemIdentifier) {
+	return systemErrors.exec(() => softDeleteSystem(system.id))
+}
+
+export async function hardDeleteCompanySystem(system: SystemIdentifier) {
+	return systemErrors.exec(() => hardDeleteSystem(system.id))
+}
+
 export async function getCompanySystems(query: SystemQueryInput) {
 	const options = getPrismaPagination(query)
 
@@ -57,6 +81,27 @@ export async function getCompanySystems(query: SystemQueryInput) {
 		}),
 	}
 	return systemErrors.exec(() => listSystems(where, options))
+}
+
+export async function getFavoriteSystems(creator: CreatorIdentifier, query: SystemQueryInput) {
+	const options = getPrismaPagination(query)
+
+	const where: Prisma.UserFavoriteSystemWhereInput = {
+		userId: creator.id,
+
+		system: {
+			systemFlag: {
+				name: query.status,
+			},
+		},
+		...(query.search && {
+			OR: [
+				{ system: { name: { contains: query.search, mode: "insensitive" } } },
+				{ system: { url: { contains: query.search, mode: "insensitive" } } },
+			],
+		}),
+	}
+	return systemErrors.exec(() => listFavoriteSystems(where, options))
 }
 
 export async function getDeletedCompanySystems(query: SystemQueryInput) {
@@ -81,14 +126,6 @@ export async function getCompanySystemById(system: SystemIdentifier) {
 	return systemErrors.exec(() => listSystemById(system.id))
 }
 
-export async function restoreCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => restoreSystem(system.id))
-}
-
-export async function softDeleteCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => softDeleteSystem(system.id))
-}
-
-export async function hardDeleteCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => hardDeleteSystem(system.id))
+export async function getFavoriteCompanySystemById(user: CreatorIdentifier, system: SystemIdentifier) {
+	return systemErrors.exec(() => listFavoriteSystemById(user.id, system.id))
 }

@@ -67,6 +67,35 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 	})
 }
 
+export async function flipFavoritePersonalSystem(userId: string, personalSystemId: string) {
+	const compositeKey = {
+		userId,
+		personalSystemId,
+	}
+	const existing = await prisma.userFavoritePersonalSystem.findUnique({
+		where: {
+			userId_personalSystemId: compositeKey,
+		},
+	})
+
+	if (existing) {
+		await prisma.userFavoritePersonalSystem.delete({
+			where: {
+				userId_personalSystemId: compositeKey,
+			},
+		})
+		return { favorited: false }
+	}
+
+	await prisma.userFavoritePersonalSystem.create({
+		data: compositeKey,
+	})
+
+	return {
+		favorited: true,
+	}
+}
+
 export async function restorePersonalSystem(id: string) {
 	return await prisma.personalSystem.update({
 		where: {
@@ -129,6 +158,46 @@ export async function listPersonalSystems(where: Prisma.PersonalSystemWhereInput
 	])
 
 	return { systems, total }
+}
+
+export async function listFavoritePersonalSystems(
+	where: Prisma.UserFavoritePersonalSystemWhereInput,
+	options: PrismaQueryOptions
+) {
+	const finalWhereQuery: Prisma.UserFavoritePersonalSystemWhereInput = {
+		...where,
+		personalSystem: DELETED_ONLY,
+	}
+
+	const [favoriteSystems, total] = await Promise.all([
+		prisma.userFavoritePersonalSystem.findMany({
+			where: finalWhereQuery,
+			...options,
+
+			select: SYSTEM_SHAPE,
+		}),
+		prisma.userFavoritePersonalSystem.count({
+			where: finalWhereQuery,
+			...options,
+		}),
+	])
+
+	return { favoriteSystems, total }
+}
+
+export async function listFavoritePersonalSystemById(userId: string, personalSystemId: string) {
+	const compositeKey = {
+		userId,
+		personalSystemId,
+	}
+	const favorite = await prisma.userFavoritePersonalSystem.findUniqueOrThrow({
+		where: {
+			userId_personalSystemId: compositeKey,
+		},
+		select: SYSTEM_SHAPE,
+	})
+
+	return favorite
 }
 
 export async function listSoftDeletedPersonaSystems(

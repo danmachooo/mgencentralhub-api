@@ -9,6 +9,10 @@ import {
 	restoreCompanySystem,
 	softDeleteCompanySystem,
 	hardDeleteCompanySystem,
+	toggleFavoriteSystem,
+	checkIfSystemIsFavorite,
+	getFavoriteSystems,
+	getFavoriteCompanySystemById,
 } from "@/features/Systems/system.service"
 import {
 	createSystemSchema,
@@ -49,6 +53,30 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 	})
 })
 
+export const toggleFavoriteSystemHandler = asyncHandler(async (http: HttpContext) => {
+	const user = creatorIdentifierSchema.parse(http.req.user)
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	const { favorited } = await toggleFavoriteSystem(user, system)
+
+	return http.res.status(200).json({
+		success: true,
+		message: favorited ? "Added to favorites." : "Removed from favorites",
+	})
+})
+
+export const isFavoriteSystemHandler = asyncHandler(async (http: HttpContext) => {
+	const user = creatorIdentifierSchema.parse(http.req.user)
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	const favorited = await checkIfSystemIsFavorite(user, system)
+
+	return http.res.status(200).json({
+		success: true,
+		favorited,
+	})
+})
+
 export const restoreCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = systemIdentifierSchema.parse(http.req.params)
 
@@ -61,36 +89,6 @@ export const restoreCompanySystemHandler = asyncHandler(async (http: HttpContext
 			restoredSystem,
 		},
 	})
-})
-
-export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
-	const query = systemQuerySchema.parse(http.req.query)
-
-	const { systems, total } = await getCompanySystems(query)
-
-	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
-})
-
-export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = systemIdentifierSchema.parse(http.req.params)
-
-	const system = await getCompanySystemById({ id })
-
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been retrieved.",
-		data: {
-			system,
-		},
-	})
-})
-
-export const getDeletedCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
-	const query = systemQuerySchema.parse(http.req.query)
-
-	const { systems, total } = await getDeletedCompanySystems(query)
-
-	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
 })
 
 export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -113,4 +111,63 @@ export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 		success: true,
 		message: "System has been deleted.",
 	})
+})
+
+export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const query = systemQuerySchema.parse(http.req.query)
+
+	const { systems, total } = await getCompanySystems(query)
+
+	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
+})
+
+export const getFavoriteCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const user = creatorIdentifierSchema.parse(http.req.user)
+	const query = systemQuerySchema.parse(http.req.query)
+
+	const { favoriteSystems, total } = await getFavoriteSystems(user, query)
+
+	return sendPaginatedResponse(
+		http,
+		{ data: favoriteSystems, total },
+		query,
+		"Favorite Systems retrieved successfully"
+	)
+})
+
+export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
+	const { id } = systemIdentifierSchema.parse(http.req.params)
+
+	const system = await getCompanySystemById({ id })
+
+	return http.res.status(200).json({
+		success: true,
+		message: "System has been retrieved.",
+		data: {
+			system,
+		},
+	})
+})
+
+export const getFavoriteCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
+	const user = creatorIdentifierSchema.parse(http.req.user)
+	const system = systemIdentifierSchema.parse(http.req.params)
+
+	const favorite = await getFavoriteCompanySystemById(user, system)
+
+	return http.res.status(200).json({
+		success: true,
+		message: "Favorite System has been retrieved.",
+		data: {
+			favorite,
+		},
+	})
+})
+
+export const getDeletedCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const query = systemQuerySchema.parse(http.req.query)
+
+	const { systems, total } = await getDeletedCompanySystems(query)
+
+	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
 })

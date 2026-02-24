@@ -12,7 +12,10 @@ import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
 import {
 	createPersonalSystem,
+	flipFavoritePersonalSystem,
 	hardDeletePersonalSystem,
+	listFavoritePersonalSystemById,
+	listFavoritePersonalSystems,
 	listPersonalSystemById,
 	restorePersonalSystem,
 	softDeletePersonalSystem,
@@ -39,6 +42,22 @@ export async function updateOwnSystem(system: PersonalSystemIdentifier, data: Up
 	await listPersonalSystemById(system.id)
 
 	return personalSystemErrors.exec(() => updateSystem(system.id, data))
+}
+
+export async function toggleFavoritePersonalSystem(user: CreatorIdentifier, system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => flipFavoritePersonalSystem(user.id, system.id))
+}
+
+export async function restoreOwnSystem(system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => restorePersonalSystem(system.id))
+}
+
+export async function softDeleteOwnSystem(system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => softDeletePersonalSystem(system.id))
+}
+
+export async function hardDeleteOwnSystem(system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => hardDeletePersonalSystem(system.id))
 }
 
 export async function getOwnSystems(query: PersonalSystemQueryInput) {
@@ -76,14 +95,19 @@ export async function getOwnSystemById(system: PersonalSystemIdentifier) {
 	return personalSystemErrors.exec(() => listPersonalSystemById(system.id))
 }
 
-export async function restoreOwnSystem(system: PersonalSystemIdentifier) {
-	return personalSystemErrors.exec(() => restorePersonalSystem(system.id))
+export async function getFavoriteOwnSystemById(user: CreatorIdentifier, system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => listFavoritePersonalSystemById(user.id, system.id))
 }
 
-export async function softDeleteOwnSystem(system: PersonalSystemIdentifier) {
-	return personalSystemErrors.exec(() => softDeletePersonalSystem(system.id))
-}
-
-export async function hardDeleteOwnSystem(system: PersonalSystemIdentifier) {
-	return personalSystemErrors.exec(() => hardDeletePersonalSystem(system.id))
+export async function getFavoriteOwnSystems(creator: CreatorIdentifier, query: PersonalSystemQueryInput) {
+	const options = getPrismaPagination(query)
+	const where: Prisma.UserFavoritePersonalSystemWhereInput = {
+		...(query.search && {
+			OR: [
+				{ personalSystem: { name: { contains: query.search, mode: "insensitive" } } },
+				{ personalSystem: { url: { contains: query.search, mode: "insensitive" } } },
+			],
+		}),
+	}
+	return personalSystemErrors.exec(() => listFavoritePersonalSystems(where, options))
 }

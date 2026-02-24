@@ -113,6 +113,51 @@ export async function restoreSystem(id: string) {
 	})
 }
 
+export async function flipFavoriteSystem(userId: string, systemId: string) {
+	const compositeKey = {
+		userId,
+		systemId,
+	}
+	const existing = await prisma.userFavoriteSystem.findUnique({
+		where: {
+			userId_systemId: compositeKey,
+		},
+	})
+
+	if (existing) {
+		await prisma.userFavoriteSystem.delete({
+			where: {
+				userId_systemId: compositeKey,
+			},
+		})
+		return { favorited: false }
+	}
+
+	await prisma.userFavoriteSystem.create({
+		data: compositeKey,
+	})
+
+	return {
+		favorited: true,
+	}
+}
+
+export async function isFavoriteSystem(userId: string, systemId: string) {
+	const compositeKey = {
+		userId,
+		systemId,
+	}
+	const fav = await prisma.userFavoriteSystem.findUniqueOrThrow({
+		where: {
+			userId_systemId: compositeKey,
+		},
+		select: {
+			userId: true,
+		},
+	})
+	return !!fav
+}
+
 export async function softDeleteSystem(id: string) {
 	return await prisma.system.update({
 		where: {
@@ -140,6 +185,21 @@ export async function listSystemById(id: string) {
 	})
 
 	return system
+}
+
+export async function listFavoriteSystemById(userId: string, systemId: string) {
+	const compositeKey = {
+		userId,
+		systemId,
+	}
+	const favorite = await prisma.userFavoriteSystem.findUniqueOrThrow({
+		where: {
+			userId_systemId: compositeKey,
+		},
+		select: SYSTEM_SHAPE,
+	})
+
+	return favorite
 }
 
 export async function listSystems(where: Prisma.SystemWhereInput, options: PrismaQueryOptions) {
@@ -184,6 +244,32 @@ export async function listSoftDeletedSystems(where: Prisma.SystemWhereInput, opt
 
 	return {
 		systems,
+		total,
+	}
+}
+
+export async function listFavoriteSystems(where: Prisma.UserFavoriteSystemWhereInput, options: PrismaQueryOptions) {
+	const finalWhere: Prisma.UserFavoriteSystemWhereInput = {
+		...where,
+		system: {
+			...DELETED_ONLY,
+		},
+	}
+
+	const [favoriteSystems, total] = await Promise.all([
+		prisma.userFavoriteSystem.findMany({
+			where: finalWhere,
+			select: SYSTEM_SHAPE,
+		}),
+
+		prisma.userFavoriteSystem.count({
+			where: finalWhere,
+			...options,
+		}),
+	])
+
+	return {
+		favoriteSystems,
 		total,
 	}
 }

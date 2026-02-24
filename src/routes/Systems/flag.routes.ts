@@ -12,18 +12,23 @@ import {
 	getInactiveSystemFlags,
 } from "@/features/Systems/SystemFlags/flag.service"
 import { Router } from "express"
-
 const router = Router()
 
+// GET
 router.get("/", getActiveSystemFlags)
-router.get("/", getInactiveSystemFlags)
+router.get("/inactive", getInactiveSystemFlags)
 router.get("/:id", getActiveSystemFlagById)
 
+// POST
 router.post("/", createSystemFlagHandler)
-router.post("/", createManySystemFlagHandler)
+router.post("/bulk", createManySystemFlagHandler)
 
+// PATCH
 router.patch("/:id", updateSystemFlagHandler)
-router.patch("/:id", restoreSystemFlagHandler)
+router.patch("/:id/restore", restoreSystemFlagHandler)
 
+// DELETE
 router.delete("/:id", softDeleteSystemFlagHandler)
-router.delete("/:id", hardDeleteSystemFlagHandler)
+router.delete("/:id/hard", hardDeleteSystemFlagHandler)
+
+export default router

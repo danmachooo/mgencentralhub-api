@@ -13,17 +13,21 @@ import { Router } from "express"
 
 const router = Router()
 
+// GET
 router.get("/", getCompanyDepartmentsHandler)
-router.get("/", getSoftDeletedCompanyDepartmentsHandler)
+router.get("/deleted", getSoftDeletedCompanyDepartmentsHandler)
 router.get("/:id", getCompanyDepartmentbyIdHandler)
 
+// POST
 router.post("/", createCompanyDepartmentHandler)
-router.post("/", createManyCompanyDepartmentHandler)
+router.post("/bulk", createManyCompanyDepartmentHandler)
 
-router.patch("/", restoreCompanyDepartmentHandler)
+// PATCH
 router.patch("/:id", updateDepartmentHandler)
+router.patch("/:id/restore", restoreCompanyDepartmentHandler)
 
-router.delete("/", softDeleteCompanyDepartmentHandler)
-router.delete("/", hardDeleteCompanyDepartmentHandler)
+// DELETE
+router.delete("/:id", softDeleteCompanyDepartmentHandler)
+router.delete("/:id/hard", hardDeleteCompanyDepartmentHandler)
 
 export default router

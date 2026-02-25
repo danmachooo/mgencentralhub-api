@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import type { CreateSystemInput, UpdateSystemInput } from "@/schema"
+import type { CreateManySystemInput, CreateSystemInput, UpdateSystemInput } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
 
@@ -54,6 +54,50 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 			},
 		})
 		return systemCreated
+	})
+}
+
+export async function createManySystem(id: string, systemsData: CreateManySystemInput) {
+	return prisma.$transaction(async tx => {
+		//  Bulk insert all Systems
+
+		await tx.system.createMany({
+			data: systemsData.map(s => ({
+				name: s.name,
+				description: s.description,
+				url: s.url,
+				image: s.image,
+				statusId: s.statusId,
+				creatorId: id,
+			})),
+			skipDuplicates: true,
+		})
+
+		// Fetch the newly created systems to get their IDs
+		const names = systemsData.map(s => s.name)
+		const createdSystems = await tx.system.findMany({
+			where: { name: { in: names }, creatorId: id },
+			select: { id: true, name: true },
+		})
+
+		// Map the retrieved IDs back to their corresponding department IDs
+		const departmentMappings = systemsData.flatMap(systemInput => {
+			const dbSystem = createdSystems.find(s => s.name === systemInput.name)
+			if (!dbSystem) return []
+
+			const uniqueDeps = [...new Set(systemInput.departmentIds)]
+			return uniqueDeps.map(depId => ({
+				systemId: dbSystem.id,
+				departmentId: depId,
+			}))
+		})
+
+		// One final bulk insert for all relationships
+		await tx.systemDepartmentMap.createMany({
+			data: departmentMappings,
+		})
+
+		return createdSystems
 	})
 }
 

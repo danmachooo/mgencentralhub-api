@@ -13,8 +13,10 @@ import {
 	checkIfSystemIsFavorite,
 	getFavoriteSystems,
 	getFavoriteCompanySystemById,
+	createManyCompanySystems,
 } from "@/features/Systems/system.service"
 import {
+	createManySystemSchema,
 	createSystemSchema,
 	creatorIdentifierSchema,
 	systemIdentifierSchema,
@@ -34,6 +36,21 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 		message: "System has been created.",
 		data: {
 			id: systemCreated.id,
+		},
+	})
+})
+
+export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
+	const creator = creatorIdentifierSchema.parse(http.req.user)
+	const body = createManySystemSchema.parse(http.req.body)
+
+	const systemsCreated = await createManyCompanySystems(creator, body)
+
+	return http.res.status(201).json({
+		success: true,
+		message: "Systems has been created.",
+		data: {
+			systemsCreated,
 		},
 	})
 })

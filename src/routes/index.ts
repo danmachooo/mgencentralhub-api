@@ -14,8 +14,8 @@ router.use("/health", HealthRouter)
 
 router.use("/auth-test", AuthTestRouter)
 router.use("/systems", requireAuth, SystemRouter)
-router.use("/departments", DepartmentRouter)
+router.use("/departments", requireAuth, DepartmentRouter)
 router.use("/users", requireAuth, UserRouter)
-router.use("/roles", RoleRouter)
+router.use("/roles", requireAuth, RoleRouter)
 
 export default router

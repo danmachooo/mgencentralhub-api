@@ -1,4 +1,5 @@
 import type {
+	CreateManySystemInput,
 	CreateSystemInput,
 	CreatorIdentifier,
 	SystemIdentifier,
@@ -7,6 +8,7 @@ import type {
 } from "@/schema"
 import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
 import {
+	createManySystem,
 	createSystem,
 	flipFavoriteSystem,
 	hardDeleteSystem,
@@ -39,6 +41,11 @@ const systemErrors = new PrismaErrorHandler({
 export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
 	const ctx = await getUserAccessContext(creator)
 	return systemErrors.exec(() => createSystem(ctx.userId, data))
+}
+
+export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {
+	const ctx = await getUserAccessContext(creator)
+	return systemErrors.exec(() => createManySystem(ctx.userId, data))
 }
 export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
 	await listSystemById(system.id)

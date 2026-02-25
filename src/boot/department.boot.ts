@@ -1,5 +1,5 @@
 import { PrismaErrorHandler } from "@/helpers/prisma"
-import { CreateManyDepartmentInput } from "@/schema"
+import type { CreateManyDepartmentInput } from "@/schema"
 import { logger, prisma } from "@/lib"
 import { createManyDepartments } from "@/features/Departments/department.repo"
 
@@ -7,7 +7,7 @@ const bootDepartmentErrors = new PrismaErrorHandler({
 	entity: "Roles",
 })
 
-export async function createDepartments() {
+export async function createDepartmentsBoot() {
 	const result = await prisma.department.findMany({
 		select: {
 			id: true,
@@ -15,14 +15,13 @@ export async function createDepartments() {
 	})
 
 	if (result.length > 0) {
-        logger.info("There are already departments available, Skipping ...")
-        return
-    }
+		return
+	}
 
 	const departments: CreateManyDepartmentInput = [
 		{
 			name: "Software Development",
-            description : "Department that is focused on making softwares and digital innovations."
+			description: "Department that is focused on making softwares and digital innovations.",
 		},
 		{
 			name: "HR",
@@ -30,7 +29,7 @@ export async function createDepartments() {
 		},
 	]
 
-    logger.info("Initializing departments ...")
+	logger.info("Company departments creation in progress ...")
 	await bootDepartmentErrors.exec(() => createManyDepartments(departments))
-    logger.info("Department has been initialized! :)")
+	logger.info("Company departments has been created. :)")
 }

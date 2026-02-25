@@ -1,5 +1,10 @@
 import { prisma } from "@/lib/prisma"
-import type { CreatePersonalSystemInput, UpdatePersonalSystemInput } from "@/schema"
+import type {
+	CreateManyPersonalSystemInput,
+	CreatePersonalSystemInput,
+	CreateSystemInput,
+	UpdatePersonalSystemInput,
+} from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
 
@@ -42,6 +47,21 @@ export async function createPersonalSystem(id: string, data: CreatePersonalSyste
 			},
 		})
 		return personalSystemCreated
+	})
+}
+
+export async function createManyPersonalSystem(id: string, systemsData: CreateManyPersonalSystemInput) {
+	return prisma.$transaction(async tx => {
+		await tx.personalSystem.createMany({
+			data: systemsData.map(s => ({
+				name: s.name,
+				description: s.description,
+				url: s.url,
+				image: s.image,
+				ownerUserId: id,
+			})),
+			skipDuplicates: true,
+		})
 	})
 }
 

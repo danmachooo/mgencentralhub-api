@@ -1,13 +1,13 @@
 import { createManyRoles } from "@/features/UserRole/userRole.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
-import { CreateManyRoleInput } from "@/schema"
+import type { CreateManyRoleInput } from "@/schema"
 import { logger, prisma } from "@/lib"
 
 const bootRoleErrors = new PrismaErrorHandler({
 	entity: "Roles",
 })
 
-export async function createRoles() {
+export async function createManyRolesBoot() {
 	const result = await prisma.role.findMany({
 		select: {
 			id: true,
@@ -15,9 +15,8 @@ export async function createRoles() {
 	})
 
 	if (result.length > 0) {
-        logger.info("There are already roles available, Skipping ...")
-        return
-    }
+		return
+	}
 
 	const roles: CreateManyRoleInput = [
 		{
@@ -30,7 +29,7 @@ export async function createRoles() {
 		},
 	]
 
-    logger.info("Initializing user roles ...")
+	logger.info("Company roles creation in progress ...")
 	await bootRoleErrors.exec(() => createManyRoles(roles))
-    logger.info("User roles has been initialized! :)")
+	logger.info("Company roles has been created. :)")
 }

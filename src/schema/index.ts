@@ -6,9 +6,11 @@ export * from "@/schema/Systems/updateSystem.schema"
 export * from "@/schema/Systems/systemQuery.schema"
 export * from "@/schema/Systems/systemIdentifier.schema"
 export * from "@/schema/Systems/creatorIdentifier.schema"
+export * from "@/schema/Systems/createManySystem.schema"
 
 // Export here all Personal System Schema
 export * from "@/schema/Systems/Personal/createPersonalSystem.schema"
+export * from "@/schema/Systems/Personal/createManyPersonalSystem.schema"
 export * from "@/schema/Systems/Personal/updatePersonalSystem.schema"
 export * from "@/schema/Systems/Personal/personalSystemIdentifier.schema" //uncomment after defining
 export * from "@/schema/Systems/Personal/personalSystemQuery.schema"
@@ -40,6 +42,7 @@ export * from "@/schema/Role/roleIdentifier.schema"
 export * from "@/schema/shared/requestQuery.schema"
 
 import type { createSystemSchema } from "@/schema/Systems/createSystem.schema"
+import type { createManySystemSchema } from "@/schema/Systems/createManySystem.schema"
 import type { updateSystemSchema } from "@/schema/Systems/updateSystem.schema"
 import type { systemQuerySchema } from "@/schema/Systems/systemQuery.schema"
 
@@ -49,6 +52,7 @@ import type { updateDepartmentSchema } from "@/schema/Departments/updateDepartme
 import type { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
 
 import type { createPersonalSystemSchema } from "@/schema/Systems/Personal/createPersonalSystem.schema"
+import type { createManyPersonalSystemSchema } from "@/schema/Systems/Personal/createManyPersonalSystem.schema"
 import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updatePersonalSystem.schema"
 import type { personalSystemQuerySchema } from "@/schema/Systems/Personal/personalSystemQuery.schema"
 
@@ -82,6 +86,7 @@ export type DepartmentIdentifier = z.infer<typeof departmentIdentifierSchema>
 
 // General System
 export type CreateSystemInput = z.infer<typeof createSystemSchema>
+export type CreateManySystemInput = z.infer<typeof createManySystemSchema>
 export type UpdateSystemInput = z.infer<typeof updateSystemSchema>
 export type SystemQueryInput = z.infer<typeof systemQuerySchema>
 
@@ -93,6 +98,7 @@ export type SystemFlagIdentifier = z.infer<typeof systemFlagIdentifierSchema>
 
 // Personal System
 export type CreatePersonalSystemInput = z.infer<typeof createPersonalSystemSchema>
+export type CreateManyPersonalSystemInput = z.infer<typeof createManyPersonalSystemSchema>
 export type UpdatePersonalSystemInput = z.infer<typeof updatePersonalSystemSchema>
 export type PersonalSystemQueryInput = z.infer<typeof personalSystemQuerySchema>
 export type PersonalSystemIdentifier = z.infer<typeof personalSystemIdentifierSchema>

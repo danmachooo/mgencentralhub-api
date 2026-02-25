@@ -36,7 +36,6 @@ const envSchema = z.object({
 	// FILE UPLOAD
 	STORAGE_MODE: z.enum(["local", "supabase"]).default("local"),
 	LOCAL_UPLOAD_DIR: z.string().min(1),
-
 })
 
 function validateEnv() {

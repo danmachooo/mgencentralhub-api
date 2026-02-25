@@ -13,8 +13,6 @@ export const appConfig = {
 
 		/** Current runtime environment (development | production | test) */
 		nodeEnv: env.NODE_ENV,
-
-
 	},
 	/**
 	 * Database configuration.
@@ -52,14 +50,14 @@ export const appConfig = {
 		region: env.SUPABASE_REGION,
 		credentials: {
 			accessKeyId: env.SUPABASE_ACCESS_KEY_ID,
-			secretAccessKey: env.SUPABASE_SECRET_ACCESS_KEY
-		}
+			secretAccessKey: env.SUPABASE_SECRET_ACCESS_KEY,
+		},
 	},
 
 	storage: {
 		mode: env.STORAGE_MODE,
 		bucket: env.SUPABASE_BUCKET,
 		uploadDir: env.LOCAL_UPLOAD_DIR,
-		baseUrl: env.BASE_URL
-	}
+		baseUrl: env.BASE_URL,
+	},
 } as const

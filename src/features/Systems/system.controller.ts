@@ -29,7 +29,9 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const body = createSystemSchema.parse(http.req.body)
 
-	const systemCreated = await createCompanySystem(creator, body)
+	const file = http.req.file ?? null
+
+	const systemCreated = await createCompanySystem(creator, body, file)
 
 	return http.res.status(201).json({
 		success: true,

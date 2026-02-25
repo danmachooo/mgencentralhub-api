@@ -4,17 +4,17 @@ import { resolveFileUrl } from "@/features/Storage/storage.service"
  * Returns the object with image replaced by the resolved URL.
  */
 export async function withResolvedImage<T extends { image: string | null }>(
-  record: T
+	record: T
 ): Promise<T & { image: string | null }> {
-  const imageUrl = await resolveFileUrl(record.image)
-  return { ...record, image: imageUrl }
+	const imageUrl = await resolveFileUrl(record.image)
+	return { ...record, image: imageUrl }
 }
 
 /**
  * Batch version for lists — resolves all images in parallel.
  */
 export async function withResolvedImages<T extends { image: string | null }>(
-  records: T[]
+	records: T[]
 ): Promise<(T & { image: string | null })[]> {
-  return Promise.all(records.map(withResolvedImage))
+	return Promise.all(records.map(withResolvedImage))
 }

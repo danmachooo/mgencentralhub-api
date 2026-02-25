@@ -1,7 +1,7 @@
 import { createManyPersonalSystem } from "@/features/Systems/PersonalSystems/personalSystem.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { prisma, logger } from "@/lib"
-import { CreateManyPersonalSystemInput, CreateManySystemInput } from "@/schema"
+import type { CreateManyPersonalSystemInput } from "@/schema"
 
 const bootPersonalSystemErrors = new PrismaErrorHandler({
 	entity: "Personal System",

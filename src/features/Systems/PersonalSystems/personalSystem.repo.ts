@@ -1,10 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import type {
-	CreateManyPersonalSystemInput,
-	CreatePersonalSystemInput,
-	CreateSystemInput,
-	UpdatePersonalSystemInput,
-} from "@/schema"
+import type { CreateManyPersonalSystemInput, CreatePersonalSystemInput, UpdatePersonalSystemInput } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
 

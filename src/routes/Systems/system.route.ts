@@ -5,7 +5,6 @@ import {
 	hardDeleteCompanySystemHandler,
 	restoreCompanySystemHandler,
 	softDeleteCompanySystemHandler,
-	toggleFavoriteSystemHandler,
 	updateCompanySystemHandler,
 } from "@/features/Systems/system.controller"
 import { getDeletedCompanySystems } from "@/features/Systems/system.service"

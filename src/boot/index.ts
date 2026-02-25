@@ -15,7 +15,7 @@ export const initializeModels = async () => {
 
 		await createAdminBoot()
 
-        await Promise.all([await createManySystemBoot(), await createManyPersonalSystemBoot()])
+		await Promise.all([createManySystemBoot(), createManyPersonalSystemBoot()])
 
 		logger.info("Model initialized successfully")
 	} catch (error) {

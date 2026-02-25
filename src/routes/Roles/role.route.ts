@@ -20,7 +20,7 @@ router.get("/:id", getActiveUserRoleByIdHandler)
 
 // POST
 router.post("/", createUserRoleHandler)
-router.post("/many", createManyUserRoleHandler)
+router.post("/bulk", createManyUserRoleHandler)
 
 // PATCH
 router.patch("/:id", updateUserRoleHandler)

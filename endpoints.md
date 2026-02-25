@@ -11,16 +11,16 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 - Routes under `/api/systems`, `/api/departments`, `/api/users`, and `/api/roles` require auth via `requireAuth` middleware.
 - Authenticated routes expect a valid Better Auth session cookie.
-  
+
 ## Common Response Envelopes
 
 ### Success (non-paginated)
 
 ```json
 {
-  "success": true,
-  "message": "string",
-  "data": {}
+	"success": true,
+	"message": "string",
+	"data": {}
 }
 ```
 
@@ -28,16 +28,16 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "string",
-  "data": [],
-  "meta": {
-    "total": 0,
-    "page": 1,
-    "limit": 10,
-    "totalPages": 1,
-    "hasNextPage": false
-  }
+	"success": true,
+	"message": "string",
+	"data": [],
+	"meta": {
+		"total": 0,
+		"page": 1,
+		"limit": 10,
+		"totalPages": 1,
+		"hasNextPage": false
+	}
 }
 ```
 
@@ -45,9 +45,9 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": false,
-  "message": "string",
-  "errors": []
+	"success": false,
+	"message": "string",
+	"errors": []
 }
 ```
 
@@ -59,7 +59,7 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "id": "uuid"
+	"id": "uuid"
 }
 ```
 
@@ -67,11 +67,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "page": 1,
-  "limit": 10,
-  "sortOrder": "asc | desc",
-  "sortBy": "string (route-specific)",
-  "search": "string (optional)"
+	"page": 1,
+	"limit": 10,
+	"sortOrder": "asc | desc",
+	"sortBy": "string (route-specific)",
+	"search": "string (optional)"
 }
 ```
 
@@ -84,8 +84,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "I am running :))"
+	"success": true,
+	"message": "I am running :))"
 }
 ```
 
@@ -96,8 +96,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "OK"
+	"success": true,
+	"message": "OK"
 }
 ```
 
@@ -107,21 +107,21 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "type": "app | zod | error | async"
+	"type": "app | zod | error | async"
 }
 ```
 
 - Response shape:
-  - `400` when missing/invalid `type`:
+    - `400` when missing/invalid `type`:
 
 ```json
 {
-  "success": false,
-  "message": "Missing/invalid type. Use ?type=app|zod|error|async"
+	"success": false,
+	"message": "Missing/invalid type. Use ?type=app|zod|error|async"
 }
 ```
 
-  - Other values intentionally throw errors to exercise the global error handler.
+- Other values intentionally throw errors to exercise the global error handler.
 
 ## Auth Test Routes (`/api/auth-test`)
 
@@ -131,11 +131,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string",
-  "email": "valid email",
-  "password": "string (min 1)",
-  "roleId": "uuid",
-  "departmentId": "uuid"
+	"name": "string",
+	"email": "valid email",
+	"password": "string (min 1)",
+	"roleId": "uuid",
+	"departmentId": "uuid"
 }
 ```
 
@@ -143,8 +143,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "User has been registered."
+	"success": true,
+	"message": "User has been registered."
 }
 ```
 
@@ -154,8 +154,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "email": "valid email",
-  "password": "string (min 1)"
+	"email": "valid email",
+	"password": "string (min 1)"
 }
 ```
 
@@ -163,9 +163,9 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "User is logged in..",
-  "data": {}
+	"success": true,
+	"message": "User is logged in..",
+	"data": {}
 }
 ```
 
@@ -178,9 +178,9 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Current Session has been retrieved",
-  "session": {}
+	"success": true,
+	"message": "Current Session has been retrieved",
+	"session": {}
 }
 ```
 
@@ -192,22 +192,22 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "id": "uuid",
-  "name": "string",
-  "description": "string | null",
-  "systemFlag": {
-    "id": "uuid",
-    "name": "string",
-    "description": "string"
-  },
-  "url": "string",
-  "createdAt": "datetime",
-  "updatedAt": "datetime",
-  "departmentMap": [
-    {
-      "departmentId": "uuid"
-    }
-  ]
+	"id": "uuid",
+	"name": "string",
+	"description": "string | null",
+	"systemFlag": {
+		"id": "uuid",
+		"name": "string",
+		"description": "string"
+	},
+	"url": "string",
+	"createdAt": "datetime",
+	"updatedAt": "datetime",
+	"departmentMap": [
+		{
+			"departmentId": "uuid"
+		}
+	]
 }
 ```
 
@@ -217,12 +217,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "page": 1,
-  "limit": 10,
-  "sortOrder": "asc | desc",
-  "sortBy": "createdAt | name",
-  "search": "string (optional)",
-  "status": "string (optional)"
+	"page": 1,
+	"limit": 10,
+	"sortOrder": "asc | desc",
+	"sortBy": "createdAt | name",
+	"search": "string (optional)",
+	"status": "string (optional)"
 }
 ```
 
@@ -240,11 +240,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been retrieved.",
-  "data": {
-    "system": {}
-  }
+	"success": true,
+	"message": "System has been retrieved.",
+	"data": {
+		"system": {}
+	}
 }
 ```
 
@@ -256,12 +256,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string",
-  "description": "string",
-  "image": "string",
-  "url": "https URL",
-  "statusId": "uuid",
-  "departmentIds": ["uuid"]
+	"name": "string",
+	"description": "string",
+	"image": "string",
+	"url": "https URL",
+	"statusId": "uuid",
+	"departmentIds": ["uuid"]
 }
 ```
 
@@ -269,11 +269,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been created.",
-  "data": {
-    "id": "uuid"
-  }
+	"success": true,
+	"message": "System has been created.",
+	"data": {
+		"id": "uuid"
+	}
 }
 ```
 
@@ -285,8 +285,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Added to favorites. | Removed from favorites"
+	"success": true,
+	"message": "Added to favorites. | Removed from favorites"
 }
 ```
 
@@ -297,12 +297,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string (optional)",
-  "description": "string (optional)",
-  "image": "string (optional)",
-  "url": "https URL (optional)",
-  "statusId": "uuid (optional)",
-  "departmentIds": ["uuid"]
+	"name": "string (optional)",
+	"description": "string (optional)",
+	"image": "string (optional)",
+	"url": "https URL (optional)",
+	"statusId": "uuid (optional)",
+	"departmentIds": ["uuid"]
 }
 ```
 
@@ -310,14 +310,14 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been updated.",
-  "data": {
-    "id": {
-      "id": "uuid",
-      "updatedAt": "datetime"
-    }
-  }
+	"success": true,
+	"message": "System has been updated.",
+	"data": {
+		"id": {
+			"id": "uuid",
+			"updatedAt": "datetime"
+		}
+	}
 }
 ```
 
@@ -329,11 +329,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been restored.",
-  "data": {
-    "restoredSystem": {}
-  }
+	"success": true,
+	"message": "System has been restored.",
+	"data": {
+		"restoredSystem": {}
+	}
 }
 ```
 
@@ -347,8 +347,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been deleted."
+	"success": true,
+	"message": "System has been deleted."
 }
 ```
 
@@ -360,8 +360,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been deleted."
+	"success": true,
+	"message": "System has been deleted."
 }
 ```
 
@@ -387,11 +387,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been retrieved.",
-  "data": {
-    "system": {}
-  }
+	"success": true,
+	"message": "System has been retrieved.",
+	"data": {
+		"system": {}
+	}
 }
 ```
 
@@ -420,8 +420,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been deleted."
+	"success": true,
+	"message": "System has been deleted."
 }
 ```
 
@@ -433,8 +433,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "System has been deleted."
+	"success": true,
+	"message": "System has been deleted."
 }
 ```
 
@@ -444,11 +444,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "page": 1,
-  "limit": 10,
-  "sortOrder": "asc | desc",
-  "sortBy": "createdAt | name",
-  "search": "string (optional)"
+	"page": 1,
+	"limit": 10,
+	"sortOrder": "asc | desc",
+	"sortBy": "createdAt | name",
+	"search": "string (optional)"
 }
 ```
 
@@ -462,11 +462,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Favorite System has been retrieved.",
-  "data": {
-    "favorite": {}
-  }
+	"success": true,
+	"message": "Favorite System has been retrieved.",
+	"data": {
+		"favorite": {}
+	}
 }
 ```
 
@@ -478,8 +478,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Added to favorites. | Removed from favorites"
+	"success": true,
+	"message": "Added to favorites. | Removed from favorites"
 }
 ```
 
@@ -489,10 +489,10 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "id": "uuid",
-  "name": "string",
-  "description": "string | null",
-  "createdAt": "datetime"
+	"id": "uuid",
+	"name": "string",
+	"description": "string | null",
+	"createdAt": "datetime"
 }
 ```
 
@@ -502,12 +502,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "page": 1,
-  "limit": 10,
-  "sortOrder": "asc | desc",
-  "sortBy": "name | createdAt",
-  "search": "string (optional)",
-  "name": "string (optional)"
+	"page": 1,
+	"limit": 10,
+	"sortOrder": "asc | desc",
+	"sortBy": "name | createdAt",
+	"search": "string (optional)",
+	"name": "string (optional)"
 }
 ```
 
@@ -525,11 +525,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been retrieved.",
-  "data": {
-    "department": {}
-  }
+	"success": true,
+	"message": "Department has been retrieved.",
+	"data": {
+		"department": {}
+	}
 }
 ```
 
@@ -539,8 +539,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string",
-  "description": "string (optional)"
+	"name": "string",
+	"description": "string (optional)"
 }
 ```
 
@@ -548,11 +548,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been created.",
-  "data": {
-    "id": "uuid"
-  }
+	"success": true,
+	"message": "Department has been created.",
+	"data": {
+		"id": "uuid"
+	}
 }
 ```
 
@@ -562,10 +562,10 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 [
-  {
-    "name": "string",
-    "description": "string (optional)"
-  }
+	{
+		"name": "string",
+		"description": "string (optional)"
+	}
 ]
 ```
 
@@ -573,16 +573,16 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been created.",
-  "data": {
-    "createdDepartments": [
-      {
-        "id": "uuid",
-        "createdAt": "datetime"
-      }
-    ]
-  }
+	"success": true,
+	"message": "Department has been created.",
+	"data": {
+		"createdDepartments": [
+			{
+				"id": "uuid",
+				"createdAt": "datetime"
+			}
+		]
+	}
 }
 ```
 
@@ -593,8 +593,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string",
-  "description": "string (optional)"
+	"name": "string",
+	"description": "string (optional)"
 }
 ```
 
@@ -602,11 +602,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been updated.",
-  "data": {
-    "id": "uuid"
-  }
+	"success": true,
+	"message": "Department has been updated.",
+	"data": {
+		"id": "uuid"
+	}
 }
 ```
 
@@ -618,8 +618,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been deleted"
+	"success": true,
+	"message": "Department has been deleted"
 }
 ```
 
@@ -631,8 +631,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been deleted"
+	"success": true,
+	"message": "Department has been deleted"
 }
 ```
 
@@ -644,8 +644,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Department has been deleted"
+	"success": true,
+	"message": "Department has been deleted"
 }
 ```
 
@@ -655,24 +655,24 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "userId": "string",
-  "createdAt": "datetime",
-  "role": {
-    "id": "uuid",
-    "name": "string",
-    "description": "string",
-    "createdAt": "datetime",
-    "updatedAt": "datetime",
-    "deletedAt": "datetime | null"
-  },
-  "department": {
-    "name": "string"
-  },
-  "user": {
-    "email": "string",
-    "name": "string",
-    "image": "string | null"
-  }
+	"userId": "string",
+	"createdAt": "datetime",
+	"role": {
+		"id": "uuid",
+		"name": "string",
+		"description": "string",
+		"createdAt": "datetime",
+		"updatedAt": "datetime",
+		"deletedAt": "datetime | null"
+	},
+	"department": {
+		"name": "string"
+	},
+	"user": {
+		"email": "string",
+		"name": "string",
+		"image": "string | null"
+	}
 }
 ```
 
@@ -682,12 +682,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "page": 1,
-  "limit": 10,
-  "sortOrder": "asc | desc",
-  "sortBy": "createdAt | role",
-  "search": "string (optional)",
-  "role": "string (optional)"
+	"page": 1,
+	"limit": 10,
+	"sortOrder": "asc | desc",
+	"sortBy": "createdAt | role",
+	"search": "string (optional)",
+	"role": "string (optional)"
 }
 ```
 
@@ -699,10 +699,10 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "id": "uuid",
-  "name": "string",
-  "description": "string",
-  "createdAt": "datetime"
+	"id": "uuid",
+	"name": "string",
+	"description": "string",
+	"createdAt": "datetime"
 }
 ```
 
@@ -713,12 +713,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Active roles has been retrieved.",
-  "data": {
-    "roles": [],
-    "total": 0
-  }
+	"success": true,
+	"message": "Active roles has been retrieved.",
+	"data": {
+		"roles": [],
+		"total": 0
+	}
 }
 ```
 
@@ -729,12 +729,12 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Inactive roles has been retrieved.",
-  "data": {
-    "roles": [],
-    "total": 0
-  }
+	"success": true,
+	"message": "Inactive roles has been retrieved.",
+	"data": {
+		"roles": [],
+		"total": 0
+	}
 }
 ```
 
@@ -745,11 +745,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Active Role has been retrieved.",
-  "data": {
-    "role": {}
-  }
+	"success": true,
+	"message": "Active Role has been retrieved.",
+	"data": {
+		"role": {}
+	}
 }
 ```
 
@@ -759,8 +759,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string",
-  "description": "string"
+	"name": "string",
+	"description": "string"
 }
 ```
 
@@ -768,11 +768,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Role has been created.",
-  "data": {
-    "roleCreated": {}
-  }
+	"success": true,
+	"message": "Role has been created.",
+	"data": {
+		"roleCreated": {}
+	}
 }
 ```
 
@@ -784,10 +784,10 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 [
-  {
-    "name": "string",
-    "description": "string"
-  }
+	{
+		"name": "string",
+		"description": "string"
+	}
 ]
 ```
 
@@ -795,15 +795,15 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Roles has been created.",
-  "data": {
-    "rolesCreated": [
-      {
-        "id": "uuid"
-      }
-    ]
-  }
+	"success": true,
+	"message": "Roles has been created.",
+	"data": {
+		"rolesCreated": [
+			{
+				"id": "uuid"
+			}
+		]
+	}
 }
 ```
 
@@ -814,8 +814,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "name": "string (optional)",
-  "description": "string (optional)"
+	"name": "string (optional)",
+	"description": "string (optional)"
 }
 ```
 
@@ -823,11 +823,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Role has been updated.",
-  "data": {
-    "roleUpdated": {}
-  }
+	"success": true,
+	"message": "Role has been updated.",
+	"data": {
+		"roleUpdated": {}
+	}
 }
 ```
 
@@ -841,11 +841,11 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Role has been restored.",
-  "data": {
-    "restoredRole": {}
-  }
+	"success": true,
+	"message": "Role has been restored.",
+	"data": {
+		"restoredRole": {}
+	}
 }
 ```
 
@@ -857,8 +857,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Role has been deleted."
+	"success": true,
+	"message": "Role has been deleted."
 }
 ```
 
@@ -870,8 +870,8 @@ This document reflects the currently mounted Express routes in this codebase (`s
 
 ```json
 {
-  "success": true,
-  "message": "Role has been deleted."
+	"success": true,
+	"message": "Role has been deleted."
 }
 ```
 

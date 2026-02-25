@@ -32,7 +32,7 @@ const SYSTEM_SHAPE: Prisma.SystemSelect = {
 	},
 }
 
-export async function createSystem(id: string, data: CreateSystemInput) {
+export async function createSystem(id: string, data: CreateSystemInput, imageKey: string | null) {
 	const departmentIds = [...new Set(data.departmentIds)]
 
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
@@ -41,7 +41,7 @@ export async function createSystem(id: string, data: CreateSystemInput) {
 				name: data.name,
 				description: data.description,
 				url: data.url,
-				image: data.image,
+				image: imageKey,
 				statusId: data.statusId,
 				creatorId: id,
 				departmentMap: {
@@ -66,7 +66,6 @@ export async function createManySystem(id: string, systemsData: CreateManySystem
 				name: s.name,
 				description: s.description,
 				url: s.url,
-				image: s.image,
 				statusId: s.statusId,
 				creatorId: id,
 			})),
@@ -113,7 +112,6 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 				name: data.name,
 				description: data.description,
 				url: data.url,
-				image: data.image,
 				statusId: data.statusId,
 			},
 			select: {

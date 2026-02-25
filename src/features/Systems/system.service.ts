@@ -25,6 +25,8 @@ import {
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
+import { uploadFile } from "@/features/Storage/storage.service"
+import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storagePresenter.helper"
 
 const systemErrors = new PrismaErrorHandler({
 	entity: "System",
@@ -38,9 +40,16 @@ const systemErrors = new PrismaErrorHandler({
 	notFoundMessage: "System not found.",
 })
 
-export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
+export async function createCompanySystem(
+	creator: CreatorIdentifier,
+	data: CreateSystemInput,
+	file: Express.Multer.File | null
+) {
 	const ctx = await getUserAccessContext(creator)
-	return systemErrors.exec(() => createSystem(ctx.userId, data))
+
+	const imageKey = file ? await uploadFile(file, "systems") : null
+
+	return systemErrors.exec(() => createSystem(ctx.userId, data, imageKey))
 }
 
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {
@@ -87,7 +96,10 @@ export async function getCompanySystems(query: SystemQueryInput) {
 			],
 		}),
 	}
-	return systemErrors.exec(() => listSystems(where, options))
+	return systemErrors.exec(async () => {
+		const { systems, total } = await listSystems(where, options)
+		return { total, systems: await withResolvedImages(systems) }
+	})
 }
 
 export async function getFavoriteSystems(creator: CreatorIdentifier, query: SystemQueryInput) {
@@ -130,7 +142,11 @@ export async function getDeletedCompanySystems(query: SystemQueryInput) {
 }
 
 export async function getCompanySystemById(system: SystemIdentifier) {
-	return systemErrors.exec(() => listSystemById(system.id))
+	return systemErrors.exec(async () => {
+		const _system = await listSystemById(system.id)
+
+		return withResolvedImage(_system)
+	})
 }
 
 export async function getFavoriteCompanySystemById(user: CreatorIdentifier, system: SystemIdentifier) {

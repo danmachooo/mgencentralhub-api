@@ -25,6 +25,7 @@ import {
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
+import { uploadFile } from "@/features/Storage/storage.service"
 
 const systemErrors = new PrismaErrorHandler({
 	entity: "System",
@@ -38,9 +39,12 @@ const systemErrors = new PrismaErrorHandler({
 	notFoundMessage: "System not found.",
 })
 
-export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput) {
+export async function createCompanySystem(creator: CreatorIdentifier, data: CreateSystemInput, file: Express.Multer.File | null) {
 	const ctx = await getUserAccessContext(creator)
-	return systemErrors.exec(() => createSystem(ctx.userId, data))
+
+	const imageKey = file ? await uploadFile(file, "systems") : null
+
+	return systemErrors.exec(() => createSystem(ctx.userId, data, imageKey))
 }
 
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {

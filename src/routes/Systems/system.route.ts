@@ -8,6 +8,7 @@ import {
 	updateCompanySystemHandler,
 } from "@/features/Systems/system.controller"
 import { getDeletedCompanySystems } from "@/features/Systems/system.service"
+import { uploadMiddleware } from "@/middlewares/upload.middleware"
 import FavoriteRouter from "@/routes/Systems/companyFavorite.route"
 import PersonalSystemRouter from "@/routes/Systems/personal.route"
 import { Router } from "express"
@@ -20,7 +21,7 @@ router.get("/deleted", getDeletedCompanySystems)
 router.get("/:id", getCompanySystemByIdHandler)
 
 // POST
-router.post("/", createCompanySystemHandler)
+router.post("/", uploadMiddleware.single("image"), createCompanySystemHandler)
 
 // PATCH
 router.patch("/:id", updateCompanySystemHandler)

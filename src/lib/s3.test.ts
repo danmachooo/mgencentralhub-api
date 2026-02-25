@@ -1,4 +1,4 @@
-import { s3 } from "@/lib/supabase"
+import { s3Client } from "@/lib/supabase"
 import {
   ListBucketsCommand,
   ListObjectsV2Command,
@@ -14,7 +14,7 @@ async function testS3Connection() {
 
   // ── 1. List buckets ───────────────────────────────────────────────────────
   try {
-    const { Buckets } = await s3.send(new ListBucketsCommand({}))
+    const { Buckets } = await s3Client.send(new ListBucketsCommand({}))
     const names = Buckets?.map((b) => b.Name).join(", ") ?? "none"
     console.log(`✅ Connected. Buckets found: ${names}`)
   } catch (err) {
@@ -24,7 +24,7 @@ async function testS3Connection() {
 
   // ── 2. List objects in your target bucket ─────────────────────────────────
   try {
-    const { KeyCount } = await s3.send(
+    const { KeyCount } = await s3Client.send(
       new ListObjectsV2Command({ Bucket: TEST_BUCKET, MaxKeys: 5 })
     )
     console.log(`✅ Bucket "${TEST_BUCKET}" accessible. Objects (up to 5): ${KeyCount}`)
@@ -35,7 +35,7 @@ async function testS3Connection() {
 
   // ── 3. Upload a test object ───────────────────────────────────────────────
   try {
-    await s3.send(
+    await s3Client.send(
       new PutObjectCommand({
         Bucket: TEST_BUCKET,
         Key: TEST_KEY,
@@ -51,7 +51,7 @@ async function testS3Connection() {
 
   // ── 4. Delete the test object (cleanup) ───────────────────────────────────
   try {
-    await s3.send(
+    await s3Client.send(
       new DeleteObjectCommand({ Bucket: TEST_BUCKET, Key: TEST_KEY })
     )
     console.log(`✅ Cleanup OK → ${TEST_KEY} deleted`)

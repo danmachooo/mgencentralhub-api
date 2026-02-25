@@ -31,7 +31,11 @@ const envSchema = z.object({
 	SUPABASE_REGION: z.string().min(1),
 	SUPABASE_BUCKET: z.string().min(1),
 	SUPABASE_ACCESS_KEY_ID: z.string().min(1),
-	SUPABASE_SECRET_ACCESS_KEY: z.string().min(1)
+	SUPABASE_SECRET_ACCESS_KEY: z.string().min(1),
+
+	// FILE UPLOAD
+	STORAGE_MODE: z.enum(["local", "supabase"]).default("local"),
+	LOCAL_UPLOAD_DIR: z.string().min(1),
 
 })
 

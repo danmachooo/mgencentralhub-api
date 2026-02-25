@@ -5,6 +5,7 @@ import { auth } from "@/lib"
 import routes from "@/routes"
 import { errorHandler, notFoundHandler } from "@/middlewares"
 import { appConfig } from "@/config/appConfig"
+import path from "path"
 
 const app = express()
 
@@ -23,6 +24,10 @@ app.use(
 // Body parsers
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+if(appConfig.storage.mode !== "supabase") {
+	app.use("/uploads", express.static(path.join(process.cwd(), "uploads")))
+}
 
 // Routes
 app.get("/", (_, res) => {

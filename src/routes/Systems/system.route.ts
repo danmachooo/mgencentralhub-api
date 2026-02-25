@@ -22,7 +22,6 @@ router.get("/:id", getCompanySystemByIdHandler)
 
 // POST
 router.post("/", createCompanySystemHandler)
-router.post("/:id/toggle-favorite", toggleFavoriteSystemHandler)
 
 // PATCH
 router.patch("/:id", updateCompanySystemHandler)

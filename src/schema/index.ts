@@ -33,10 +33,10 @@ export * from "@/schema/User/createUserProfile.schema"
 export * from "@/schema/User/userQuery.schema"
 
 //Export here all Role Schema
-export * from "@/schema/Role/createRole.schema"
-export * from "@/schema/Role/createManyRole.schema"
-export * from "@/schema/Role/updateRole.schema"
-export * from "@/schema/Role/roleIdentifier.schema"
+export * from "@/schema/User/Role/createRole.schema"
+export * from "@/schema/User/Role/createManyRole.schema"
+export * from "@/schema/User/Role/updateRole.schema"
+export * from "@/schema/User/Role/roleIdentifier.schema"
 
 //Export here all Shared Schema
 export * from "@/schema/shared/requestQuery.schema"
@@ -59,9 +59,9 @@ import type { personalSystemQuerySchema } from "@/schema/Systems/Personal/person
 import type { createUserProfileSchema } from "@/schema/User/createUserProfile.schema"
 import type { userProfileQuerySchema } from "@/schema/User/userQuery.schema"
 
-import type { createRoleSchema } from "@/schema/Role/createRole.schema"
-import type { createManyRoleSchema } from "@/schema/Role/createManyRole.schema"
-import type { updateRoleSchema } from "@/schema/Role/updateRole.schema"
+import type { createRoleSchema } from "@/schema/User/Role/createRole.schema"
+import type { createManyRoleSchema } from "@/schema/User/Role/createManyRole.schema"
+import type { updateRoleSchema } from "@/schema/User/Role/updateRole.schema"
 
 import type { createSystemFlagSchema } from "@/schema/Systems/SystemFlag/createSystemFlag.schema"
 import type { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/createManySystemFlag.schema"
@@ -73,7 +73,7 @@ import type { systemIdentifierSchema } from "@/schema/Systems/systemIdentifier.s
 import type { personalSystemIdentifierSchema } from "@/schema/Systems/Personal/personalSystemIdentifier.schema"
 import type { userIdentifierSchema } from "@/schema/User/userIdentifier.schema"
 import type { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
-import type { roleIdentifierSchema } from "@/schema/Role/roleIdentifier.schema"
+import type { roleIdentifierSchema } from "@/schema/User/Role/roleIdentifier.schema"
 import type { systemFlagIdentifierSchema } from "@/schema/Systems/SystemFlag/systemFlagIdentifier.schema"
 
 //Infer schema to be a type

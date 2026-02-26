@@ -52,6 +52,10 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 	})
 }
 
+export async function updateUserProfile(userProfile: any) {
+	
+}
+
 export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {
 	const [users, total] = await Promise.all([
 		prisma.userProfile.findMany({

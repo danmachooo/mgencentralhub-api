@@ -143,6 +143,17 @@ export async function updateSystem(id: string, data: UpdateSystemInput, imageKey
 	})
 }
 
+export async function updateOnlySystemImage(id: string, imageKey: string) {
+	return await prisma.system.update({
+		where: {
+			id,
+		},
+		data: {
+			image: imageKey,
+		},
+	})
+}
+
 export async function restoreSystem(id: string) {
 	return await prisma.system.update({
 		where: {

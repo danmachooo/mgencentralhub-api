@@ -20,6 +20,7 @@ import {
 	listSystems,
 	restoreSystem,
 	softDeleteSystem,
+	updateOnlySystemImage,
 	updateSystem,
 } from "@/features/Systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
@@ -47,9 +48,24 @@ export async function createCompanySystem(
 ) {
 	const ctx = await getUserAccessContext(creator)
 
-	const imageKey = file ? await uploadFile(file, "systems") : null
+	return systemErrors.exec(async () => {
+		const created = await createSystem(ctx.userId, data, null)
 
-	return systemErrors.exec(() => createSystem(ctx.userId, data, imageKey))
+		let imageKey: string | null = null
+		if (file) {
+			try {
+				imageKey = await uploadFile(file, "systems")
+			} catch (uploadErr) {
+				await hardDeleteSystem(created.id)
+				throw uploadErr
+			}
+		}
+
+		if (imageKey) {
+			await updateOnlySystemImage(created.id, imageKey)
+		}
+		return created
+	})
 }
 
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {

@@ -33,7 +33,7 @@ export async function createPersonalSystem(id: string, data: CreatePersonalSyste
 				name: data.name,
 				description: data.description,
 				url: data.url,
-				...(imageKey !== undefined && { image: imageKey}),
+				image: imageKey,
 				ownerUserId: id,
 			},
 			select: {
@@ -60,7 +60,7 @@ export async function createManyPersonalSystem(id: string, systemsData: CreateMa
 	})
 }
 
-export async function updatePersonalSystem(id: string, data: UpdatePersonalSystemInput) {
+export async function updatePersonalSystem(id: string, data: UpdatePersonalSystemInput, imageKey?: string | null) {
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 		const systemUpdated = await tx.personalSystem.update({
 			where: {
@@ -70,7 +70,7 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 				name: data.name,
 				description: data.description,
 				url: data.url,
-				image: data.image,
+			...(imageKey !== undefined && { image: imageKey })
 			},
 			select: {
 				id: true,

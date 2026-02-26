@@ -60,8 +60,9 @@ export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpCon
 export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const { id } = systemIdentifierSchema.parse(http.req.params)
 	const body = updateSystemSchema.parse(http.req.body)
+	const file = http.req.file ?? null
 
-	const systemUpdated = await updateCompanySystem({ id }, body)
+	const systemUpdated = await updateCompanySystem({ id }, body, file)
 
 	return http.res.status(200).json({
 		success: true,

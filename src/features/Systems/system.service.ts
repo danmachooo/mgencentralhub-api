@@ -20,12 +20,13 @@ import {
 	listSystems,
 	restoreSystem,
 	softDeleteSystem,
+	updateOnlySystemImage,
 	updateSystem,
 } from "@/features/Systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
-import { uploadFile } from "@/features/Storage/storage.service"
+import { deleteFile, uploadFile } from "@/features/Storage/storage.service"
 import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storagePresenter.helper"
 
 const systemErrors = new PrismaErrorHandler({
@@ -47,19 +48,50 @@ export async function createCompanySystem(
 ) {
 	const ctx = await getUserAccessContext(creator)
 
-	const imageKey = file ? await uploadFile(file, "systems") : null
+	return systemErrors.exec(async () => {
+		const created = await createSystem(ctx.userId, data, null)
 
-	return systemErrors.exec(() => createSystem(ctx.userId, data, imageKey))
+		let imageKey: string | null = null
+		if (file) {
+			try {
+				imageKey = await uploadFile(file, "systems")
+			} catch (uploadErr) {
+				await hardDeleteSystem(created.id)
+				throw uploadErr
+			}
+		}
+
+		if (imageKey) {
+			await updateOnlySystemImage(created.id, imageKey)
+		}
+		return created
+	})
 }
 
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {
 	const ctx = await getUserAccessContext(creator)
 	return systemErrors.exec(() => createManySystem(ctx.userId, data))
 }
-export async function updateCompanySystem(system: SystemIdentifier, data: UpdateSystemInput) {
-	await listSystemById(system.id)
+export async function updateCompanySystem(
+	system: SystemIdentifier,
+	data: UpdateSystemInput,
+	file: Express.Multer.File | null
+) {
+	const existing = await listSystemById(system.id)
 
-	return systemErrors.exec(() => updateSystem(system.id, data))
+	return systemErrors.exec(async () => {
+		let imageKey: string | undefined = undefined
+
+		if (file) {
+			// Upload image first
+			imageKey = await uploadFile(file, "systems")
+
+			// Then delete the old one
+			await deleteFile(existing.image)
+		}
+
+		return await updateSystem(system.id, data, imageKey)
+	})
 }
 
 export async function toggleFavoriteSystem(user: CreatorIdentifier, system: SystemIdentifier) {
@@ -79,7 +111,12 @@ export async function softDeleteCompanySystem(system: SystemIdentifier) {
 }
 
 export async function hardDeleteCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => hardDeleteSystem(system.id))
+	const existing = await listSystemById(system.id)
+
+	return systemErrors.exec(async () => {
+		const deleted = await hardDeleteSystem(existing.id)
+		await deleteFile(deleted.image)
+	})
 }
 
 export async function getCompanySystems(query: SystemQueryInput) {

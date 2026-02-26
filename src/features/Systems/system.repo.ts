@@ -23,6 +23,7 @@ const SYSTEM_SHAPE: Prisma.SystemSelect = {
 		},
 	},
 	url: true,
+	image: true,
 	createdAt: true,
 	updatedAt: true,
 	departmentMap: {
@@ -100,7 +101,7 @@ export async function createManySystem(id: string, systemsData: CreateManySystem
 	})
 }
 
-export async function updateSystem(id: string, data: UpdateSystemInput) {
+export async function updateSystem(id: string, data: UpdateSystemInput, imageKey?: string | null) {
 	const departmentIds = data.departmentIds ? [...new Set(data.departmentIds)] : undefined
 
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
@@ -113,6 +114,7 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 				description: data.description,
 				url: data.url,
 				statusId: data.statusId,
+				...(imageKey !== undefined && { image: imageKey }), // Update image if a new one is upload
 			},
 			select: {
 				id: true,
@@ -139,6 +141,17 @@ export async function updateSystem(id: string, data: UpdateSystemInput) {
 		}
 
 		return systemUpdated
+	})
+}
+
+export async function updateOnlySystemImage(id: string, imageKey: string) {
+	return await prisma.system.update({
+		where: {
+			id,
+		},
+		data: {
+			image: imageKey,
+		},
 	})
 }
 
@@ -215,6 +228,9 @@ export async function softDeleteSystem(id: string) {
 export async function hardDeleteSystem(id: string) {
 	return await prisma.system.delete({
 		where: { id },
+		select: {
+			image: true,
+		},
 	})
 }
 

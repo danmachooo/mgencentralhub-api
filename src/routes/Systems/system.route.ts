@@ -24,7 +24,7 @@ router.get("/:id", getCompanySystemByIdHandler)
 router.post("/", uploadMiddleware.single("image"), createCompanySystemHandler)
 
 // PATCH
-router.patch("/:id", updateCompanySystemHandler)
+router.patch("/:id", uploadMiddleware.single("image"), updateCompanySystemHandler)
 router.patch("/:id/restore", restoreCompanySystemHandler)
 
 //DELETE

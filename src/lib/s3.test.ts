@@ -6,7 +6,7 @@ const TEST_BUCKET = "system-logos" // change to your actual bucket name
 const TEST_KEY = "__connection-test/ping.txt"
 
 async function testS3Connection() {
-	logger.info("🔌 Testing S3 connection...\n")
+	logger.info("Testing S3 connection...\n")
 
 	// ── 1. List buckets ───────────────────────────────────────────────────────
 	try {
@@ -52,7 +52,7 @@ async function testS3Connection() {
 		logger.warn("Cleanup failed (manual delete needed):", err)
 	}
 
-	logger.info("\All checks passed. S3 connection is healthy.")
+	logger.info("All checks passed. S3 connection is healthy.")
 }
 
 void testS3Connection()

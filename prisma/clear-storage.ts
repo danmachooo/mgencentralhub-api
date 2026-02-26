@@ -26,7 +26,7 @@ async function clearBucket() {
 		process.exit(1)
 	}
 
-	console.log(`Clearing bucket: ${BUCKET}`)
+	logger.info(`Clearing bucket: ${BUCKET}`)
 
 	let cleared = 0
 	let continuationToken: string | undefined = undefined

@@ -90,7 +90,7 @@ export async function updateCompanySystem(
 			await deleteFile(existing.image)
 		}
 
-		await updateSystem(system.id, data, imageKey)
+		return await updateSystem(system.id, data, imageKey)
 	})
 }
 

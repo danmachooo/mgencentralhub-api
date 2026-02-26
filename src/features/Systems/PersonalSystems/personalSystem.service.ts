@@ -59,10 +59,28 @@ export async function createOwnSystem(creator: CreatorIdentifier, data: CreatePe
 		return created
 	})
 }
-export async function updateOwnSystem(system: PersonalSystemIdentifier, data: UpdatePersonalSystemInput) {
+export async function updateOwnSystem(system: PersonalSystemIdentifier, data: UpdatePersonalSystemInput, file: Express.Multer.File | null) {
 	await listPersonalSystemById(system.id)
 
-	return personalSystemErrors.exec(() => updateSystem(system.id, data))
+	return personalSystemErrors.exec(async () => {
+		const updated = await updateSystem(system.id, data, null);
+
+		let imageKey: string | null = null
+
+		if(file) {
+			try {
+				imageKey = await uploadFile(file, "personal_systems")
+			} catch(uploadErr) {
+
+				throw uploadErr
+			}
+		}
+
+		if(imageKey) {
+			await updateOnlyPersonalSystemImage(updated.id, imageKey);
+		}
+		return updated
+	})
 }
 
 export async function toggleFavoritePersonalSystem(user: CreatorIdentifier, system: PersonalSystemIdentifier) {

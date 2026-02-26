@@ -58,17 +58,17 @@ export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpCon
 })
 
 export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = systemIdentifierSchema.parse(http.req.params)
+	const system = systemIdentifierSchema.parse(http.req.params)
 	const body = updateSystemSchema.parse(http.req.body)
 	const file = http.req.file ?? null
 
-	const systemUpdated = await updateCompanySystem({ id }, body, file)
+	const systemUpdated = await updateCompanySystem(system, body, file)
 
 	return http.res.status(200).json({
 		success: true,
 		message: "System has been updated.",
 		data: {
-			id: systemUpdated,
+			systemUpdated,
 		},
 	})
 })
@@ -156,15 +156,15 @@ export const getFavoriteCompanySystemsHandler = asyncHandler(async (http: HttpCo
 })
 
 export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = systemIdentifierSchema.parse(http.req.params)
+	const system = systemIdentifierSchema.parse(http.req.params)
 
-	const system = await getCompanySystemById({ id })
+	const _system = await getCompanySystemById(system)
 
 	return http.res.status(200).json({
 		success: true,
 		message: "System has been retrieved.",
 		data: {
-			system,
+			_system,
 		},
 	})
 })

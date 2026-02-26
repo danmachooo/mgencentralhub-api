@@ -40,16 +40,17 @@ export const createPersonalSystemHandler = asyncHandler(async (http: HttpContext
 })
 
 export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = personalSystemIdentifierSchema.parse(http.req.params)
+	const system = personalSystemIdentifierSchema.parse(http.req.params)
 	const body = updatePersonalSystemSchema.parse(http.req.body)
+	const file = http.req.file ?? null
 
-	const systemUpdated = await updateOwnSystem({ id }, body)
+	const systemUpdated = await updateOwnSystem(system, body, file)
 
 	return http.res.status(200).json({
 		success: true,
 		message: "Personal System has been updated.",
 		data: {
-			id: systemUpdated,
+			systemUpdated
 		},
 	})
 })
@@ -102,15 +103,15 @@ export const getFavoritePersonalSystemsHandler = asyncHandler(async (http: HttpC
 })
 
 export const getPersonalSystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = personalSystemIdentifierSchema.parse(http.req.params)
+	const system = personalSystemIdentifierSchema.parse(http.req.params)
 
-	const system = await getOwnSystemById({ id })
+	const _system = await getOwnSystemById(system)
 
 	return http.res.status(200).json({
 		success: true,
 		message: "Personal System has been retrieved.",
 		data: {
-			system,
+			_system,
 		},
 	})
 })

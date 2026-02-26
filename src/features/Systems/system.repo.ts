@@ -23,6 +23,7 @@ const SYSTEM_SHAPE: Prisma.SystemSelect = {
 		},
 	},
 	url: true,
+	image: true,
 	createdAt: true,
 	updatedAt: true,
 	departmentMap: {

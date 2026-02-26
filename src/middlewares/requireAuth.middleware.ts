@@ -3,7 +3,8 @@ import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/toFetchHeaders.helper"
-import { logger, prisma } from "@/lib"
+import { logger } from "@/lib"
+import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
 
 /**
  * Authentication middleware that enforces a valid user session.
@@ -41,7 +42,6 @@ import { logger, prisma } from "@/lib"
  * @returns A JSON 401 response if unauthorized, otherwise calls `next()`.
  */
 export const requireAuth = asyncHandler(async (http: HttpContext) => {
-	// NOTE: Adjust API name if your Better Auth instance differs
 	const session = await auth.api.getSession({
 		headers: toFetchHeaders(http.req.headers),
 	})
@@ -50,34 +50,10 @@ export const requireAuth = asyncHandler(async (http: HttpContext) => {
 		throw new UnauthorizedError("User is unauthorized.")
 	}
 
+	const profile = await getUserAccessContext({ id: session.user.id })
 
-	const profile = await prisma.userProfile.findUniqueOrThrow({
-		where: {
-			userId: session.user.id
-		}, 
-		include: {
-			role: {
-				select: {
-					name: true
-				}
-			},
-			department: {
-				select: {
-					name: true
-				}
-			}
-		}
-	})
-
-	const user = {
-		...session.user,
-		department: profile.department?.name,
-		role: profile.role.name,
-	}
-
-
-	// Attach authenticated user context for downstream handlers
-	http.req.user = user;
+	// Attach full profile (userId, role, department) for downstream use
+	http.req.user = profile
 
 	logger.info("Require auth check passed: ", http.req.user)
 

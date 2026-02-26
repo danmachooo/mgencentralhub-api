@@ -1,5 +1,10 @@
-import type { CreateUserProfileInput, UserIdentifier, UserProfileQuery } from "@/schema"
-import { createUserProfile, getUserContext, getUsers } from "@/features/Users/Profile/userProfile.repo"
+import type { CreateUserProfileInput, UpdateUserProfileInput, UserIdentifier, UserProfileQuery } from "@/schema"
+import {
+	createUserProfile,
+	getUserContext,
+	getUsers,
+	updateUserProfile,
+} from "@/features/Users/Profile/userProfile.repo"
 import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 
@@ -42,4 +47,8 @@ export async function getUserInfo(query: UserProfileQuery) {
 	}
 
 	return userProfileErrors.exec(() => getUsers(where, options))
+}
+
+export async function updateUser(user: UserIdentifier, data: UpdateUserProfileInput) {
+	return userProfileErrors.exec(() => updateUserProfile(user.id, data))
 }

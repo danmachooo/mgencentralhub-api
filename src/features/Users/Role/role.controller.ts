@@ -107,9 +107,9 @@ export const getActiveUserRolesHandler = asyncHandler(async (http: HttpContext) 
 })
 
 export const getActiveUserRoleByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const role = roleIdentifierSchema.parse(http.req.params)
+	const _role = roleIdentifierSchema.parse(http.req.params)
 
-	const _role = await getActiveUserRoleById(role)
+	const role = await getActiveUserRoleById(_role)
 
 	return http.res.status(200).json({
 		success: true,

@@ -85,15 +85,10 @@ export async function updateCompanySystem(
 		let imageKey: string | undefined = undefined
 
 		if (file) {
-			try {
-				// Upload image first
-				imageKey = await uploadFile(file, "systems")
-				// Then delete the old one
-				await deleteFile(existing.image)
-			} catch (uploadErr) {
-				// await
-				throw uploadErr
-			}
+			// Upload image first
+			imageKey = await uploadFile(file, "systems")
+			// Then delete the old one
+			await deleteFile(existing.image)
 		}
 
 		if (imageKey) {
@@ -134,13 +129,22 @@ export async function hardDeleteCompanySystem(system: SystemIdentifier) {
 	})
 }
 
-export async function getCompanySystems(query: SystemQueryInput) {
+export async function getCompanySystems(query: SystemQueryInput, departmentId: string | null) {
 	const options = getPrismaPagination(query)
 
+	// Department scoping — separate from search
+	const departmentFilter: Prisma.SystemWhereInput = departmentId
+		? {
+				OR: [
+					{ departmentMap: { none: {} } }, // public systems
+					{ departmentMap: { some: { departmentId } } }, // employee's department
+				],
+			}
+		: {} // admin — no filter
+
 	const where: Prisma.SystemWhereInput = {
-		systemFlag: {
-			name: query.status,
-		},
+		...departmentFilter,
+		systemFlag: { name: query.status },
 		...(query.search && {
 			OR: [
 				{ name: { contains: query.search, mode: "insensitive" } },
@@ -148,6 +152,7 @@ export async function getCompanySystems(query: SystemQueryInput) {
 			],
 		}),
 	}
+
 	return systemErrors.exec(async () => {
 		const { systems, total } = await listSystems(where, options)
 		return { total, systems: await withResolvedImages(systems) }

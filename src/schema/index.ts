@@ -29,7 +29,7 @@ export * from "@/schema/Departments/departmentIdentifier.schema"
 
 // Export here all User schema
 export * from "@/schema/User/userIdentifier.schema"
-export * from "@/schema/User/createUserProfile.schema"
+export * from "@/schema/User/Profile/createUserProfile.schema"
 export * from "@/schema/User/userQuery.schema"
 
 //Export here all Role Schema
@@ -56,8 +56,9 @@ import type { createManyPersonalSystemSchema } from "@/schema/Systems/Personal/c
 import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/updatePersonalSystem.schema"
 import type { personalSystemQuerySchema } from "@/schema/Systems/Personal/personalSystemQuery.schema"
 
-import type { createUserProfileSchema } from "@/schema/User/createUserProfile.schema"
+import type { createUserProfileSchema } from "@/schema/User/Profile/createUserProfile.schema"
 import type { userProfileQuerySchema } from "@/schema/User/userQuery.schema"
+import type { updateUserProfileSchema } from "@/schema/User/Profile/updateUserProfile.schema"
 
 import type { createRoleSchema } from "@/schema/User/Role/createRole.schema"
 import type { createManyRoleSchema } from "@/schema/User/Role/createManyRole.schema"
@@ -112,6 +113,7 @@ export type DepartmentQueryInput = z.infer<typeof departmentQuerySchema>
 //User Profile
 export type CreateUserProfileInput = z.infer<typeof createUserProfileSchema>
 export type UserProfileQuery = z.infer<typeof userProfileQuerySchema>
+export type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>
 
 //User Role
 export type CreateRoleInput = z.infer<typeof createRoleSchema>

@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma"
-import type { CreateUserProfileInput, UserIdentifier } from "@/schema"
+import type { CreateUserProfileInput, UpdateUserProfileInput, UserIdentifier } from "@/schema"
 import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
 import type { Prisma } from "@prisma/client"
-
 
 const USER_SHAPE: Prisma.UserProfileSelect = {
 	userId: true,
@@ -10,12 +9,12 @@ const USER_SHAPE: Prisma.UserProfileSelect = {
 	role: {
 		select: {
 			id: true,
-			name: true
-		}
+			name: true,
+		},
 	},
 	department: {
 		select: {
-			id:true,
+			id: true,
 			name: true,
 		},
 	},
@@ -24,7 +23,6 @@ const USER_SHAPE: Prisma.UserProfileSelect = {
 			email: true,
 			name: true,
 			image: true,
-
 		},
 	},
 }
@@ -36,8 +34,18 @@ export async function getUserContext(user: UserIdentifier) {
 		},
 		select: {
 			userId: true,
-			role: true,
-			departmentId: true,
+			role: {
+				select: {
+					id: true,
+					name: true,
+				},
+			},
+			department: {
+				select: {
+					id: true,
+					name: true,
+				},
+			},
 		},
 	})
 }
@@ -52,8 +60,31 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 	})
 }
 
-export async function updateUserProfile(userProfile: any) {
-	
+export async function updateUserProfile(id: string, userProfile: UpdateUserProfileInput) {
+	if (userProfile.name) {
+		await prisma.user.update({
+			where: {
+				id,
+			},
+			data: {
+				name: userProfile.name,
+			},
+		})
+	}
+
+	return await prisma.userProfile.update({
+		where: {
+			userId: id,
+		},
+		data: {
+			roleId: userProfile.roleId,
+			departmentId: userProfile.departmentId,
+		},
+		select: {
+			updatedAt: true,
+			userId: true,
+		},
+	})
 }
 
 export async function getUsers(where: Prisma.UserProfileWhereInput, options: PrismaQueryOptions) {
@@ -61,7 +92,7 @@ export async function getUsers(where: Prisma.UserProfileWhereInput, options: Pri
 		prisma.userProfile.findMany({
 			where,
 			...options,
-			select: USER_SHAPE
+			select: USER_SHAPE,
 		}),
 		prisma.userProfile.count({
 			where,

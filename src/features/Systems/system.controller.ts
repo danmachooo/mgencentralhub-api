@@ -135,8 +135,11 @@ export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 
 export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
 	const query = systemQuerySchema.parse(http.req.query)
+	const { role, department } = http.req.user
 
-	const { systems, total } = await getCompanySystems(query)
+	const departmentId = role.name === "admin" ? null : (department?.id ?? "NO_DEPARTMENT")
+
+	const { systems, total } = await getCompanySystems(query, departmentId)
 
 	return sendPaginatedResponse(http, { data: systems, total }, query, "Systems retrieved successfully")
 })

@@ -78,11 +78,7 @@ export async function updateOwnSystem(
 		let imageKey: string | null = null
 
 		if (file) {
-			try {
-				imageKey = await uploadFile(file, "personal_systems")
-			} catch (uploadErr) {
-				throw uploadErr
-			}
+			imageKey = await uploadFile(file, "personal_systems")
 		}
 
 		if (imageKey) {

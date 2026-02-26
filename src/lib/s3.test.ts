@@ -1,5 +1,5 @@
 import { s3Client } from "@/lib/supabase"
-import { logger } from '@/lib';
+import { logger } from "@/lib"
 import { ListBucketsCommand, ListObjectsV2Command, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
 
 const TEST_BUCKET = "system-logos" // change to your actual bucket name

@@ -5,12 +5,14 @@ export default [
 	{
 		ignores: ["dist/**", "node_modules/**", "generated/**", "**/generated", "prisma.config.ts"],
 	},
+	
 	js.configs.recommended,
 	...tseslint.configs.recommended,
+	
 
 	// Main TS rules (for .ts and .d.ts)
 	{
-		files: ["**/*.ts", "**/*.d.ts"],
+		files: ["src/**/*.ts", "src/**/*.d.ts"],
 		languageOptions: {
 			parserOptions: {
 				project: true,

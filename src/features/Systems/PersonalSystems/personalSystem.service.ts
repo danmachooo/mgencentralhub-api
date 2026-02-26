@@ -19,7 +19,9 @@ import {
 	listPersonalSystemById,
 	restorePersonalSystem,
 	softDeletePersonalSystem,
+	updateOnlyPersonalSystemImage,
 } from "@/features/Systems/PersonalSystems/personalSystem.repo"
+import { uploadFile } from "@/features/Storage/storage.service"
 
 const personalSystemErrors = new PrismaErrorHandler({
 	entity: "Personal System",
@@ -33,10 +35,29 @@ const personalSystemErrors = new PrismaErrorHandler({
 	notFoundMessage: "Personal System not found.",
 })
 
-export async function createOwnSystem(creator: CreatorIdentifier, data: CreatePersonalSystemInput) {
+export async function createOwnSystem(creator: CreatorIdentifier, data: CreatePersonalSystemInput, file: Express.Multer.File | null) {
 	const ctx = await getUserAccessContext(creator)
 
-	return personalSystemErrors.exec(() => createPersonalSystem(ctx.userId, data))
+	return personalSystemErrors.exec(async () => {
+		const created = await createPersonalSystem(ctx.userId, data, null)
+
+		let imageKey: string | null = null
+
+		if(file) {
+			try {
+				imageKey = await uploadFile(file, "personal_systems")
+			} catch(uploadErr) {
+				await hardDeletePersonalSystem(created.id)
+				throw uploadErr
+			}
+		}
+
+		if(imageKey) {
+			await updateOnlyPersonalSystemImage(created.id, imageKey)
+		}
+
+		return created
+	})
 }
 export async function updateOwnSystem(system: PersonalSystemIdentifier, data: UpdatePersonalSystemInput) {
 	await listPersonalSystemById(system.id)

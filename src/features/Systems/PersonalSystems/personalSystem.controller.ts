@@ -26,13 +26,15 @@ export const createPersonalSystemHandler = asyncHandler(async (http: HttpContext
 	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const body = createPersonalSystemSchema.parse(http.req.body)
 
-	const systemCreated = await createOwnSystem(creator, body)
+	const file = http.req.file ?? null
+
+	const systemCreated = await createOwnSystem(creator, body, file)
 
 	return http.res.status(201).json({
 		success: true,
 		message: "Personal System has been created.",
 		data: {
-			id: systemCreated.id,
+			systemCreated
 		},
 	})
 })

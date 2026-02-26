@@ -37,7 +37,7 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 		success: true,
 		message: "System has been created.",
 		data: {
-			id: systemCreated.id,
+			systemCreated
 		},
 	})
 })

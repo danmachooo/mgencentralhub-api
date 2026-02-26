@@ -26,14 +26,14 @@ const SYSTEM_SHAPE: Prisma.PersonalSystemSelect = {
 	updatedAt: true,
 }
 
-export async function createPersonalSystem(id: string, data: CreatePersonalSystemInput) {
+export async function createPersonalSystem(id: string, data: CreatePersonalSystemInput, imageKey: string | null) {
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 		const personalSystemCreated = await tx.personalSystem.create({
 			data: {
 				name: data.name,
 				description: data.description,
 				url: data.url,
-				image: data.image,
+				...(imageKey !== undefined && { image: imageKey}),
 				ownerUserId: id,
 			},
 			select: {
@@ -79,6 +79,17 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 		})
 
 		return systemUpdated
+	})
+}
+
+export async function updateOnlyPersonalSystemImage(id: string, imageKey: string) {
+	return await prisma.personalSystem.update({
+		where: {
+			id
+		},
+		data: {
+			image: imageKey
+		}
 	})
 }
 

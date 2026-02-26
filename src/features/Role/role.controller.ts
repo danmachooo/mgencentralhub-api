@@ -8,7 +8,7 @@ import {
 	restoreUserRole,
 	softDeleteUserRole,
 	updateUserRole,
-} from "@/features/UserRole/userRole.service"
+} from "@/features/Role/userRole.service"
 import { asyncHandler } from "@/middlewares"
 import { createManyRoleSchema, createRoleSchema, updateRoleSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"

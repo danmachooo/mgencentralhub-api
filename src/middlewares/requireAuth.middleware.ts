@@ -3,7 +3,7 @@ import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/toFetchHeaders.helper"
-import { logger } from "@/lib"
+import { logger, prisma } from "@/lib"
 
 /**
  * Authentication middleware that enforces a valid user session.
@@ -50,10 +50,36 @@ export const requireAuth = asyncHandler(async (http: HttpContext) => {
 		throw new UnauthorizedError("User is unauthorized.")
 	}
 
-	// Attach authenticated user context for downstream handlers
-	http.req.user = session.user
 
-	logger.info("Require auth check passed: ", http.req.user.id)
+	const profile = await prisma.userProfile.findUniqueOrThrow({
+		where: {
+			userId: session.user.id
+		}, 
+		include: {
+			role: {
+				select: {
+					name: true
+				}
+			},
+			department: {
+				select: {
+					name: true
+				}
+			}
+		}
+	})
+
+	const user = {
+		...session.user,
+		department: profile.department?.name,
+		role: profile.role.name,
+	}
+
+
+	// Attach authenticated user context for downstream handlers
+	http.req.user = user;
+
+	logger.info("Require auth check passed: ", http.req.user)
 
 	http.next()
 })

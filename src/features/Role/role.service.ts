@@ -8,7 +8,7 @@ import {
 	restoreRole,
 	softDeleteRole,
 	updateRole,
-} from "@/features/UserRole/userRole.repo"
+} from "@/features/Role/role.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { CreateRoleInput, RoleIdentifier, UpdateRoleInput } from "@/schema"
 

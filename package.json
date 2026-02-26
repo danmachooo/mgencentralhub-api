@@ -5,8 +5,8 @@
 	"scripts": {
 		"postinstall": "npx prisma generate",
 		"dev": "tsx --watch src/server.ts",
-		"db:reset" : "tsx prisma/clear-storage.ts && npx prisma migrate reset",
-		"db:reset:db-only" : "npx prisma migrate reset",
+		"db:reset": "tsx prisma/clear-storage.ts && npx prisma migrate reset",
+		"db:reset:db-only": "npx prisma migrate reset",
 		"build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
 		"start": "node dist/server.js",
 		"lint": "eslint .",

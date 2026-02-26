@@ -80,17 +80,27 @@ export async function updateCompanySystem(
 	const existing = await listSystemById(system.id)
 
 	return systemErrors.exec(async () => {
+		const updated = await updateSystem(system.id, data, null)
+
 		let imageKey: string | undefined = undefined
 
 		if (file) {
-			// Upload image first
-			imageKey = await uploadFile(file, "systems")
-
-			// Then delete the old one
-			await deleteFile(existing.image)
+			try {
+				// Upload image first
+				imageKey = await uploadFile(file, "systems")
+				// Then delete the old one
+				await deleteFile(existing.image)
+			} catch (uploadErr) {
+				// await
+				throw uploadErr
+			}
 		}
 
-		return await updateSystem(system.id, data, imageKey)
+		if (imageKey) {
+			await updateOnlySystemImage(updated.id, imageKey)
+		}
+
+		return updated
 	})
 }
 

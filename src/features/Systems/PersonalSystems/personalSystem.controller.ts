@@ -34,7 +34,7 @@ export const createPersonalSystemHandler = asyncHandler(async (http: HttpContext
 		success: true,
 		message: "Personal System has been created.",
 		data: {
-			systemCreated
+			systemCreated,
 		},
 	})
 })
@@ -50,7 +50,7 @@ export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext
 		success: true,
 		message: "Personal System has been updated.",
 		data: {
-			systemUpdated
+			systemUpdated,
 		},
 	})
 })
@@ -92,26 +92,26 @@ export const getFavoritePersonalSystemsHandler = asyncHandler(async (http: HttpC
 	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const query = personalSystemQuerySchema.parse(http.req.query)
 
-	const { favoriteSystems, total } = await getFavoriteOwnSystems(creator, query)
+	const { favorites, total } = await getFavoriteOwnSystems(creator, query)
 
 	return sendPaginatedResponse(
 		http,
-		{ data: favoriteSystems, total },
+		{ data: favorites, total },
 		query,
 		"Favorite Personal Systems retrieved successfully"
 	)
 })
 
 export const getPersonalSystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const system = personalSystemIdentifierSchema.parse(http.req.params)
+	const _system = personalSystemIdentifierSchema.parse(http.req.params)
 
-	const _system = await getOwnSystemById(system)
+	const system = await getOwnSystemById(_system)
 
 	return http.res.status(200).json({
 		success: true,
 		message: "Personal System has been retrieved.",
 		data: {
-			_system,
+			system,
 		},
 	})
 })
@@ -134,9 +134,9 @@ export const getFavoritePersonalSystemByIdHandler = asyncHandler(async (http: Ht
 export const getDeletedPersonalSystemsHandler = asyncHandler(async (http: HttpContext) => {
 	const query = personalSystemQuerySchema.parse(http.req.query)
 
-	const { systems, total } = await getDeletedOwnSystems(query)
+	const { deleted, total } = await getDeletedOwnSystems(query)
 
-	return sendPaginatedResponse(http, { data: systems, total }, query, "Personal Systems retrieved successfully")
+	return sendPaginatedResponse(http, { data: deleted, total }, query, "Personal Systems retrieved successfully")
 })
 
 export const softDeletePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {

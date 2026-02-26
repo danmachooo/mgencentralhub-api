@@ -70,7 +70,7 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 				name: data.name,
 				description: data.description,
 				url: data.url,
-			...(imageKey !== undefined && { image: imageKey })
+				...(imageKey !== undefined && { image: imageKey }),
 			},
 			select: {
 				id: true,
@@ -85,11 +85,11 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 export async function updateOnlyPersonalSystemImage(id: string, imageKey: string) {
 	return await prisma.personalSystem.update({
 		where: {
-			id
+			id,
 		},
 		data: {
-			image: imageKey
-		}
+			image: imageKey,
+		},
 	})
 }
 
@@ -150,6 +150,9 @@ export async function softDeletePersonalSystem(id: string) {
 export async function hardDeletePersonalSystem(id: string) {
 	return await prisma.personalSystem.delete({
 		where: { id },
+		select: {
+			image: true,
+		},
 	})
 }
 
@@ -226,7 +229,7 @@ export async function listFavoritePersonalSystemById(userId: string, personalSys
 	return favorite
 }
 
-export async function listSoftDeletedPersonaSystems(
+export async function listSoftDeletedPersonalSystems(
 	where: Prisma.PersonalSystemWhereInput,
 	options: PrismaQueryOptions
 ) {

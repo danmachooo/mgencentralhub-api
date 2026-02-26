@@ -113,7 +113,12 @@ export async function checkIfSystemIsFavorite(user: CreatorIdentifier, system: S
 }
 
 export async function restoreCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => restoreSystem(system.id))
+	return systemErrors.exec(async () => {
+		const _system = await restoreSystem(system.id)
+		return {
+			restored: await withResolvedImage(_system),
+		}
+	})
 }
 
 export async function softDeleteCompanySystem(system: SystemIdentifier) {
@@ -167,7 +172,13 @@ export async function getFavoriteSystems(creator: CreatorIdentifier, query: Syst
 			],
 		}),
 	}
-	return systemErrors.exec(() => listFavoriteSystems(where, options))
+	return systemErrors.exec(async () => {
+		const { favoriteSystems, total } = await listFavoriteSystems(where, options)
+		return {
+			favorites: await withResolvedImages(favoriteSystems),
+			total,
+		}
+	})
 }
 
 export async function getDeletedCompanySystems(query: SystemQueryInput) {
@@ -185,17 +196,31 @@ export async function getDeletedCompanySystems(query: SystemQueryInput) {
 		}),
 	}
 
-	return systemErrors.exec(() => listSoftDeletedSystems(where, options))
+	return systemErrors.exec(async () => {
+		const { systems, total } = await listSoftDeletedSystems(where, options)
+		return {
+			deleted: await withResolvedImages(systems),
+			total,
+		}
+	})
 }
 
 export async function getCompanySystemById(system: SystemIdentifier) {
 	return systemErrors.exec(async () => {
 		const _system = await listSystemById(system.id)
 
-		return withResolvedImage(_system)
+		return {
+			system: withResolvedImage(_system),
+		}
 	})
 }
 
 export async function getFavoriteCompanySystemById(user: CreatorIdentifier, system: SystemIdentifier) {
-	return systemErrors.exec(() => listFavoriteSystemById(user.id, system.id))
+	return systemErrors.exec(async () => {
+		const _system = await listFavoriteSystemById(user.id, system.id)
+
+		return {
+			favorite: withResolvedImage(_system),
+		}
+	})
 }

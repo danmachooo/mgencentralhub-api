@@ -1,4 +1,4 @@
-import { getUsersHandler } from "@/features/UserProfiles/userProfile.controller"
+import { getUsersHandler } from "@/features/Users/Profile/userProfile.controller"
 import { Router } from "express"
 
 const router = Router()

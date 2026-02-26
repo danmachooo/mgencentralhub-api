@@ -8,7 +8,7 @@ import {
 	restoreUserRoleHandler,
 	softDeleteUserRoleHandler,
 	updateUserRoleHandler,
-} from "@/features/Role/role.controller"
+} from "@/features/Users/Role/role.controller"
 import { Router } from "express"
 
 const router = Router()

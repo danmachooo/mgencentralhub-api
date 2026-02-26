@@ -1,4 +1,4 @@
-import { createManyRoles } from "@/features/Role/role.repo"
+import { createManyRoles } from "@/features/Users/Role/role.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { CreateManyRoleInput } from "@/schema"
 import { logger, prisma } from "@/lib"

@@ -5,7 +5,7 @@ import type {
 	PersonalSystemQueryInput,
 	UpdatePersonalSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
+import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
 import { listSystemById, listSystems, updateSystem } from "@/features/Systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"

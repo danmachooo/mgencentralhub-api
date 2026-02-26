@@ -1,4 +1,4 @@
-import { getUserInfo } from "@/features/UserProfiles/userProfile.service"
+import { getUserInfo } from "@/features/Users/Profile/userProfile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
 import { userProfileQuerySchema } from "@/schema"

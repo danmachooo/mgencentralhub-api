@@ -1,5 +1,5 @@
 import type { CreateUserProfileInput, UserIdentifier, UserProfileQuery } from "@/schema"
-import { createUserProfile, getUserContext, getUsers } from "@/features/UserProfiles/userProfile.repo"
+import { createUserProfile, getUserContext, getUsers } from "@/features/Users/Profile/userProfile.repo"
 import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 

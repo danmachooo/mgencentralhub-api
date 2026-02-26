@@ -6,7 +6,7 @@ import type {
 	SystemQueryInput,
 	UpdateSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/UserProfiles/userProfile.service"
+import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
 import {
 	createManySystem,
 	createSystem,

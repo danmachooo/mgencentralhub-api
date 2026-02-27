@@ -8,6 +8,7 @@ import {
 	updateCompanySystemHandler,
 } from "@/features/Systems/system.controller"
 import { getDeletedCompanySystems } from "@/features/Systems/system.service"
+import { requireRole } from "@/middlewares/rbac.middleware"
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
 import FavoriteRouter from "@/routes/Systems/companyFavorite.route"
 import PersonalSystemRouter from "@/routes/Systems/personal.route"
@@ -16,20 +17,20 @@ import { Router } from "express"
 const router = Router()
 
 // GET
-router.get("/", getCompanySystemsHandler)
-router.get("/deleted", getDeletedCompanySystems)
-router.get("/:id", getCompanySystemByIdHandler)
+router.get("/", requireRole("ADMIN", "EMPLOYEE"), getCompanySystemsHandler)
+router.get("/deleted", requireRole("ADMIN"), getDeletedCompanySystems)
+router.get("/:id", requireRole("ADMIN", "EMPLOYEE"), getCompanySystemByIdHandler)
 
 // POST
-router.post("/", uploadMiddleware.single("image"), createCompanySystemHandler)
+router.post("/", requireRole("ADMIN"), uploadMiddleware.single("image"), createCompanySystemHandler)
 
 // PATCH
-router.patch("/:id", uploadMiddleware.single("image"), updateCompanySystemHandler)
-router.patch("/:id/restore", restoreCompanySystemHandler)
+router.patch("/:id", requireRole("ADMIN"), uploadMiddleware.single("image"), updateCompanySystemHandler)
+router.patch("/:id/restore", requireRole("ADMIN"), restoreCompanySystemHandler)
 
 //DELETE
-router.delete("/:id", softDeleteCompanySystemHandler)
-router.delete("/:id/hard", hardDeleteCompanySystemHandler)
+router.delete("/:id", requireRole("ADMIN"), softDeleteCompanySystemHandler)
+router.delete("/:id/hard", requireRole("ADMIN"), hardDeleteCompanySystemHandler)
 
 router.use("/personal", PersonalSystemRouter)
 router.use("/favorites", FavoriteRouter)

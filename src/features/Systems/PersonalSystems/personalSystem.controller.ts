@@ -41,10 +41,11 @@ export const createPersonalSystemHandler = asyncHandler(async (http: HttpContext
 
 export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const body = updatePersonalSystemSchema.parse(http.req.body)
 	const file = http.req.file ?? null
 
-	const systemUpdated = await updateOwnSystem(system, body, file)
+	const systemUpdated = await updateOwnSystem(system, creator, body, file)
 
 	return http.res.status(200).json({
 		success: true,
@@ -56,10 +57,10 @@ export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext
 })
 
 export const toggleFavoritePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
-	const user = creatorIdentifierSchema.parse(http.req.user)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
 
-	const { favorited } = await toggleFavoritePersonalSystem(user, system)
+	const { favorited } = await toggleFavoritePersonalSystem(creator, system)
 
 	return http.res.status(200).json({
 		success: true,
@@ -69,8 +70,9 @@ export const toggleFavoritePersonalSystemHandler = asyncHandler(async (http: Htt
 
 export const restorePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
+	const creator = creatorIdentifierSchema.parse(http.req.body)
 
-	const restoredSystem = await restoreOwnSystem(system)
+	const restoredSystem = await restoreOwnSystem(system, creator)
 
 	return http.res.status(200).json({
 		success: true,
@@ -83,8 +85,9 @@ export const restorePersonalSystemHandler = asyncHandler(async (http: HttpContex
 
 export const getPersonalSystemsHandler = asyncHandler(async (http: HttpContext) => {
 	const query = personalSystemQuerySchema.parse(http.req.query)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
-	const { systems, total } = await getOwnSystems(query)
+	const { systems, total } = await getOwnSystems(query, creator)
 
 	return sendPaginatedResponse(http, { data: systems, total }, query, "Personal Systems retrieved successfully")
 })
@@ -104,8 +107,9 @@ export const getFavoritePersonalSystemsHandler = asyncHandler(async (http: HttpC
 
 export const getPersonalSystemByIdHandler = asyncHandler(async (http: HttpContext) => {
 	const _system = personalSystemIdentifierSchema.parse(http.req.params)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
-	const system = await getOwnSystemById(_system)
+	const system = await getOwnSystemById(_system, creator)
 
 	return http.res.status(200).json({
 		success: true,
@@ -117,10 +121,10 @@ export const getPersonalSystemByIdHandler = asyncHandler(async (http: HttpContex
 })
 
 export const getFavoritePersonalSystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const user = creatorIdentifierSchema.parse(http.req.user)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
 
-	const favorite = await getFavoriteOwnSystemById(user, system)
+	const favorite = await getFavoriteOwnSystemById(creator, system)
 
 	return http.res.status(200).json({
 		success: true,
@@ -133,16 +137,18 @@ export const getFavoritePersonalSystemByIdHandler = asyncHandler(async (http: Ht
 
 export const getDeletedPersonalSystemsHandler = asyncHandler(async (http: HttpContext) => {
 	const query = personalSystemQuerySchema.parse(http.req.query)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
-	const { deleted, total } = await getDeletedOwnSystems(query)
+	const { deleted, total } = await getDeletedOwnSystems(query, creator)
 
 	return sendPaginatedResponse(http, { data: deleted, total }, query, "Personal Systems retrieved successfully")
 })
 
 export const softDeletePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
-	await softDeleteOwnSystem(system)
+	await softDeleteOwnSystem(system, creator)
 
 	return http.res.status(404).json({
 		success: true,
@@ -152,8 +158,9 @@ export const softDeletePersonalSystemHandler = asyncHandler(async (http: HttpCon
 
 export const hardDeletePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
-	await hardDeleteOwnSystem(system)
+	await hardDeleteOwnSystem(system, creator)
 
 	return http.res.status(410).json({
 		success: true,

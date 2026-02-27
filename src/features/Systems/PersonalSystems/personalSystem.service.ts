@@ -4,9 +4,9 @@ import type {
 	PersonalSystemIdentifier,
 	PersonalSystemQueryInput,
 	UpdatePersonalSystemInput,
+	UserIdentifier,
 } from "@/schema"
 import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
-import { listSystemById, listSystems, updateSystem } from "@/features/Systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
@@ -17,10 +17,12 @@ import {
 	listFavoritePersonalSystemById,
 	listFavoritePersonalSystems,
 	listPersonalSystemById,
+	listPersonalSystems,
 	listSoftDeletedPersonalSystems,
 	restorePersonalSystem,
 	softDeletePersonalSystem,
 	updateOnlyPersonalSystemImage,
+	updatePersonalSystem,
 } from "@/features/Systems/PersonalSystems/personalSystem.repo"
 import { deleteFile, uploadFile } from "@/features/Storage/storage.service"
 import { withResolvedImage, withResolvedImages } from "@/helpers/shared/storagePresenter.helper"
@@ -53,13 +55,13 @@ export async function createOwnSystem(
 			try {
 				imageKey = await uploadFile(file, "personal_systems")
 			} catch (uploadErr) {
-				await hardDeletePersonalSystem(created.id)
+				await hardDeletePersonalSystem(created.id, ctx.userId)
 				throw uploadErr
 			}
 		}
 
 		if (imageKey) {
-			await updateOnlyPersonalSystemImage(created.id, imageKey)
+			await updateOnlyPersonalSystemImage(created.id, imageKey, ctx.userId)
 		}
 
 		return created
@@ -67,13 +69,14 @@ export async function createOwnSystem(
 }
 export async function updateOwnSystem(
 	system: PersonalSystemIdentifier,
+	creator: CreatorIdentifier,
 	data: UpdatePersonalSystemInput,
 	file: Express.Multer.File | null
 ) {
-	await listPersonalSystemById(system.id)
+	await listPersonalSystemById(system.id, creator.id)
 
 	return personalSystemErrors.exec(async () => {
-		const updated = await updateSystem(system.id, data, null)
+		const updated = await updatePersonalSystem(system.id, creator.id, data, null)
 
 		let imageKey: string | null = null
 
@@ -82,42 +85,43 @@ export async function updateOwnSystem(
 		}
 
 		if (imageKey) {
-			await updateOnlyPersonalSystemImage(updated.id, imageKey)
+			await updateOnlyPersonalSystemImage(updated.id, imageKey, creator.id)
 		}
 		return updated
 	})
 }
 
-export async function toggleFavoritePersonalSystem(user: CreatorIdentifier, system: PersonalSystemIdentifier) {
-	return personalSystemErrors.exec(() => flipFavoritePersonalSystem(user.id, system.id))
+export async function toggleFavoritePersonalSystem(creator: CreatorIdentifier, system: PersonalSystemIdentifier) {
+	return personalSystemErrors.exec(() => flipFavoritePersonalSystem(creator.id, system.id))
 }
 
-export async function restoreOwnSystem(system: PersonalSystemIdentifier) {
+export async function restoreOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await restorePersonalSystem(system.id)
+		const _system = await restorePersonalSystem(system.id, creator.id)
 		return {
 			restored: withResolvedImage(_system),
 		}
 	})
 }
 
-export async function softDeleteOwnSystem(system: PersonalSystemIdentifier) {
-	return personalSystemErrors.exec(() => softDeletePersonalSystem(system.id))
+export async function softDeleteOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
+	return personalSystemErrors.exec(() => softDeletePersonalSystem(system.id, creator.id))
 }
 
-export async function hardDeleteOwnSystem(system: PersonalSystemIdentifier) {
-	const existing = await listPersonalSystemById(system.id)
+export async function hardDeleteOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
+	const existing = await listPersonalSystemById(system.id, creator.id)
 
 	return personalSystemErrors.exec(async () => {
-		const deleted = await hardDeletePersonalSystem(existing.id)
+		const deleted = await hardDeletePersonalSystem(existing.id, creator.id)
 		await deleteFile(deleted.image)
 	})
 }
 
-export async function getOwnSystems(query: PersonalSystemQueryInput) {
+export async function getOwnSystems(query: PersonalSystemQueryInput, creator: CreatorIdentifier) {
 	const options = getPrismaPagination(query)
 
-	const where: Prisma.SystemWhereInput = {
+	const where: Prisma.PersonalSystemWhereInput = {
+		ownerUserId: creator.id,
 		...(query.search && {
 			OR: [
 				{ description: { contains: query.search, mode: "insensitive" } },
@@ -127,16 +131,17 @@ export async function getOwnSystems(query: PersonalSystemQueryInput) {
 		}),
 	}
 	return personalSystemErrors.exec(async () => {
-		const { systems, total } = await listSystems(where, options)
+		const { systems, total } = await listPersonalSystems(where, options)
 
 		return { total, systems: await withResolvedImages(systems) }
 	})
 }
 
-export async function getDeletedOwnSystems(query: PersonalSystemQueryInput) {
+export async function getDeletedOwnSystems(query: PersonalSystemQueryInput, creator: CreatorIdentifier) {
 	const options = getPrismaPagination(query)
 
 	const where: Prisma.PersonalSystemWhereInput = {
+		ownerUserId: creator.id,
 		...(query.search && {
 			OR: [
 				{ description: { contains: query.search, mode: "insensitive" } },
@@ -153,17 +158,17 @@ export async function getDeletedOwnSystems(query: PersonalSystemQueryInput) {
 	})
 }
 
-export async function getOwnSystemById(system: PersonalSystemIdentifier) {
+export async function getOwnSystemById(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await listSystemById(system.id)
+		const _system = await listPersonalSystemById(system.id, creator.id)
 
 		return { system: await withResolvedImage(_system) }
 	})
 }
 
-export async function getFavoriteOwnSystemById(user: CreatorIdentifier, system: PersonalSystemIdentifier) {
+export async function getFavoriteOwnSystemById(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await listFavoritePersonalSystemById(user.id, system.id)
+		const _system = await listFavoritePersonalSystemById(system.id, creator.id)
 
 		return {
 			favorite: await withResolvedImage(_system),

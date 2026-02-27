@@ -9,9 +9,12 @@ import {
 	softDeleteUserRoleHandler,
 	updateUserRoleHandler,
 } from "@/features/Users/Role/role.controller"
+import { requireRole } from "@/middlewares"
 import { Router } from "express"
 
 const router = Router()
+
+router.use(requireRole("ADMIN", "EMPLOYEE"))
 
 // GET
 router.get("/", getActiveUserRolesHandler)

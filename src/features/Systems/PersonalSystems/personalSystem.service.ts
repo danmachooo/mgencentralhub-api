@@ -4,7 +4,6 @@ import type {
 	PersonalSystemIdentifier,
 	PersonalSystemQueryInput,
 	UpdatePersonalSystemInput,
-	UserIdentifier,
 } from "@/schema"
 import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
 import { PrismaErrorHandler } from "@/helpers/prisma"

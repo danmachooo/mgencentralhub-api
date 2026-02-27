@@ -32,7 +32,7 @@ router.patch("/:id/restore", requireRole("ADMIN"), restoreCompanySystemHandler)
 router.delete("/:id", requireRole("ADMIN"), softDeleteCompanySystemHandler)
 router.delete("/:id/hard", requireRole("ADMIN"), hardDeleteCompanySystemHandler)
 
-router.use("/personal", PersonalSystemRouter)
-router.use("/favorites", FavoriteRouter)
+router.use("/personal", requireRole("ADMIN", "EMPLOYEE"), PersonalSystemRouter)
+router.use("/favorites", requireRole("ADMIN", "EMPLOYEE"), FavoriteRouter)
 
 export default router

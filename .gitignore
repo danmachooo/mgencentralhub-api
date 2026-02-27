@@ -5,3 +5,5 @@ logs
 dist
 uploads
 /generated/prisma
+codebase-health-report.md
+report.md

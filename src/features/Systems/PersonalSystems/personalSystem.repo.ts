@@ -26,7 +26,11 @@ const SYSTEM_SHAPE: Prisma.PersonalSystemSelect = {
 	updatedAt: true,
 }
 
-export async function createPersonalSystem(id: string, data: CreatePersonalSystemInput, imageKey: string | null) {
+export async function createPersonalSystem(
+	creatorId: string,
+	data: CreatePersonalSystemInput,
+	imageKey: string | null
+) {
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 		const personalSystemCreated = await tx.personalSystem.create({
 			data: {
@@ -34,7 +38,7 @@ export async function createPersonalSystem(id: string, data: CreatePersonalSyste
 				description: data.description,
 				url: data.url,
 				image: imageKey,
-				ownerUserId: id,
+				ownerUserId: creatorId,
 			},
 			select: {
 				id: true,
@@ -45,7 +49,7 @@ export async function createPersonalSystem(id: string, data: CreatePersonalSyste
 	})
 }
 
-export async function createManyPersonalSystem(id: string, systemsData: CreateManyPersonalSystemInput) {
+export async function createManyPersonalSystem(creatorId: string, systemsData: CreateManyPersonalSystemInput) {
 	return prisma.$transaction(async tx => {
 		await tx.personalSystem.createMany({
 			data: systemsData.map(s => ({
@@ -53,18 +57,24 @@ export async function createManyPersonalSystem(id: string, systemsData: CreateMa
 				description: s.description,
 				url: s.url,
 				image: s.image,
-				ownerUserId: id,
+				ownerUserId: creatorId,
 			})),
 			skipDuplicates: true,
 		})
 	})
 }
 
-export async function updatePersonalSystem(id: string, data: UpdatePersonalSystemInput, imageKey?: string | null) {
+export async function updatePersonalSystem(
+	systemId: string,
+	creatorId: string,
+	data: UpdatePersonalSystemInput,
+	imageKey?: string | null
+) {
 	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
 		const systemUpdated = await tx.personalSystem.update({
 			where: {
-				id: id,
+				id: systemId,
+				ownerUserId: creatorId,
 			},
 			data: {
 				name: data.name,
@@ -82,10 +92,11 @@ export async function updatePersonalSystem(id: string, data: UpdatePersonalSyste
 	})
 }
 
-export async function updateOnlyPersonalSystemImage(id: string, imageKey: string) {
+export async function updateOnlyPersonalSystemImage(systemId: string, creatorId: string, imageKey: string) {
 	return await prisma.personalSystem.update({
 		where: {
-			id,
+			id: systemId,
+			ownerUserId: creatorId,
 		},
 		data: {
 			image: imageKey,
@@ -93,9 +104,9 @@ export async function updateOnlyPersonalSystemImage(id: string, imageKey: string
 	})
 }
 
-export async function flipFavoritePersonalSystem(userId: string, personalSystemId: string) {
+export async function flipFavoritePersonalSystem(creatorId: string, personalSystemId: string) {
 	const compositeKey = {
-		userId,
+		userId: creatorId,
 		personalSystemId,
 	}
 	const existing = await prisma.userFavoritePersonalSystem.findUnique({
@@ -122,10 +133,11 @@ export async function flipFavoritePersonalSystem(userId: string, personalSystemI
 	}
 }
 
-export async function restorePersonalSystem(id: string) {
+export async function restorePersonalSystem(creatorId: string, systemId: string) {
 	return await prisma.personalSystem.update({
 		where: {
-			id,
+			id: systemId,
+			ownerUserId: creatorId,
 			NOT: { deletedAt: null },
 		},
 		data: {
@@ -135,10 +147,11 @@ export async function restorePersonalSystem(id: string) {
 	})
 }
 
-export async function softDeletePersonalSystem(id: string) {
+export async function softDeletePersonalSystem(creatorId: string, systemId: string) {
 	return await prisma.personalSystem.update({
 		where: {
-			id,
+			id: systemId,
+			ownerUserId: creatorId,
 			deletedAt: null,
 		},
 		data: {
@@ -147,19 +160,20 @@ export async function softDeletePersonalSystem(id: string) {
 	})
 }
 
-export async function hardDeletePersonalSystem(id: string) {
+export async function hardDeletePersonalSystem(creatorId: string, systemId: string) {
 	return await prisma.personalSystem.delete({
-		where: { id },
+		where: { id: systemId, ownerUserId: creatorId },
 		select: {
 			image: true,
 		},
 	})
 }
 
-export async function listPersonalSystemById(id: string) {
+export async function listPersonalSystemById(creatorId: string, systemId: string) {
 	const personalSystem = await prisma.personalSystem.findUniqueOrThrow({
 		where: {
-			id,
+			id: systemId,
+			ownerUserId: creatorId,
 		},
 		select: SYSTEM_SHAPE,
 	})
@@ -214,10 +228,10 @@ export async function listFavoritePersonalSystems(
 	return { favoriteSystems, total }
 }
 
-export async function listFavoritePersonalSystemById(userId: string, personalSystemId: string) {
+export async function listFavoritePersonalSystemById(creatorId: string, systemId: string) {
 	const compositeKey = {
-		userId,
-		personalSystemId,
+		userId: creatorId,
+		personalSystemId: systemId,
 	}
 	const favorite = await prisma.userFavoritePersonalSystem.findUniqueOrThrow({
 		where: {

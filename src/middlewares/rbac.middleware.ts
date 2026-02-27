@@ -2,7 +2,7 @@ import { asyncHandler } from "@/middlewares/asyncHandler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { ForbiddenError } from "@/errors"
 
-type AllowedRole = "admin" | "employee"
+type AllowedRole = "ADMIN" | "EMPLOYEE"
 
 /**
  * Restricts access to the specified roles.
@@ -14,7 +14,7 @@ type AllowedRole = "admin" | "employee"
  */
 export const requireRole = (...roles: AllowedRole[]) =>
 	asyncHandler(async (http: HttpContext) => {
-		const userRole = http.req.user.role.name as AllowedRole
+		const userRole = http.req.user.role.name.toUpperCase() as AllowedRole
 
 		if (!roles.includes(userRole)) {
 			throw new ForbiddenError("You do not have permission to perform this action.")

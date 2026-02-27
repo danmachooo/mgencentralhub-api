@@ -1,25 +1,24 @@
 import {
 	createManySystemFlagHandler,
 	createSystemFlagHandler,
+	getActiveSystemFlagsByIdHandler,
+	getActiveSystemFlagsHandler,
+	getInActiveSystemFlagsHandler,
 	hardDeleteSystemFlagHandler,
 	restoreSystemFlagHandler,
 	softDeleteSystemFlagHandler,
 	updateSystemFlagHandler,
 } from "@/features/Systems/SystemFlags/flag.controller"
-import {
-	getActiveSystemFlagById,
-	getActiveSystemFlags,
-	getInactiveSystemFlags,
-} from "@/features/Systems/SystemFlags/flag.service"
+
 import { requireRole } from "@/middlewares"
 import { Router } from "express"
 
 const router = Router()
 
 // GET
-router.get("/", requireRole("ADMIN", "EMPLOYEE"), getActiveSystemFlags)
-router.get("/inactive", requireRole("ADMIN"), getInactiveSystemFlags)
-router.get("/:id", requireRole("ADMIN", "EMPLOYEE"), getActiveSystemFlagById)
+router.get("/", requireRole("ADMIN", "EMPLOYEE"), getActiveSystemFlagsHandler)
+router.get("/inactive", requireRole("ADMIN"), getInActiveSystemFlagsHandler)
+router.get("/:id", requireRole("ADMIN", "EMPLOYEE"), getActiveSystemFlagsByIdHandler)
 
 // POST
 router.post("/", requireRole("ADMIN"), createSystemFlagHandler)

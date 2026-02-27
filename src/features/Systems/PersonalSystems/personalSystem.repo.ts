@@ -8,7 +8,9 @@ const ACTIVE_ONLY: Prisma.PersonalSystemWhereInput = {
 }
 
 const DELETED_ONLY: Prisma.PersonalSystemWhereInput = {
-	deletedAt: null,
+	NOT: {
+		deletedAt: null,
+	},
 }
 
 const SYSTEM_SHAPE: Prisma.PersonalSystemSelect = {
@@ -196,7 +198,6 @@ export async function listPersonalSystems(where: Prisma.PersonalSystemWhereInput
 		}),
 		prisma.personalSystem.count({
 			where: finalWhereQuery,
-			...options,
 		}),
 	])
 
@@ -209,7 +210,7 @@ export async function listFavoritePersonalSystems(
 ) {
 	const finalWhereQuery: Prisma.UserFavoritePersonalSystemWhereInput = {
 		...where,
-		personalSystem: DELETED_ONLY,
+		personalSystem: ACTIVE_ONLY,
 	}
 
 	const [favoriteSystems, total] = await Promise.all([
@@ -221,7 +222,6 @@ export async function listFavoritePersonalSystems(
 		}),
 		prisma.userFavoritePersonalSystem.count({
 			where: finalWhereQuery,
-			...options,
 		}),
 	])
 
@@ -255,12 +255,12 @@ export async function listSoftDeletedPersonalSystems(
 	const [systems, total] = await Promise.all([
 		prisma.personalSystem.findMany({
 			where: finalWhere,
+			...options,
 			select: SYSTEM_SHAPE,
 		}),
 
 		prisma.personalSystem.count({
 			where: finalWhere,
-			...options,
 		}),
 	])
 

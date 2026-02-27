@@ -70,7 +70,7 @@ export const toggleFavoritePersonalSystemHandler = asyncHandler(async (http: Htt
 
 export const restorePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = personalSystemIdentifierSchema.parse(http.req.params)
-	const creator = creatorIdentifierSchema.parse(http.req.body)
+	const creator = creatorIdentifierSchema.parse(http.req.user)
 
 	const restoredSystem = await restoreOwnSystem(system, creator)
 

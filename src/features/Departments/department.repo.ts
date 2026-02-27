@@ -61,11 +61,17 @@ export async function updateDepartment(id: string, data: UpdateDepartmentInput) 
 }
 
 export async function restoreDepartment(id: string) {
-	return await prisma.department.findUniqueOrThrow({
+	return await prisma.department.update({
 		where: {
 			id,
+			NOT: {
+				deletedAt: null
+			}
 		},
-		select: DEPARTMENT_SHAPE,
+		data: {
+			deletedAt: null
+		},
+		select: DEPARTMENT_SHAPE
 	})
 }
 
@@ -103,7 +109,6 @@ export async function listDepartments(where: Prisma.DepartmentWhereInput, option
 		}),
 		prisma.department.count({
 			where: finalWhere,
-			...options,
 		}),
 	])
 
@@ -136,7 +141,6 @@ export async function listSoftDeletedDepartments(where: Prisma.DepartmentWhereIn
 		}),
 		prisma.department.count({
 			where: finalWhere,
-			...options,
 		}),
 	])
 

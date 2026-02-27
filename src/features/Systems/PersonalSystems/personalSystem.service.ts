@@ -54,13 +54,13 @@ export async function createOwnSystem(
 			try {
 				imageKey = await uploadFile(file, "personal_systems")
 			} catch (uploadErr) {
-				await hardDeletePersonalSystem(created.id, ctx.userId)
+				await hardDeletePersonalSystem(ctx.userId, created.id)
 				throw uploadErr
 			}
 		}
 
 		if (imageKey) {
-			await updateOnlyPersonalSystemImage(created.id, imageKey, ctx.userId)
+			await updateOnlyPersonalSystemImage(created.id, ctx.userId, imageKey)
 		}
 
 		return created
@@ -72,7 +72,7 @@ export async function updateOwnSystem(
 	data: UpdatePersonalSystemInput,
 	file: Express.Multer.File | null
 ) {
-	await listPersonalSystemById(system.id, creator.id)
+	await listPersonalSystemById(creator.id, system.id)
 
 	return personalSystemErrors.exec(async () => {
 		const updated = await updatePersonalSystem(system.id, creator.id, data, null)
@@ -84,7 +84,7 @@ export async function updateOwnSystem(
 		}
 
 		if (imageKey) {
-			await updateOnlyPersonalSystemImage(updated.id, imageKey, creator.id)
+			await updateOnlyPersonalSystemImage(updated.id, creator.id, imageKey)
 		}
 		return updated
 	})
@@ -96,22 +96,22 @@ export async function toggleFavoritePersonalSystem(creator: CreatorIdentifier, s
 
 export async function restoreOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await restorePersonalSystem(system.id, creator.id)
+		const _system = await restorePersonalSystem(creator.id, system.id)
 		return {
-			restored: withResolvedImage(_system),
+			restored: await withResolvedImage(_system),
 		}
 	})
 }
 
 export async function softDeleteOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
-	return personalSystemErrors.exec(() => softDeletePersonalSystem(system.id, creator.id))
+	return personalSystemErrors.exec(() => softDeletePersonalSystem(creator.id, system.id))
 }
 
 export async function hardDeleteOwnSystem(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
-	const existing = await listPersonalSystemById(system.id, creator.id)
+	const existing = await listPersonalSystemById(creator.id, system.id)
 
 	return personalSystemErrors.exec(async () => {
-		const deleted = await hardDeletePersonalSystem(existing.id, creator.id)
+		const deleted = await hardDeletePersonalSystem(creator.id, existing.id)
 		await deleteFile(deleted.image)
 	})
 }
@@ -159,15 +159,15 @@ export async function getDeletedOwnSystems(query: PersonalSystemQueryInput, crea
 
 export async function getOwnSystemById(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await listPersonalSystemById(system.id, creator.id)
+		const _system = await listPersonalSystemById(creator.id, system.id)
 
 		return { system: await withResolvedImage(_system) }
 	})
 }
 
-export async function getFavoriteOwnSystemById(system: PersonalSystemIdentifier, creator: CreatorIdentifier) {
+export async function getFavoriteOwnSystemById(creator: CreatorIdentifier, system: PersonalSystemIdentifier) {
 	return personalSystemErrors.exec(async () => {
-		const _system = await listFavoritePersonalSystemById(system.id, creator.id)
+		const _system = await listFavoritePersonalSystemById(creator.id, system.id)
 
 		return {
 			favorite: await withResolvedImage(_system),

@@ -9,7 +9,7 @@ const router = Router()
 
 router.get("/", getFavoritePersonalSystemsHandler)
 
-router.post("/:id", getFavoritePersonalSystemByIdHandler)
+router.get("/:id", getFavoritePersonalSystemByIdHandler)
 
 router.post("/:id/toggle-favorite", toggleFavoritePersonalSystemHandler)
 

@@ -8,7 +8,9 @@ const ACTIVE_ONLY: Prisma.SystemWhereInput = {
 }
 
 const DELETED_ONLY: Prisma.SystemWhereInput = {
-	deletedAt: null,
+	NOT: {
+		deletedAt: null,
+	}
 }
 
 const SYSTEM_SHAPE: Prisma.SystemSelect = {
@@ -275,7 +277,6 @@ export async function listSystems(where: Prisma.SystemWhereInput, options: Prism
 		}),
 		prisma.system.count({
 			where: finalWhereQuery,
-			...options,
 		}),
 	])
 
@@ -291,12 +292,12 @@ export async function listSoftDeletedSystems(where: Prisma.SystemWhereInput, opt
 	const [systems, total] = await Promise.all([
 		prisma.system.findMany({
 			where: finalWhere,
+			...options,
 			select: SYSTEM_SHAPE,
 		}),
 
 		prisma.system.count({
 			where: finalWhere,
-			...options,
 		}),
 	])
 
@@ -310,19 +311,19 @@ export async function listFavoriteSystems(where: Prisma.UserFavoriteSystemWhereI
 	const finalWhere: Prisma.UserFavoriteSystemWhereInput = {
 		...where,
 		system: {
-			...DELETED_ONLY,
+			...ACTIVE_ONLY,
 		},
 	}
 
 	const [favoriteSystems, total] = await Promise.all([
 		prisma.userFavoriteSystem.findMany({
 			where: finalWhere,
+			...options,
 			select: SYSTEM_SHAPE,
 		}),
 
 		prisma.userFavoriteSystem.count({
 			where: finalWhere,
-			...options,
 		}),
 	])
 

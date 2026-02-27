@@ -27,3 +27,6 @@ jobs:
 
             - name: Run typecheck
               run: npm run typecheck
+
+            - name: Run test for rbac
+              run: npm run test:rbac

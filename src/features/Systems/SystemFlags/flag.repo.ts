@@ -78,7 +78,7 @@ export async function softDeleteSystemFlag(id: string) {
 			id,
 		},
 		data: {
-			deletedAt: null,
+			deletedAt: new Date(),
 		},
 	})
 }

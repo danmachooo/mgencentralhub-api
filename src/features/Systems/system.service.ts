@@ -215,7 +215,7 @@ export async function getCompanySystemById(system: SystemIdentifier) {
 		const _system = await listSystemById(system.id)
 
 		return {
-			system: withResolvedImage(_system),
+			system: await withResolvedImage(_system),
 		}
 	})
 }
@@ -225,7 +225,7 @@ export async function getFavoriteCompanySystemById(user: CreatorIdentifier, syst
 		const _system = await listFavoriteSystemById(user.id, system.id)
 
 		return {
-			favorite: withResolvedImage(_system),
+			favorite: await withResolvedImage(_system),
 		}
 	})
 }

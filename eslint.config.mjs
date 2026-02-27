@@ -3,7 +3,7 @@ import tseslint from "typescript-eslint"
 
 export default [
 	{
-		ignores: ["dist/**", "node_modules/**", "generated/**", "**/generated", "prisma.config.ts"],
+		ignores: ["dist/**", "node_modules/**", "generated/**", "**/generated", "prisma.config.ts", "src/tests/**"],
 	},
 
 	js.configs.recommended,

@@ -2,12 +2,12 @@ import {
 	createCompanySystemHandler,
 	getCompanySystemByIdHandler,
 	getCompanySystemsHandler,
+	getDeletedCompanySystemsHandler,
 	hardDeleteCompanySystemHandler,
 	restoreCompanySystemHandler,
 	softDeleteCompanySystemHandler,
 	updateCompanySystemHandler,
 } from "@/features/Systems/system.controller"
-import { getDeletedCompanySystems } from "@/features/Systems/system.service"
 import { requireRole } from "@/middlewares/rbac.middleware"
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
 import FavoriteRouter from "@/routes/Systems/companyFavorite.route"
@@ -18,7 +18,7 @@ const router = Router()
 
 // GET
 router.get("/", requireRole("ADMIN", "EMPLOYEE"), getCompanySystemsHandler)
-router.get("/deleted", requireRole("ADMIN"), getDeletedCompanySystems)
+router.get("/deleted", requireRole("ADMIN"), getDeletedCompanySystemsHandler)
 router.get("/:id", requireRole("ADMIN", "EMPLOYEE"), getCompanySystemByIdHandler)
 
 // POST

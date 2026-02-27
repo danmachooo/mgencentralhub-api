@@ -1,9 +1,9 @@
-import { listSystemById } from "@/features/Systems/system.repo"
 import {
 	createManySystemFlags,
 	createSystemFlag,
 	hardDeleteSystemFlag,
 	listSoftDeletedSystemFlags,
+	listSystemFlagById,
 	listSystemFlags,
 	restoreSystemFlag,
 	softDeleteSystemFlag,
@@ -55,5 +55,5 @@ export async function getActiveSystemFlags() {
 }
 
 export async function getActiveSystemFlagById(flag: SystemFlagIdentifier) {
-	return systemFlagErrors.exec(() => listSystemById(flag.id))
+	return systemFlagErrors.exec(() => listSystemFlagById(flag.id))
 }

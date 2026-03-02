@@ -5,12 +5,13 @@ import { appConfig } from "@/config/appConfig"
 
 const backendURL = appConfig.app.url
 const frontendURL = appConfig.frontend.url
+const baseUrl = appConfig.app.url
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
-	baseURL: appConfig.app.url,
+	baseURL: baseUrl,
 	trustedOrigins: [backendURL, frontendURL],
 	emailAndPassword: {
 		enabled: true,

@@ -10,11 +10,13 @@ import path from "path"
 const app = express()
 
 const frontendURL = appConfig.frontend.url
+const backendURL = appConfig.app.url
+const storageMode = appConfig.storage.mode
 
 // Define cors
 app.use(
 	cors({
-		origin: frontendURL,
+		origin: [frontendURL, backendURL ],
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],
@@ -25,7 +27,7 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-if (appConfig.storage.mode !== "supabase") {
+if (storageMode !== "supabase") {
 	app.use("/uploads", express.static(path.join(process.cwd(), "uploads")))
 }
 

@@ -1,7 +1,5 @@
 import { saveMessage } from "@/features/Chatbot/chatbot.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
-import type { CreatorIdentifier, PromptInput, UserIdentifier } from "@/schema"
-import type { RequestLabels } from "@/features/Chatbot/intent.service";
 import { classifyIntent } from "@/features/Chatbot/intent.service"
 import { getRecentConversations } from "@/features/Chatbot/memory.service"
 import { chatWithGemini } from "@/features/Chatbot/ai.service"
@@ -11,6 +9,8 @@ import { getOwnSystems } from "@/features/Systems/PersonalSystems/personalSystem
 import { getActiveSystemFlags } from "@/features/Systems/SystemFlags/flag.service"
 import { appConfig } from "@/config/appConfig"
 import { gemini } from "@/lib/gemini"
+import type { CreatorIdentifier, PromptInput, UserIdentifier } from "@/schema"
+import type { RequestLabels } from "@/features/Chatbot/intent.service";
 
 const employeeAssistantErrors = new PrismaErrorHandler({
 	entity: "Chatbot",

@@ -5,15 +5,15 @@ import type { ErrorShape } from "@/types/error"
 export function getApiErrorStatus(err: Error): number | undefined {
 	const anyErr = err as ErrorShape
 
-	if(typeof anyErr.statusCode === "number") {
+	if (typeof anyErr.statusCode === "number") {
 		return anyErr.statusCode
 	}
 
-	if(typeof anyErr.status === "number"){
+	if (typeof anyErr.status === "number") {
 		return anyErr.status
 	}
 
-	if(typeof anyErr.code === "number") {
+	if (typeof anyErr.code === "number") {
 		return anyErr.code
 	}
 

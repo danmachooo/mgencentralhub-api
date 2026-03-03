@@ -63,6 +63,6 @@ export const appConfig = {
 
 	gemini: {
 		apiKey: env.GEMINI_API_KEY,
-		model: env.GEMINI_MODEL
-	}
+		model: env.GEMINI_MODEL,
+	},
 } as const

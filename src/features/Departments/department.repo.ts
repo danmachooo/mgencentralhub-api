@@ -65,13 +65,13 @@ export async function restoreDepartment(id: string) {
 		where: {
 			id,
 			NOT: {
-				deletedAt: null
-			}
+				deletedAt: null,
+			},
 		},
 		data: {
-			deletedAt: null
+			deletedAt: null,
 		},
-		select: DEPARTMENT_SHAPE
+		select: DEPARTMENT_SHAPE,
 	})
 }
 

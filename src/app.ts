@@ -16,7 +16,7 @@ const storageMode = appConfig.storage.mode
 // Define cors
 app.use(
 	cors({
-		origin: [frontendURL, backendURL ],
+		origin: [frontendURL, backendURL],
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],

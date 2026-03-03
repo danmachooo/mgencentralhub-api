@@ -10,7 +10,7 @@ const ACTIVE_ONLY: Prisma.SystemWhereInput = {
 const DELETED_ONLY: Prisma.SystemWhereInput = {
 	NOT: {
 		deletedAt: null,
-	}
+	},
 }
 
 const SYSTEM_SHAPE: Prisma.SystemSelect = {

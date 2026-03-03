@@ -1,21 +1,20 @@
-import { appConfig } from "@/config/appConfig";
-import { gemini } from "@/lib/gemini";
-import type { Content } from "@google/genai";
+import { appConfig } from "@/config/appConfig"
+import { gemini } from "@/lib/gemini"
+import type { Content } from "@google/genai"
 
 export type ChatParams = {
-    systemContext: string,
-    conversation: Content[],
-    userMessage: string
+	systemContext: string
+	conversation: Content[]
+	userMessage: string
 }
 
 export async function chatWithGemini(params: ChatParams) {
-
-    const contents = [
-        {
-            role: "user",
-            parts: [
-                {
-                    text: `
+	const contents = [
+		{
+			role: "user",
+			parts: [
+				{
+					text: `
 You are an internal employee assistant.
 
 Rules:
@@ -28,18 +27,18 @@ ${params.systemContext}
 
 User question:
 ${params.userMessage}       
-                    `
-                }
-            ]
-        }
-    ]
+                    `,
+				},
+			],
+		},
+	]
 
-    const finalContents = [...params.conversation, ...contents]
+	const finalContents = [...params.conversation, ...contents]
 
-    const response = await gemini.models.generateContent({
-        model: appConfig.gemini.model,
-        contents: finalContents
-    })
+	const response = await gemini.models.generateContent({
+		model: appConfig.gemini.model,
+		contents: finalContents,
+	})
 
-    return response.text ?? "I don't know based on the available context."
+	return response.text ?? "I don't know based on the available context."
 }

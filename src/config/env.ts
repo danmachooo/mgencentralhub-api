@@ -39,7 +39,7 @@ const envSchema = z.object({
 
 	// Gemini
 	GEMINI_API_KEY: z.string().min(1),
-	GEMINI_MODEL: z.string().min(1)
+	GEMINI_MODEL: z.string().min(1),
 })
 
 function validateEnv() {

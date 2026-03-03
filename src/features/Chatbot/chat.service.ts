@@ -7,7 +7,9 @@ import { chatWithGemini } from "@/features/Chatbot/ai.service";
 import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service";
 import { getCompanySystems } from "@/features/Systems/system.service";
 import { getOwnSystems } from "@/features/Systems/PersonalSystems/personalSystem.service";
-import { NotFoundError } from "@/errors";
+import { getActiveSystemFlags } from "@/features/Systems/SystemFlags/flag.service";
+import { appConfig } from "@/config/appConfig";
+import { gemini } from "@/lib/gemini";
 
 
 const employeeAssistantErrors = new PrismaErrorHandler({
@@ -22,11 +24,20 @@ export async function employeeAssistant(user: UserIdentifier, prompt: PromptInpu
 
     let responseText = ""
 
-    if(intent === "DEPARTMENT_SYSTEM") {
+    if (intent === "PUBLIC_INFO") {
+        responseText = await handlePublicInfo(user, prompt)
+    } else if(intent === "DEPARTMENT_SYSTEM") {
         responseText = await handleDepartmentSystems(user, prompt)
     } else if (intent === "PERSONAL_SYSTEM") {
         responseText = await handlePersonalSystems(user, prompt)
-    } else {
+    } else if (intent === "STATUS_REPORT") {
+        responseText = await handleStatusReport(user, prompt)
+    } else if (intent === "UNKNOWN") {
+        responseText = await handleUnknownIntent(user, prompt)
+    } else if (intent === "EVENT") {
+        responseText = "Event intent is currently not supported by this assistant."
+    }
+    else {
         const conversation = await getRecentConversations(user)
 
         responseText = await chatWithGemini({   
@@ -105,5 +116,90 @@ async function handlePersonalSystems(user: UserIdentifier, prompt: PromptInput):
         systemContext: personalContext,
         conversation,
         userMessage: prompt.message
+    })
+}
+async function handlePublicInfo(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+    const conversation = await getRecentConversations(user)
+
+    const contents = [
+        ...conversation,
+        {
+            role: "user",
+            parts: [
+                {
+                    text: `
+You are an internal employee assistant for Microgenesis Business System.
+
+Task:
+- Answer company-related questions using publicly available information.
+- Prioritize official company/public website sources for Microgenesis Business System.
+- If information cannot be verified from public sources, say you don't know.
+- Do not invent facts.
+
+User question:
+${prompt.message}
+                    `
+                }
+            ]
+        }
+    ]
+
+    const response = await gemini.models.generateContent({
+        model: appConfig.gemini.model,
+        contents,
+        config: {
+            tools: [{ googleSearch: {} }],
+        },
+    })
+
+    return response.text ?? "I don't know based on the available public information."
+}
+
+async function handleStatusReport(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+    const conversation = await getRecentConversations(user)
+    const profile = await getUserAccessContext(user)
+
+    const query = {
+        page: 1,
+        limit: 100,
+        sortOrder: "desc" as const,
+        sortBy: "createdAt" as const,
+    }
+
+    const departmentId = profile.department!.id
+    const [{ systems, total }, { flags }] = await Promise.all([
+        getCompanySystems(query, departmentId),
+        getActiveSystemFlags(),
+    ])
+
+    const systemsByStatus = systems.reduce<Record<string, string[]>>((acc, system) => {
+        const status = system.systemFlag.name
+        acc[status] = acc[status] ?? []
+        acc[status].push(system.name)
+        return acc
+    }, {})
+
+    const statusContext = [
+        `Status Report Scope: Visible department/public company systems`,
+        `User Department: ${profile.department!.name}`,
+        `Total Visible Systems: ${total}`,
+        `Available Status Flags: ${flags.map(flag => `${flag.name} (${flag.description ?? "No description"})`).join("; ")}`,
+        ...Object.entries(systemsByStatus).map(([status, names]) => `${status}: ${names.length} system(s) -> ${names.join(", ")}`),
+    ].join("\n")
+
+    return chatWithGemini({
+        systemContext: statusContext,
+        conversation,
+        userMessage: prompt.message,
+    })
+}
+
+async function handleUnknownIntent(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+    const conversation = await getRecentConversations(user)
+
+    return chatWithGemini({
+        systemContext: "Intent could not be classified. Ask clarifying questions and answer conservatively using only available context.",
+        conversation,
+        userMessage: prompt.message,
     })
 }

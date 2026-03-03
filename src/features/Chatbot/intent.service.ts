@@ -15,7 +15,7 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
     model: appConfig.gemini.model,
     contents: [{ 
       role: 'user', 
-      parts: [{ text: `Classify this employee request: "${prompt.message}". Return ONLY one of these labels: PUBLIC_INFO, EVENT, PERSONAL_SYSTEM, DEPARTMENT_SYSTEM, STATUS_REPORT, UNKNOWN` }] 
+        parts: [{ text: `Classify this employee request: "${prompt.message}". Return ONLY one of these labels: PUBLIC_INFO, EVENT, PERSONAL_SYSTEM, DEPARTMENT_SYSTEM, STATUS_REPORT, UNKNOWN` }] 
     }],
   });
 

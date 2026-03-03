@@ -253,4 +253,6 @@ model ChatbotMessage {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  @@map("chatbot_message")
 }

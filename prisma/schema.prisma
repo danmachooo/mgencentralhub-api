@@ -26,6 +26,7 @@ model User {
   personalSystems         PersonalSystem[]             @relation("PersonalSystemOwner")
   favoriteSystems         UserFavoriteSystem[]
   favoritePersonalSystems UserFavoritePersonalSystem[]
+  chatbotMessages         ChatbotMessage[]
 
   @@unique([email])
   @@map("user")
@@ -242,4 +243,14 @@ model UserFavoritePersonalSystem {
   @@map("user_favorite_personal_systems")
 }
 
-// Messaging
+// Chatbot
+
+model ChatbotMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}

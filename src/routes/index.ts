@@ -21,6 +21,6 @@ router.use("/systems", requireAuth, SystemRouter)
 router.use("/departments", requireAuth, DepartmentRouter)
 router.use("/users", requireAuth, UserRouter)
 router.use("/roles", requireAuth, RoleRouter)
-router.use("/chatbot", ChatbotRouter)
+router.use("/chatbot", requireAuth, ChatbotRouter)
 
 export default router

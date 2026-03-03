@@ -5,7 +5,7 @@ import { Router } from "express";
 
 const router = Router();
 
-// router.use(requireRole("ADMIN", "EMPLOYEE"))
+router.use(requireRole("ADMIN", "EMPLOYEE"))
 
 router.post("/ask", chatbotHandler)
 

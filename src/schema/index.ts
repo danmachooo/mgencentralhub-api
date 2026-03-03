@@ -38,6 +38,9 @@ export * from "@/schema/User/Role/createManyRole.schema"
 export * from "@/schema/User/Role/updateRole.schema"
 export * from "@/schema/User/Role/roleIdentifier.schema"
 
+//Export here all Chatbot schema
+export * from "@/schema/Chatbot/prompt.schema"
+
 //Export here all Shared Schema
 export * from "@/schema/shared/requestQuery.schema"
 
@@ -67,6 +70,8 @@ import type { updateRoleSchema } from "@/schema/User/Role/updateRole.schema"
 import type { createSystemFlagSchema } from "@/schema/Systems/SystemFlag/createSystemFlag.schema"
 import type { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/createManySystemFlag.schema"
 import type { updateSystemFlagSchema } from "@/schema/Systems/SystemFlag/updateSystemFlag.schema"
+
+import type { promptSchema } from "@/schema/Chatbot/prompt.schema"
 
 // Identifiers schema
 import type { creatorIdentifierSchema } from "@/schema/Systems/creatorIdentifier.schema"
@@ -120,3 +125,6 @@ export type CreateRoleInput = z.infer<typeof createRoleSchema>
 export type UpdateRoleInput = z.infer<typeof updateRoleSchema>
 export type RoleIdentifier = z.infer<typeof roleIdentifierSchema>
 export type CreateManyRoleInput = z.infer<typeof createManyRoleSchema>
+
+//Chatbot
+export type PromptInput = z.infer<typeof promptSchema>

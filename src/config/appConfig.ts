@@ -60,4 +60,9 @@ export const appConfig = {
 		uploadDir: env.LOCAL_UPLOAD_DIR,
 		baseUrl: env.BASE_URL,
 	},
+
+	gemini: {
+		apiKey: env.GEMINI_API_KEY,
+		model: env.GEMINI_MODEL
+	}
 } as const

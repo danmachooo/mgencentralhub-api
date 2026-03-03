@@ -16,8 +16,8 @@
 		"typecheck": "tsc -p tsconfig.json",
 		"test": "vitest",
 		"test:run": "vitest run",
-		"test:coverage" : "vitest run --coverage",
-		"test:rbac" : "vitest run src/tests/rbac",
+		"test:coverage": "vitest run --coverage",
+		"test:rbac": "vitest run src/tests/rbac",
 		"test:s3": "tsx src/lib/s3.test.ts"
 	},
 	"keywords": [],
@@ -27,6 +27,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.997.0",
 		"@aws-sdk/s3-request-presigner": "^3.997.0",
+		"@google/genai": "^1.43.0",
 		"@prisma/adapter-pg": "^7.4.0",
 		"@prisma/client": "^7.4.1",
 		"axios": "^1.13.2",

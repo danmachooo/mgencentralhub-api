@@ -36,6 +36,10 @@ const envSchema = z.object({
 	// FILE UPLOAD
 	STORAGE_MODE: z.enum(["local", "supabase"]).default("local"),
 	LOCAL_UPLOAD_DIR: z.string().min(1),
+
+	// Gemini
+	GEMINI_API_KEY: z.string().min(1),
+	GEMINI_MODEL: z.string().min(1)
 })
 
 function validateEnv() {

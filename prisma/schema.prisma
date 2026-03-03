@@ -241,3 +241,5 @@ model UserFavoritePersonalSystem {
   @@index([personalSystemId])
   @@map("user_favorite_personal_systems")
 }
+
+// Messaging

@@ -1,4 +1,4 @@
-import { success, z } from "zod"
+import { z } from "zod"
 import { ValidationError } from "@/errors"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"

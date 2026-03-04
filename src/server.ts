@@ -7,7 +7,12 @@ import { initializeModels } from "@/boot"
 const PORT = appConfig.app.port
 
 const startServer = async () => {
-	await initializeModels()
+	try {
+		await initializeModels()
+	} catch (error) {
+		logger.error("Initialization failed:", error)
+		process.exit(1)
+	}
 
 	app.listen(PORT, () => {
 		logger.info(`Microgenesis Central Hub API running on port ${PORT}`)

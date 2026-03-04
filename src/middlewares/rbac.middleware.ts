@@ -16,7 +16,7 @@ function isAllowedRole(role: string): role is AllowedRole {
  *   router.post("/", requireAuth, requireRole("admin"), handler)
  *   router.get("/", requireAuth, requireRole("admin", "employee"), handler)
  */
-export const requireRole = (...roles: AllowedRole[]) => 
+export const requireRole = (...roles: AllowedRole[]) =>
 	asyncHandler(async (http: HttpContext) => {
 		const userRole = http.req.user.role.name.toUpperCase()
 

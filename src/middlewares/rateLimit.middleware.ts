@@ -55,7 +55,7 @@ function getClientKey(req: Request, keyPrefix: string): string {
 	return `${keyPrefix}:${userKey}:${ipKey}`
 }
 
-export const rateLimit = (options: RateLimitOptions) => 
+export const rateLimit = (options: RateLimitOptions) =>
 	asyncHandler(http => {
 		const now = Date.now()
 		pruneExpiredBucketsIfNeeded(now)
@@ -93,4 +93,3 @@ export const rateLimit = (options: RateLimitOptions) =>
 
 		http.next()
 	})
-

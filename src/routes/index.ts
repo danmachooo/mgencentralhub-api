@@ -14,10 +14,9 @@ const router = Router()
 // Use to check health route
 router.use("/health", HealthRouter)
 
-if (appConfig.app.nodeEnv !== "production") {
+if (appConfig.app.nodeEnv === "development") {
 	router.use("/auth-test", AuthTestRouter)
 }
-
 
 router.use("/systems", requireAuth, SystemRouter)
 router.use("/departments", requireAuth, DepartmentRouter)

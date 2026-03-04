@@ -15,6 +15,19 @@ export const appConfig = {
 		nodeEnv: env.NODE_ENV,
 	},
 	/**
+	 * Bootstrap configuration
+	 */
+	bootstrap: {
+		enabled: env.ENABLE_BOOTSTRAP,
+		admin: {
+			name: env.BOOTSTRAP_ADMIN_NAME,
+			email: env.BOOTSTRAP_ADMIN_EMAIL,
+			password: env.BOOTSTRAP_ADMIN_PASSWORD,
+			roleName: env.BOOTSTRAP_ADMIN_ROLE_NAME,
+			departmentName: env.BOOTSTRAP_ADMIN_DEPARTMENT_NAME,
+		},
+	},
+	/**
 	 * Database configuration.
 	 */
 	database: {

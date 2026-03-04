@@ -10,7 +10,7 @@ import { getActiveSystemFlags } from "@/features/Systems/SystemFlags/flag.servic
 import { appConfig } from "@/config/appConfig"
 import { gemini } from "@/lib/gemini"
 import type { CreatorIdentifier, PromptInput, UserIdentifier } from "@/schema"
-import type { RequestLabels } from "@/features/Chatbot/intent.service";
+import type { RequestLabels } from "@/features/Chatbot/intent.service"
 
 const employeeAssistantErrors = new PrismaErrorHandler({
 	entity: "Chatbot",

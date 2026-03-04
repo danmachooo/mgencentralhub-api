@@ -1,4 +1,5 @@
-import { isPrismaKnownRequestError, prismaToAppError } from "@/helpers/prisma"
+import { isPrismaKnownRequestError } from "@/helpers/prisma/isPrismaKnownRequestError.helper"
+import { prismaToAppError } from "@/helpers/prisma/prismaToAppError.helper"
 
 export async function withPrismaErrorHandling<T>(
 	fn: () => Promise<T>,

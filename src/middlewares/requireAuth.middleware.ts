@@ -1,9 +1,8 @@
 import { auth } from "@/lib/auth"
-import { asyncHandler } from "@/middlewares"
+import { asyncHandler } from "@/middlewares/asyncHandler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/toFetchHeaders.helper"
-import { logger } from "@/lib"
 import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
 
 /**
@@ -54,8 +53,5 @@ export const requireAuth = asyncHandler(async (http: HttpContext) => {
 
 	// Attach full profile (userId, role, department) for downstream use
 	http.req.user = profile
-
-	logger.info("Require auth check passed: ", http.req.user)
-
 	http.next()
 })

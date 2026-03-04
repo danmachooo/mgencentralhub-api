@@ -62,7 +62,7 @@ export const softDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext
 
 	await softDeleteFlag(flag)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
 		message: "A system flag has been deleted.",
 	})
@@ -73,9 +73,9 @@ export const hardDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext
 
 	await hardDeleteFlag(flag)
 
-	return http.res.status(410).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "A system flag has been deleted.",
+		message: "A system flag has been permanently deleted.",
 	})
 })
 
@@ -122,7 +122,7 @@ export const getInActiveSystemFlagsHandler = asyncHandler(async (http: HttpConte
 
 	return http.res.status(200).json({
 		success: true,
-		message: "Active flag has been retrieved.",
+		message: "Inactive flag has been retrieved.",
 		data: {
 			flag,
 		},

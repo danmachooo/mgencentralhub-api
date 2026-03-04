@@ -17,6 +17,8 @@ router.use("/health", HealthRouter)
 if (appConfig.app.nodeEnv !== "production") {
 	router.use("/auth-test", AuthTestRouter)
 }
+
+
 router.use("/systems", requireAuth, SystemRouter)
 router.use("/departments", requireAuth, DepartmentRouter)
 router.use("/users", requireAuth, UserRouter)

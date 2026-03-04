@@ -62,7 +62,7 @@ export const softDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await softDeleteUserRole(role)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
 		message: "Role has been deleted.",
 	})
@@ -87,9 +87,9 @@ export const hardDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await hardDeleteUserRole(role)
 
-	return http.res.status(410).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "Role has been deleted.",
+		message: "Role has been permanently deleted.",
 	})
 })
 

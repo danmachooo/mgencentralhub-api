@@ -3,7 +3,7 @@ import path from "path"
 import { randomUUID } from "crypto"
 import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 import { s3Client } from "@/lib"
 
 const MIME_TO_EXT: Record<string, string> = {

@@ -24,7 +24,6 @@ import {
 	updateSystemSchema,
 } from "@/schema"
 import { sendPaginatedResponse } from "@/helpers/shared"
-import { cacheWrap } from "@/helpers/shared/cache"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const creator = creatorIdentifierSchema.parse(http.req.user)
@@ -155,14 +154,8 @@ export const getFavoriteCompanySystemsHandler = asyncHandler(async (http: HttpCo
 })
 
 export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
-	const _system = systemIdentifierSchema.parse(http.req.params)
-
-	const key = `system:${_system.id}`
-
-	// const { system } = await getCompanySystemById(_system)
-	console.time("DB")
-	const { system } = await cacheWrap(key, ()=> getCompanySystemById(_system), { ttl: 180 })
-	console.timeEnd("DB")
+	const systemParam = systemIdentifierSchema.parse(http.req.params)
+	const { system } = await getCompanySystemById(systemParam)
 	return http.res.status(200).json({
 		success: true,
 		message: "System has been retrieved.",

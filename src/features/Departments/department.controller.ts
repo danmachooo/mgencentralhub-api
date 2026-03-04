@@ -11,9 +11,9 @@ import {
 	softDeleteCompanyDepartment,
 	updateCompanyDepartment,
 } from "@/features/Departments/department.service"
-import { departmentIdentifierSchema } from "@/schema/Departments/departmentIdentifier.schema"
+import { departmentIdentifierSchema } from "@/schema/Departments/department-identifier.schema"
 import type { HttpContext } from "@/types/shared"
-import { departmentQuerySchema } from "@/schema/Departments/departmentQuery.schema"
+import { departmentQuerySchema } from "@/schema/Departments/department-query.schema"
 import { sendPaginatedResponse } from "@/helpers/shared"
 
 export const createCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {

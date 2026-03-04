@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 import { prisma } from "@/lib/prisma"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 
 const backendURL = appConfig.app.url
 const frontendURL = appConfig.frontend.url

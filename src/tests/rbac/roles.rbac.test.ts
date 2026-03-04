@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest"
 import request from "supertest"
 import express, { type Request, type Response, type NextFunction } from "express"
-import { mockAdmin, mockEmployee } from "../helpers/mockUser"
+import { mockAdmin, mockEmployee } from "../helpers/mock-user"
 
 const ROLE_ID = "11111111-1111-4111-8111-111111111111"
 

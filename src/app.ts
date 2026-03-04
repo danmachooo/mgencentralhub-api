@@ -4,7 +4,7 @@ import { toNodeHandler } from "better-auth/node"
 import { auth } from "@/lib"
 import routes from "@/routes"
 import { errorHandler, notFoundHandler } from "@/middlewares"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 import path from "path"
 
 const app = express()

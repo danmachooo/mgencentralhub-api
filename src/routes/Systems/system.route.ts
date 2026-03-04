@@ -12,7 +12,7 @@ import {
 import { Router } from "express"
 import { requireRole } from "@/middlewares/rbac.middleware"
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
-import FavoriteRouter from "@/routes/Systems/companyFavorite.route"
+import FavoriteRouter from "@/routes/Systems/company-favorite.route"
 import PersonalSystemRouter from "@/routes/Systems/personal.route"
 import SystemFlagRouter from "@/routes/Systems/flag.routes"
 

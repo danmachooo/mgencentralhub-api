@@ -18,12 +18,12 @@ router.get("/", (_req, res) => {
 })
 
 router.get("/redis-test", async (_req, res) => {
-	await redis.set("health:test", "ok", {ex: 60})
-	const value =  await redis.get("health:test")
+	await redis.set("health:test", "ok", { ex: 60 })
+	const value = await redis.get("health:test")
 	return res.json({
 		success: true,
 		message: "OK",
-		value
+		value,
 	})
 })
 

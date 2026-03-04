@@ -1,8 +1,8 @@
-import { createUser } from "@/features/Users/Profile/userProfile.service"
+import { createUser } from "@/features/Users/Profile/user-profile.service"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { auth, logger, prisma } from "@/lib"
 import { APIError } from "better-auth/api"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 
 const adminBootErrors = new PrismaErrorHandler({
 	entity: "User Profile",

@@ -1,5 +1,5 @@
 import { gemini } from "@/lib/gemini"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 import type { PromptInput } from "@/schema"
 
 export type RequestLabels =

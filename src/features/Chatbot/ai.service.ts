@@ -1,4 +1,4 @@
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 import { gemini } from "@/lib/gemini"
 import type { Content } from "@google/genai"
 

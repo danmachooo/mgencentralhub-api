@@ -6,7 +6,7 @@ import type {
 	SystemQueryInput,
 	UpdateSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/Users/Profile/userProfile.service"
+import { getUserAccessContext } from "@/features/Users/Profile/user-profile.service"
 import {
 	createManySystem,
 	createSystem,
@@ -25,10 +25,20 @@ import {
 } from "@/features/Systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
-import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
+import { getPrismaPagination } from "@/helpers/prisma/get-prisma-pagination.helper"
 import { deleteFile, uploadFile } from "@/features/Storage/storage.service"
-import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storagePresenter.helper"
-import { redis } from "@/lib"
+import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storage-presenter.helper"
+import {
+	invalidateFavoriteCache,
+	invalidateSystemCollectionCaches,
+	invalidateSystemCache,
+	withDeletedSystemListCache,
+	withFavoriteSystemByIdCache,
+	withFavoriteSystemListCache,
+	withFavoriteSystemStatusCache,
+	withSystemByIdCache,
+	withSystemListCache,
+} from "@/helpers/shared/cache/system-cache.helper"
 
 const systemErrors = new PrismaErrorHandler({
 	entity: "System",
@@ -65,13 +75,18 @@ export async function createCompanySystem(
 		if (imageKey) {
 			await updateOnlySystemImage(created.id, imageKey)
 		}
+		await invalidateSystemCollectionCaches()
 		return created
 	})
 }
 
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {
 	const ctx = await getUserAccessContext(creator)
-	return systemErrors.exec(() => createManySystem(ctx.userId, data))
+	return systemErrors.exec(async () => {
+		const created = await createManySystem(ctx.userId, data)
+		await invalidateSystemCollectionCaches()
+		return created
+	})
 }
 export async function updateCompanySystem(
 	system: SystemIdentifier,
@@ -95,24 +110,29 @@ export async function updateCompanySystem(
 		if (imageKey) {
 			await updateOnlySystemImage(updated.id, imageKey)
 		}
-		await redis.del(`system:${updated.id}`)
+		await invalidateSystemCache(updated.id)
 		return updated
 	})
 }
 
 export async function toggleFavoriteSystem(user: CreatorIdentifier, system: SystemIdentifier) {
-	return systemErrors.exec(() => flipFavoriteSystem(user.id, system.id))
+	return systemErrors.exec(async () => {
+		const updated = await flipFavoriteSystem(user.id, system.id)
+		await invalidateFavoriteCache(user.id, system.id)
+		return updated
+	})
 }
 
 export async function checkIfSystemIsFavorite(user: CreatorIdentifier, system: SystemIdentifier) {
-	return systemErrors.exec(() => isFavoriteSystem(user.id, system.id))
+	return withFavoriteSystemStatusCache(user.id, system.id, () =>
+		systemErrors.exec(() => isFavoriteSystem(user.id, system.id))
+	)
 }
 
 export async function restoreCompanySystem(system: SystemIdentifier) {
 	return systemErrors.exec(async () => {
 		const _system = await restoreSystem(system.id)
-		
-		await redis.del(`system:${_system.id}`)
+		await invalidateSystemCache(_system.id)
 
 		return {
 			restored: await withResolvedImage(_system),
@@ -121,21 +141,18 @@ export async function restoreCompanySystem(system: SystemIdentifier) {
 }
 
 export async function softDeleteCompanySystem(system: SystemIdentifier) {
-	const existing  = await listSystemById(system.id)
-
 	return systemErrors.exec(async () => {
 		const _system = await softDeleteSystem(system.id)
-		await redis.del(`system:${_system.id}`)
+		await invalidateSystemCache(_system.id)
 	})
 }
 
 export async function hardDeleteCompanySystem(system: SystemIdentifier) {
 	const existing = await listSystemById(system.id)
-	
-	
+
 	return systemErrors.exec(async () => {
 		const deleted = await hardDeleteSystem(existing.id)
-		await redis.del(`system:${deleted.id}`)
+		await invalidateSystemCache(deleted.id)
 		await deleteFile(deleted.image)
 	})
 }
@@ -164,10 +181,12 @@ export async function getCompanySystems(query: SystemQueryInput, departmentId: s
 		}),
 	}
 
-	return systemErrors.exec(async () => {
-		const { systems, total } = await listSystems(where, options)
-		return { total, systems: await withResolvedImages(systems) }
-	})
+	return withSystemListCache(query, departmentId, () =>
+		systemErrors.exec(async () => {
+			const { systems, total } = await listSystems(where, options)
+			return { total, systems: await withResolvedImages(systems) }
+		})
+	)
 }
 
 export async function getFavoriteSystems(creator: CreatorIdentifier, query: SystemQueryInput) {
@@ -188,13 +207,15 @@ export async function getFavoriteSystems(creator: CreatorIdentifier, query: Syst
 			],
 		}),
 	}
-	return systemErrors.exec(async () => {
-		const { favoriteSystems, total } = await listFavoriteSystems(where, options)
-		return {
-			favorites: await withResolvedImages(favoriteSystems),
-			total,
-		}
-	})
+	return withFavoriteSystemListCache(creator.id, query, () =>
+		systemErrors.exec(async () => {
+			const { favoriteSystems, total } = await listFavoriteSystems(where, options)
+			return {
+				favorites: await withResolvedImages(favoriteSystems),
+				total,
+			}
+		})
+	)
 }
 
 export async function getDeletedCompanySystems(query: SystemQueryInput) {
@@ -212,31 +233,37 @@ export async function getDeletedCompanySystems(query: SystemQueryInput) {
 		}),
 	}
 
-	return systemErrors.exec(async () => {
-		const { systems, total } = await listSoftDeletedSystems(where, options)
-		return {
-			deleted: await withResolvedImages(systems),
-			total,
-		}
-	})
+	return withDeletedSystemListCache(query, () =>
+		systemErrors.exec(async () => {
+			const { systems, total } = await listSoftDeletedSystems(where, options)
+			return {
+				deleted: await withResolvedImages(systems),
+				total,
+			}
+		})
+	)
 }
 
 export async function getCompanySystemById(system: SystemIdentifier) {
-	return systemErrors.exec(async () => {
-		const _system = await listSystemById(system.id)
+	return withSystemByIdCache(system.id, () =>
+		systemErrors.exec(async () => {
+			const _system = await listSystemById(system.id)
 
-		return {
-			system: await withResolvedImage(_system),
-		}
-	})
+			return {
+				system: await withResolvedImage(_system),
+			}
+		})
+	)
 }
 
 export async function getFavoriteCompanySystemById(user: CreatorIdentifier, system: SystemIdentifier) {
-	return systemErrors.exec(async () => {
-		const _system = await listFavoriteSystemById(user.id, system.id)
+	return withFavoriteSystemByIdCache(user.id, system.id, () =>
+		systemErrors.exec(async () => {
+			const _system = await listFavoriteSystemById(user.id, system.id)
 
-		return {
-			favorite: await withResolvedImage(_system),
-		}
-	})
+			return {
+				favorite: await withResolvedImage(_system),
+			}
+		})
+	)
 }

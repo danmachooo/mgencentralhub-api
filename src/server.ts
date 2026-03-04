@@ -1,7 +1,7 @@
 // src/server.ts
 import { app } from "@/app"
 import { logger } from "@/lib"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 import { initializeModels } from "@/boot"
 
 const PORT = appConfig.app.port

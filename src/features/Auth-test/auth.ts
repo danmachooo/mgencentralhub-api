@@ -2,9 +2,9 @@ import { auth } from "@/lib/auth"
 import { toFetchHeaders } from "@/helpers/shared"
 import { signInSchema, signUpSchema } from "@/features/Auth-test/schema"
 import { asyncHandler } from "@/middlewares"
-import type { HttpContext } from "@/types/shared/httpContext.type"
+import type { HttpContext } from "@/types/shared/http-context.type"
 import type { IncomingHttpHeaders } from "http"
-import { createUser } from "@/features/Users/Profile/userProfile.service"
+import { createUser } from "@/features/Users/Profile/user-profile.service"
 
 type User = {
 	name: string

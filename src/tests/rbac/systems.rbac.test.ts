@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest"
 import request from "supertest"
 import express, { type Request, type Response, type NextFunction } from "express"
-import { mockAdmin, mockEmployee } from "../helpers/mockUser"
+import { mockAdmin, mockEmployee } from "../helpers/mock-user"
 
 const SYSTEM_ID = "33333333-3333-4333-8333-333333333333"
 const STATUS_ID = "44444444-4444-4444-8444-444444444444"

@@ -1,0 +1,95 @@
+import { env } from "@/config/env"
+
+export const appConfig = {
+	/**
+	 * Core application settings.
+	 */
+	app: {
+		/** Port the HTTP server listens on */
+		port: env.PORT,
+
+		/** Public base URL of the application */
+		url: env.BASE_URL,
+
+		/** Current runtime environment (development | production | test) */
+		nodeEnv: env.NODE_ENV,
+	},
+	/**
+	 * Bootstrap configuration
+	 */
+	bootstrap: {
+		enabled: env.ENABLE_BOOTSTRAP,
+		admin: {
+			name: env.BOOTSTRAP_ADMIN_NAME,
+			email: env.BOOTSTRAP_ADMIN_EMAIL,
+			password: env.BOOTSTRAP_ADMIN_PASSWORD,
+			roleName: env.BOOTSTRAP_ADMIN_ROLE_NAME,
+			departmentName: env.BOOTSTRAP_ADMIN_DEPARTMENT_NAME,
+		},
+	},
+	/**
+	 * Database configuration.
+	 */
+	database: {
+		/** Database connection URL */
+		url: env.DATABASE_URL,
+	},
+
+	/**
+	 * Redis configuration
+	 */
+	redis: {
+		url: env.UPSTASH_REDIS_REST_URL,
+		token: env.UPSTASH_REDIS_REST_TOKEN,
+	},
+	/**
+	 * Authentication and OAuth configuration.
+	 */
+	auth: {
+		/** Secret used by Better Auth for signing tokens */
+		secret: env.BETTER_AUTH_SECRET,
+
+		/** Public URL used by Better Auth */
+		url: env.BETTER_AUTH_URL,
+
+		/**
+		 * Azure SSO credentials.
+		 */
+		azure: {
+			clientId: env.AZURE_AD_CLIENT_ID,
+			clientSecret: env.AZURE_AD_CLIENT_SECRET,
+			tenantId: env.AZURE_AD_TENANT_ID,
+			redirectUri: env.AZURE_AD_REDIRECT_URI,
+		},
+		/**
+		 * Google SSO credentials
+		 */
+		google: {
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
+		},
+	},
+	frontend: {
+		url: env.FRONTEND_URL,
+	},
+	supabaseS3: {
+		endpoint: env.SUPABASE_ENDPOINT,
+		region: env.SUPABASE_REGION,
+		credentials: {
+			accessKeyId: env.SUPABASE_ACCESS_KEY_ID,
+			secretAccessKey: env.SUPABASE_SECRET_ACCESS_KEY,
+		},
+	},
+
+	storage: {
+		mode: env.STORAGE_MODE,
+		bucket: env.SUPABASE_BUCKET,
+		uploadDir: env.LOCAL_UPLOAD_DIR,
+		baseUrl: env.BASE_URL,
+	},
+
+	gemini: {
+		apiKey: env.GEMINI_API_KEY,
+		model: env.GEMINI_MODEL,
+	},
+} as const

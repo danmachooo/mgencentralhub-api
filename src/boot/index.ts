@@ -1,12 +1,12 @@
 // src/boot/index.ts
 import { createAdminBoot } from "@/boot/admin.boot"
-import { createManySystemBoot } from "@/boot/companySystem.boot"
+import { createManySystemBoot } from "@/boot/company-system.boot"
 import { createDepartmentsBoot } from "@/boot/department.boot"
-import { createManyPersonalSystemBoot } from "@/boot/personalSystems.boot"
+import { createManyPersonalSystemBoot } from "@/boot/personal-systems.boot"
 import { createManyRolesBoot } from "@/boot/role.boot"
-import { createManySystemFlagsBoot } from "@/boot/systemFlag.boot"
+import { createManySystemFlagsBoot } from "@/boot/system-flag.boot"
 import { logger } from "@/lib"
-import { appConfig } from "@/config/appConfig"
+import { appConfig } from "@/config/app-config"
 
 export const initializeModels = async () => {
 	if (!appConfig.bootstrap.enabled) {

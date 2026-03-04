@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import type { CreateManySystemInput, CreateSystemInput, UpdateSystemInput } from "@/schema"
-import type { PrismaQueryOptions } from "@/types/shared/prismaOption.types"
+import type { PrismaQueryOptions } from "@/types/shared/prisma-option.types"
 import type { Prisma } from "@prisma/client"
 
 const ACTIVE_ONLY: Prisma.SystemWhereInput = {

@@ -16,6 +16,13 @@ import type {
 	SystemFlagIdentifier,
 	UpdateSystemFlagInput,
 } from "@/schema"
+import {
+	invalidateSystemFlagCache,
+	invalidateSystemFlagCollectionCaches,
+	withActiveSystemFlagsCache,
+	withInactiveSystemFlagsCache,
+	withSystemFlagByIdCache,
+} from "@/helpers/shared/cache/system-flag-cache.helper"
 
 const systemFlagErrors = new PrismaErrorHandler({
 	entity: "System Flag",
@@ -23,37 +30,61 @@ const systemFlagErrors = new PrismaErrorHandler({
 })
 
 export async function createFlag(flag: CreateSystemFlagInput) {
-	return systemFlagErrors.exec(() => createSystemFlag(flag))
+	return systemFlagErrors.exec(async () => {
+		const created = await createSystemFlag(flag)
+		await invalidateSystemFlagCollectionCaches()
+		return created
+	})
 }
 
 export async function createManyFlags(flags: CreateManySystemFlagInput) {
-	return systemFlagErrors.exec(() => createManySystemFlags(flags))
+	return systemFlagErrors.exec(async () => {
+		const created = await createManySystemFlags(flags)
+		await invalidateSystemFlagCollectionCaches()
+		return created
+	})
 }
 
 export async function updateFlag(flag: SystemFlagIdentifier, data: UpdateSystemFlagInput) {
-	return systemFlagErrors.exec(() => updateSystemFlag(flag.id, data))
+	return systemFlagErrors.exec(async () => {
+		const updated = await updateSystemFlag(flag.id, data)
+		await invalidateSystemFlagCache(flag.id)
+		return updated
+	})
 }
 
 export async function restoreFlag(flag: SystemFlagIdentifier) {
-	return systemFlagErrors.exec(() => restoreSystemFlag(flag.id))
+	return systemFlagErrors.exec(async () => {
+		const restored = await restoreSystemFlag(flag.id)
+		await invalidateSystemFlagCache(flag.id)
+		return restored
+	})
 }
 
 export async function softDeleteFlag(flag: SystemFlagIdentifier) {
-	return systemFlagErrors.exec(() => softDeleteSystemFlag(flag.id))
+	return systemFlagErrors.exec(async () => {
+		const deleted = await softDeleteSystemFlag(flag.id)
+		await invalidateSystemFlagCache(flag.id)
+		return deleted
+	})
 }
 
 export async function hardDeleteFlag(flag: SystemFlagIdentifier) {
-	return systemFlagErrors.exec(() => hardDeleteSystemFlag(flag.id))
+	return systemFlagErrors.exec(async () => {
+		const deleted = await hardDeleteSystemFlag(flag.id)
+		await invalidateSystemFlagCache(flag.id)
+		return deleted
+	})
 }
 
 export async function getInactiveSystemFlags() {
-	return systemFlagErrors.exec(() => listSoftDeletedSystemFlags())
+	return withInactiveSystemFlagsCache(() => systemFlagErrors.exec(() => listSoftDeletedSystemFlags()))
 }
 
 export async function getActiveSystemFlags() {
-	return systemFlagErrors.exec(() => listSystemFlags())
+	return withActiveSystemFlagsCache(() => systemFlagErrors.exec(() => listSystemFlags()))
 }
 
 export async function getActiveSystemFlagById(flag: SystemFlagIdentifier) {
-	return systemFlagErrors.exec(() => listSystemFlagById(flag.id))
+	return withSystemFlagByIdCache(flag.id, () => systemFlagErrors.exec(() => listSystemFlagById(flag.id)))
 }

@@ -1,4 +1,4 @@
-import { asyncHandler } from "@/middlewares/asyncHandler.middleware"
+import { asyncHandler } from "@/middlewares/async-handler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { ForbiddenError } from "@/errors"
 

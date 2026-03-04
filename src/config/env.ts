@@ -53,6 +53,11 @@ const envSchema = z
 		BOOTSTRAP_ADMIN_PASSWORD: z.string().min(12).optional(),
 		BOOTSTRAP_ADMIN_ROLE_NAME: z.string().min(1).default("ADMIN"),
 		BOOTSTRAP_ADMIN_DEPARTMENT_NAME: z.string().min(1).default("Software Development"),
+
+		// Redis
+		UPSTASH_REDIS_REST_URL: z.string().min(1),
+		UPSTASH_REDIS_REST_TOKEN: z.string().min(1)
+		
 	})
 	.superRefine((val, ctx) => {
 		if (!val.ENABLE_BOOTSTRAP) return

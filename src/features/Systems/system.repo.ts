@@ -231,6 +231,7 @@ export async function hardDeleteSystem(id: string) {
 	return await prisma.system.delete({
 		where: { id },
 		select: {
+			id: true,
 			image: true,
 		},
 	})

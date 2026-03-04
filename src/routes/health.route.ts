@@ -1,8 +1,9 @@
-import { z } from "zod"
+import { success, z } from "zod"
 import { ValidationError } from "@/errors"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared"
 import { Router } from "express"
+import { redis } from "@/lib/redis"
 
 const router = Router()
 /**
@@ -13,6 +14,16 @@ router.get("/", (_req, res) => {
 	return res.json({
 		success: true,
 		message: "OK",
+	})
+})
+
+router.get("/redis-test", async (_req, res) => {
+	await redis.set("health:test", "ok", {ex: 60})
+	const value =  await redis.get("health:test")
+	return res.json({
+		success: true,
+		message: "OK",
+		value
 	})
 })
 

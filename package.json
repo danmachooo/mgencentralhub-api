@@ -18,7 +18,8 @@
 		"test:run": "vitest run",
 		"test:coverage": "vitest run --coverage",
 		"test:rbac": "vitest run src/tests/rbac",
-		"test:s3": "tsx src/lib/s3.test.ts"
+		"test:s3": "tsx src/lib/s3.test.ts",
+		"": ""
 	},
 	"keywords": [],
 	"author": "",
@@ -30,6 +31,7 @@
 		"@google/genai": "^1.43.0",
 		"@prisma/adapter-pg": "^7.4.0",
 		"@prisma/client": "^7.4.1",
+		"@upstash/redis": "^1.36.3",
 		"axios": "^1.13.2",
 		"better-auth": "^1.4.18",
 		"cors": "^2.8.5",

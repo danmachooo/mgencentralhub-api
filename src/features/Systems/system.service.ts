@@ -28,6 +28,7 @@ import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/getPrismaPagination.helper"
 import { deleteFile, uploadFile } from "@/features/Storage/storage.service"
 import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storagePresenter.helper"
+import { redis } from "@/lib"
 
 const systemErrors = new PrismaErrorHandler({
 	entity: "System",
@@ -94,7 +95,7 @@ export async function updateCompanySystem(
 		if (imageKey) {
 			await updateOnlySystemImage(updated.id, imageKey)
 		}
-
+		await redis.del(`system:${updated.id}`)
 		return updated
 	})
 }
@@ -110,6 +111,9 @@ export async function checkIfSystemIsFavorite(user: CreatorIdentifier, system: S
 export async function restoreCompanySystem(system: SystemIdentifier) {
 	return systemErrors.exec(async () => {
 		const _system = await restoreSystem(system.id)
+		
+		await redis.del(`system:${_system.id}`)
+
 		return {
 			restored: await withResolvedImage(_system),
 		}
@@ -117,14 +121,21 @@ export async function restoreCompanySystem(system: SystemIdentifier) {
 }
 
 export async function softDeleteCompanySystem(system: SystemIdentifier) {
-	return systemErrors.exec(() => softDeleteSystem(system.id))
+	const existing  = await listSystemById(system.id)
+
+	return systemErrors.exec(async () => {
+		const _system = await softDeleteSystem(system.id)
+		await redis.del(`system:${_system.id}`)
+	})
 }
 
 export async function hardDeleteCompanySystem(system: SystemIdentifier) {
 	const existing = await listSystemById(system.id)
-
+	
+	
 	return systemErrors.exec(async () => {
 		const deleted = await hardDeleteSystem(existing.id)
+		await redis.del(`system:${deleted.id}`)
 		await deleteFile(deleted.image)
 	})
 }

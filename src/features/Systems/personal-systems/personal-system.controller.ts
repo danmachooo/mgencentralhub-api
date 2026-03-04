@@ -12,7 +12,7 @@ import {
 	toggleFavoritePersonalSystem,
 	getFavoriteOwnSystemById,
 	getFavoriteOwnSystems,
-} from "@/features/Systems/PersonalSystems/personal-system.service"
+} from "@/features/Systems/personal-systems/personal-system.service"
 import {
 	createPersonalSystemSchema,
 	creatorIdentifierSchema,

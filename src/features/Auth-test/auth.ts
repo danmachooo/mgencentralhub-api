@@ -1,10 +1,10 @@
 import { auth } from "@/lib/auth"
 import { toFetchHeaders } from "@/helpers/shared"
-import { signInSchema, signUpSchema } from "@/features/Auth-test/schema"
+import { signInSchema, signUpSchema } from "@/features/auth-test/schema"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/http-context.type"
 import type { IncomingHttpHeaders } from "http"
-import { createUser } from "@/features/Users/Profile/user-profile.service"
+import { createUser } from "@/features/Users/profile/user-profile.service"
 
 type User = {
 	name: string

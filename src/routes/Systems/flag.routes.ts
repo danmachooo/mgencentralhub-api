@@ -8,7 +8,7 @@ import {
 	restoreSystemFlagHandler,
 	softDeleteSystemFlagHandler,
 	updateSystemFlagHandler,
-} from "@/features/Systems/SystemFlags/flag.controller"
+} from "@/features/Systems/system-flags/flag.controller"
 
 import { requireRole } from "@/middlewares"
 import { Router } from "express"

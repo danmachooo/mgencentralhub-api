@@ -1,8 +1,8 @@
-import { getUserInfo, updateUser } from "@/features/Users/Profile/user-profile.service"
+import { getUserInfo, updateUser } from "@/features/Users/profile/user-profile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
 import { userIdentifierSchema, userProfileQuerySchema } from "@/schema"
-import { updateUserProfileSchema } from "@/schema/User/Profile/update-user-profile.schema"
+import { updateUserProfileSchema } from "@/schema/User/profile/update-user-profile.schema"
 import type { HttpContext } from "@/types/shared"
 
 export const getUsersHandler = asyncHandler(async (http: HttpContext) => {

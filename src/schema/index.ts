@@ -9,37 +9,37 @@ export * from "@/schema/Systems/creator-identifier.schema"
 export * from "@/schema/Systems/create-many-system.schema"
 
 // Export here all Personal System Schema
-export * from "@/schema/Systems/Personal/create-personal-system.schema"
-export * from "@/schema/Systems/Personal/create-many-personal-system.schema"
-export * from "@/schema/Systems/Personal/update-personal-system.schema"
-export * from "@/schema/Systems/Personal/personal-system-identifier.schema" //uncomment after defining
-export * from "@/schema/Systems/Personal/personal-system-query.schema"
+export * from "@/schema/Systems/personal/create-personal-system.schema"
+export * from "@/schema/Systems/personal/create-many-personal-system.schema"
+export * from "@/schema/Systems/personal/update-personal-system.schema"
+export * from "@/schema/Systems/personal/personal-system-identifier.schema" //uncomment after defining
+export * from "@/schema/Systems/personal/personal-system-query.schema"
 
 // Export here all System Flags schema
-export * from "@/schema/Systems/SystemFlag/create-system-flag.schema"
-export * from "@/schema/Systems/SystemFlag/update-system-flag.schema"
-export * from "@/schema/Systems/SystemFlag/system-flag-identifier.schema"
+export * from "@/schema/Systems/system-flag/create-system-flag.schema"
+export * from "@/schema/Systems/system-flag/update-system-flag.schema"
+export * from "@/schema/Systems/system-flag/system-flag-identifier.schema"
 
 // Export here all Departments schema
-export * from "@/schema/Departments/create-department.schema"
-export * from "@/schema/Departments/create-many-department.schema"
-export * from "@/schema/Departments/update-department.schema"
-export * from "@/schema/Departments/department-query.schema"
-export * from "@/schema/Departments/department-identifier.schema"
+export * from "@/schema/departments/create-department.schema"
+export * from "@/schema/departments/create-many-department.schema"
+export * from "@/schema/departments/update-department.schema"
+export * from "@/schema/departments/department-query.schema"
+export * from "@/schema/departments/department-identifier.schema"
 
 // Export here all User schema
 export * from "@/schema/User/user-identifier.schema"
-export * from "@/schema/User/Profile/create-user-profile.schema"
+export * from "@/schema/User/profile/create-user-profile.schema"
 export * from "@/schema/User/user-query.schema"
 
 //Export here all Role Schema
-export * from "@/schema/User/Role/create-role.schema"
-export * from "@/schema/User/Role/create-many-role.schema"
-export * from "@/schema/User/Role/update-role.schema"
-export * from "@/schema/User/Role/role-identifier.schema"
+export * from "@/schema/User/role/create-role.schema"
+export * from "@/schema/User/role/create-many-role.schema"
+export * from "@/schema/User/role/update-role.schema"
+export * from "@/schema/User/role/role-identifier.schema"
 
 //Export here all Chatbot schema
-export * from "@/schema/Chatbot/prompt.schema"
+export * from "@/schema/chatbot/prompt.schema"
 
 //Export here all Shared Schema
 export * from "@/schema/shared/request-query.schema"
@@ -49,38 +49,38 @@ import type { createManySystemSchema } from "@/schema/Systems/create-many-system
 import type { updateSystemSchema } from "@/schema/Systems/update-system.schema"
 import type { systemQuerySchema } from "@/schema/Systems/system-query.schema"
 
-import type { createDepartmentSchema } from "@/schema/Departments/create-department.schema"
-import type { createManyDepartmentSchema } from "@/schema/Departments/create-many-department.schema"
-import type { updateDepartmentSchema } from "@/schema/Departments/update-department.schema"
-import type { departmentQuerySchema } from "@/schema/Departments/department-query.schema"
+import type { createDepartmentSchema } from "@/schema/departments/create-department.schema"
+import type { createManyDepartmentSchema } from "@/schema/departments/create-many-department.schema"
+import type { updateDepartmentSchema } from "@/schema/departments/update-department.schema"
+import type { departmentQuerySchema } from "@/schema/departments/department-query.schema"
 
-import type { createPersonalSystemSchema } from "@/schema/Systems/Personal/create-personal-system.schema"
-import type { createManyPersonalSystemSchema } from "@/schema/Systems/Personal/create-many-personal-system.schema"
-import type { updatePersonalSystemSchema } from "@/schema/Systems/Personal/update-personal-system.schema"
-import type { personalSystemQuerySchema } from "@/schema/Systems/Personal/personal-system-query.schema"
+import type { createPersonalSystemSchema } from "@/schema/Systems/personal/create-personal-system.schema"
+import type { createManyPersonalSystemSchema } from "@/schema/Systems/personal/create-many-personal-system.schema"
+import type { updatePersonalSystemSchema } from "@/schema/Systems/personal/update-personal-system.schema"
+import type { personalSystemQuerySchema } from "@/schema/Systems/personal/personal-system-query.schema"
 
-import type { createUserProfileSchema } from "@/schema/User/Profile/create-user-profile.schema"
+import type { createUserProfileSchema } from "@/schema/User/profile/create-user-profile.schema"
 import type { userProfileQuerySchema } from "@/schema/User/user-query.schema"
-import type { updateUserProfileSchema } from "@/schema/User/Profile/update-user-profile.schema"
+import type { updateUserProfileSchema } from "@/schema/User/profile/update-user-profile.schema"
 
-import type { createRoleSchema } from "@/schema/User/Role/create-role.schema"
-import type { createManyRoleSchema } from "@/schema/User/Role/create-many-role.schema"
-import type { updateRoleSchema } from "@/schema/User/Role/update-role.schema"
+import type { createRoleSchema } from "@/schema/User/role/create-role.schema"
+import type { createManyRoleSchema } from "@/schema/User/role/create-many-role.schema"
+import type { updateRoleSchema } from "@/schema/User/role/update-role.schema"
 
-import type { createSystemFlagSchema } from "@/schema/Systems/SystemFlag/create-system-flag.schema"
-import type { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/create-many-system-flag.schema"
-import type { updateSystemFlagSchema } from "@/schema/Systems/SystemFlag/update-system-flag.schema"
+import type { createSystemFlagSchema } from "@/schema/Systems/system-flag/create-system-flag.schema"
+import type { createManySystemFlagSchema } from "@/schema/Systems/system-flag/create-many-system-flag.schema"
+import type { updateSystemFlagSchema } from "@/schema/Systems/system-flag/update-system-flag.schema"
 
-import type { promptSchema } from "@/schema/Chatbot/prompt.schema"
+import type { promptSchema } from "@/schema/chatbot/prompt.schema"
 
 // Identifiers schema
 import type { creatorIdentifierSchema } from "@/schema/Systems/creator-identifier.schema"
 import type { systemIdentifierSchema } from "@/schema/Systems/system-identifier.schema"
-import type { personalSystemIdentifierSchema } from "@/schema/Systems/Personal/personal-system-identifier.schema"
+import type { personalSystemIdentifierSchema } from "@/schema/Systems/personal/personal-system-identifier.schema"
 import type { userIdentifierSchema } from "@/schema/User/user-identifier.schema"
-import type { departmentIdentifierSchema } from "@/schema/Departments/department-identifier.schema"
-import type { roleIdentifierSchema } from "@/schema/User/Role/role-identifier.schema"
-import type { systemFlagIdentifierSchema } from "@/schema/Systems/SystemFlag/system-flag-identifier.schema"
+import type { departmentIdentifierSchema } from "@/schema/departments/department-identifier.schema"
+import type { roleIdentifierSchema } from "@/schema/User/role/role-identifier.schema"
+import type { systemFlagIdentifierSchema } from "@/schema/Systems/system-flag/system-flag-identifier.schema"
 
 //Infer schema to be a type
 

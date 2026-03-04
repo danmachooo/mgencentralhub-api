@@ -1,4 +1,4 @@
-import { resolveFileUrl } from "@/features/Storage/storage.service"
+import { resolveFileUrl } from "@/features/storage/storage.service"
 /**
  * Takes any object with an `image` key field and resolves it to a URL.
  * Returns the object with image replaced by the resolved URL.

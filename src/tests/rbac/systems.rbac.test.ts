@@ -69,7 +69,7 @@ function buildApp(user: typeof mockAdmin | typeof mockEmployee | null) {
 }
 
 describe("Systems - unauthenticated", async () => {
-	const { default: SystemRouter } = await import("@/routes/Systems/system.route")
+	const { default: SystemRouter } = await import("@/routes/systems/system.route")
 	const app = buildApp(null)
 	app.use("/systems", SystemRouter)
 
@@ -83,7 +83,7 @@ describe("Systems - unauthenticated", async () => {
 })
 
 describe("Systems - admin", async () => {
-	const { default: SystemRouter } = await import("@/routes/Systems/system.route")
+	const { default: SystemRouter } = await import("@/routes/systems/system.route")
 	const app = buildApp(mockAdmin)
 	app.use("/systems", SystemRouter)
 
@@ -130,7 +130,7 @@ describe("Systems - admin", async () => {
 })
 
 describe("Systems - employee", async () => {
-	const { default: SystemRouter } = await import("@/routes/Systems/system.route")
+	const { default: SystemRouter } = await import("@/routes/systems/system.route")
 	const app = buildApp(mockEmployee)
 	app.use("/systems", SystemRouter)
 

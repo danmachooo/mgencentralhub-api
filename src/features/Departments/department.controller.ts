@@ -10,10 +10,10 @@ import {
 	restoreCompanyDepartment,
 	softDeleteCompanyDepartment,
 	updateCompanyDepartment,
-} from "@/features/Departments/department.service"
-import { departmentIdentifierSchema } from "@/schema/Departments/department-identifier.schema"
+} from "@/features/departments/department.service"
+import { departmentIdentifierSchema } from "@/schema/departments/department-identifier.schema"
 import type { HttpContext } from "@/types/shared"
-import { departmentQuerySchema } from "@/schema/Departments/department-query.schema"
+import { departmentQuerySchema } from "@/schema/departments/department-query.schema"
 import { sendPaginatedResponse } from "@/helpers/shared"
 
 export const createCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {

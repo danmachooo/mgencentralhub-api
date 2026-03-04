@@ -12,9 +12,9 @@ import {
 import { Router } from "express"
 import { requireRole } from "@/middlewares/rbac.middleware"
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
-import FavoriteRouter from "@/routes/Systems/company-favorite.route"
-import PersonalSystemRouter from "@/routes/Systems/personal.route"
-import SystemFlagRouter from "@/routes/Systems/flag.routes"
+import FavoriteRouter from "@/routes/systems/company-favorite.route"
+import PersonalSystemRouter from "@/routes/systems/personal.route"
+import SystemFlagRouter from "@/routes/systems/flag.routes"
 
 const router = Router()
 

@@ -3,7 +3,7 @@ import {
 	getFavoritePersonalSystemsHandler,
 	toggleFavoritePersonalSystemHandler,
 	getFavoritePersonalSystemByIdHandler,
-} from "@/features/Systems/PersonalSystems/personal-system.controller"
+} from "@/features/Systems/personal-systems/personal-system.controller"
 
 const router = Router()
 

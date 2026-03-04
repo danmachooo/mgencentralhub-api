@@ -1,7 +1,7 @@
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { CreateManyDepartmentInput } from "@/schema"
 import { logger, prisma } from "@/lib"
-import { createManyDepartments } from "@/features/Departments/department.repo"
+import { createManyDepartments } from "@/features/departments/department.repo"
 
 const bootDepartmentErrors = new PrismaErrorHandler({
 	entity: "Roles",

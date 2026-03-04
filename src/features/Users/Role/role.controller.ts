@@ -8,11 +8,11 @@ import {
 	restoreUserRole,
 	softDeleteUserRole,
 	updateUserRole,
-} from "@/features/Users/Role/role.service"
+} from "@/features/Users/role/role.service"
 import { asyncHandler } from "@/middlewares"
 import { createManyRoleSchema, createRoleSchema, updateRoleSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"
-import { roleIdentifierSchema } from "@/schema/User/Role/role-identifier.schema"
+import { roleIdentifierSchema } from "@/schema/User/role/role-identifier.schema"
 
 export const createUserRoleHandler = asyncHandler(async (http: HttpContext) => {
 	const role = createRoleSchema.parse(http.req.body)

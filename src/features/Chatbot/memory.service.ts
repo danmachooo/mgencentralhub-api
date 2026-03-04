@@ -1,4 +1,4 @@
-import { fetchRecentConversations } from "@/features/Chatbot/chatbot.repo"
+import { fetchRecentConversations } from "@/features/chatbot/chatbot.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { UserIdentifier } from "@/schema"
 import type { Content } from "@google/genai"

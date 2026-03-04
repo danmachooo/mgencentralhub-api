@@ -37,7 +37,7 @@ function buildApp(user: typeof mockAdmin | typeof mockEmployee | null) {
 }
 
 describe("Roles - unauthenticated", async () => {
-	const { default: RoleRouter } = await import("@/routes/Roles/role.route")
+	const { default: RoleRouter } = await import("@/routes/roles/role.route")
 	const app = buildApp(null)
 	app.use("/roles", RoleRouter)
 
@@ -47,7 +47,7 @@ describe("Roles - unauthenticated", async () => {
 })
 
 describe("Roles - admin", async () => {
-	const { default: RoleRouter } = await import("@/routes/Roles/role.route")
+	const { default: RoleRouter } = await import("@/routes/roles/role.route")
 	const app = buildApp(mockAdmin)
 	app.use("/roles", RoleRouter)
 
@@ -97,7 +97,7 @@ describe("Roles - admin", async () => {
 })
 
 describe("Roles - employee", async () => {
-	const { default: RoleRouter } = await import("@/routes/Roles/role.route")
+	const { default: RoleRouter } = await import("@/routes/roles/role.route")
 	const app = buildApp(mockEmployee)
 	app.use("/roles", RoleRouter)
 

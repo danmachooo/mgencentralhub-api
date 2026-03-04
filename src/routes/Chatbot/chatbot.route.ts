@@ -1,4 +1,4 @@
-import { chatbotHandler } from "@/features/Chatbot/chatbot.controller"
+import { chatbotHandler } from "@/features/chatbot/chatbot.controller"
 import { rateLimit, requireRole } from "@/middlewares"
 import { Router } from "express"
 

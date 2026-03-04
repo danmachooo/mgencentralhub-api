@@ -15,7 +15,7 @@ import {
 	restoreDepartment,
 	softDeleteDepartment,
 	updateDepartment,
-} from "@/features/Departments/department.repo"
+} from "@/features/departments/department.repo"
 import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import {

@@ -3,7 +3,7 @@ import { asyncHandler } from "@/middlewares/async-handler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared/to-fetch-headers.helper"
-import { getUserAccessContext } from "@/features/Users/Profile/user-profile.service"
+import { getUserAccessContext } from "@/features/Users/profile/user-profile.service"
 
 /**
  * Authentication middleware that enforces a valid user session.

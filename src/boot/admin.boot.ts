@@ -1,4 +1,4 @@
-import { createUser } from "@/features/Users/Profile/user-profile.service"
+import { createUser } from "@/features/Users/profile/user-profile.service"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { auth, logger, prisma } from "@/lib"
 import { APIError } from "better-auth/api"

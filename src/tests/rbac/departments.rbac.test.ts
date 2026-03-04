@@ -37,7 +37,7 @@ function buildApp(user: typeof mockAdmin | typeof mockEmployee | null) {
 }
 
 describe("Departments - unauthenticated", async () => {
-	const { default: DepartmentRouter } = await import("@/routes/Departments/department.route")
+	const { default: DepartmentRouter } = await import("@/routes/departments/department.route")
 	const app = buildApp(null)
 	app.use("/departments", DepartmentRouter)
 
@@ -47,7 +47,7 @@ describe("Departments - unauthenticated", async () => {
 })
 
 describe("Departments - admin", async () => {
-	const { default: DepartmentRouter } = await import("@/routes/Departments/department.route")
+	const { default: DepartmentRouter } = await import("@/routes/departments/department.route")
 	const app = buildApp(mockAdmin)
 	app.use("/departments", DepartmentRouter)
 
@@ -97,7 +97,7 @@ describe("Departments - admin", async () => {
 })
 
 describe("Departments - employee", async () => {
-	const { default: DepartmentRouter } = await import("@/routes/Departments/department.route")
+	const { default: DepartmentRouter } = await import("@/routes/departments/department.route")
 	const app = buildApp(mockEmployee)
 	app.use("/departments", DepartmentRouter)
 

@@ -4,7 +4,7 @@ import {
 	getUserContext,
 	getUsers,
 	updateUserProfile,
-} from "@/features/Users/Profile/user-profile.repo"
+} from "@/features/Users/profile/user-profile.repo"
 import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { invalidateUserProfileListCache, withUserProfileListCache } from "@/helpers/shared/cache/user-profile-cache.helper"

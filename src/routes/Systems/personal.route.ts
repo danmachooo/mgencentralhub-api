@@ -7,10 +7,10 @@ import {
 	restorePersonalSystemHandler,
 	softDeletePersonalSystemHandler,
 	updatePersonalSystemHandler,
-} from "@/features/Systems/PersonalSystems/personal-system.controller"
+} from "@/features/Systems/personal-systems/personal-system.controller"
 
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
-import FavoriteRouter from "@/routes/Systems/personal-favorite.route"
+import FavoriteRouter from "@/routes/systems/personal-favorite.route"
 import { Router } from "express"
 
 const router = Router()

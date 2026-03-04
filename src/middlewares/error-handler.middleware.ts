@@ -4,7 +4,7 @@ import { AppError } from "@/errors"
 import { appConfig } from "@/config/app-config"
 import { z } from "zod"
 import { logger } from "@/lib"
-import { isApiError, getApiErrorStatus, isBodyParserJsonError } from "@/helpers/errorHandlerMiddleware"
+import { isApiError, getApiErrorStatus, isBodyParserJsonError } from "@/helpers/error-handler-middleware"
 
 import { isPrismaKnownRequestError, isPrismaValidationError } from "@/helpers/prisma"
 import { handlePrismaKnownError } from "@/helpers/prisma"

@@ -18,10 +18,10 @@ export function createTestApp(user: Record<string, unknown> | null) {
 	}))
 
 	// Import routes AFTER mock is set up
-	const SystemRouter = require("@/routes/Systems/system.route").default
-	const DepartmentRouter = require("@/routes/Departments/department.route").default
-	const RoleRouter = require("@/routes/Roles/role.route").default
-	const UserRouter = require("@/routes/Users/user-profile.route").default
+	const SystemRouter = require("@/routes/systems/system.route").default
+	const DepartmentRouter = require("@/routes/departments/department.route").default
+	const RoleRouter = require("@/routes/roles/role.route").default
+	const UserRouter = require("@/routes/users/user-profile.route").default
 
 	const app = express()
 	app.use(express.json())

@@ -8,10 +8,10 @@ import {
 	restoreFlag,
 	softDeleteFlag,
 	updateFlag,
-} from "@/features/Systems/SystemFlags/flag.service"
+} from "@/features/Systems/system-flags/flag.service"
 import { asyncHandler } from "@/middlewares"
 import { createSystemFlagSchema, systemFlagIdentifierSchema, updateSystemFlagSchema } from "@/schema"
-import { createManySystemFlagSchema } from "@/schema/Systems/SystemFlag/create-many-system-flag.schema"
+import { createManySystemFlagSchema } from "@/schema/Systems/system-flag/create-many-system-flag.schema"
 import type { HttpContext } from "@/types/shared"
 
 export const createSystemFlagHandler = asyncHandler(async (http: HttpContext) => {

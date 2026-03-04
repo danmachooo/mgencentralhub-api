@@ -1,4 +1,4 @@
-import { createManyPersonalSystem } from "@/features/Systems/PersonalSystems/personal-system.repo"
+import { createManyPersonalSystem } from "@/features/Systems/personal-systems/personal-system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { prisma, logger } from "@/lib"
 import type { CreateManyPersonalSystemInput } from "@/schema"

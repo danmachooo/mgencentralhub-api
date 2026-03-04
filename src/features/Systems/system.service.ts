@@ -6,7 +6,7 @@ import type {
 	SystemQueryInput,
 	UpdateSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/Users/Profile/user-profile.service"
+import { getUserAccessContext } from "@/features/Users/profile/user-profile.service"
 import {
 	createManySystem,
 	createSystem,
@@ -26,7 +26,7 @@ import {
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/get-prisma-pagination.helper"
-import { deleteFile, uploadFile } from "@/features/Storage/storage.service"
+import { deleteFile, uploadFile } from "@/features/storage/storage.service"
 import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storage-presenter.helper"
 import {
 	invalidateFavoriteCache,

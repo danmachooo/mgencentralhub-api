@@ -8,7 +8,7 @@ import {
 	restoreCompanyDepartmentHandler,
 	softDeleteCompanyDepartmentHandler,
 	updateDepartmentHandler,
-} from "@/features/Departments/department.controller"
+} from "@/features/departments/department.controller"
 import { requireRole } from "@/middlewares"
 import { Router } from "express"
 

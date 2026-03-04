@@ -1,6 +1,6 @@
-import { getSessionHandler, signInHandler, signUpHandler } from "@/features/Auth-test/auth"
-import { getCompanyDepartmentsHandler } from "@/features/Departments/department.controller"
-import { getActiveUserRolesHandler } from "@/features/Users/Role/role.controller"
+import { getSessionHandler, signInHandler, signUpHandler } from "@/features/auth-test/auth"
+import { getCompanyDepartmentsHandler } from "@/features/departments/department.controller"
+import { getActiveUserRolesHandler } from "@/features/Users/role/role.controller"
 import { Router } from "express"
 
 const router = Router()

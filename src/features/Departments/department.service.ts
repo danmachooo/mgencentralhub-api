@@ -24,7 +24,7 @@ import {
 	withDepartmentByIdCache,
 	withDepartmentListCache,
 	withInactiveDepartmentListCache,
-} from "@/helpers/shared/cache/department-cache.helper"
+} from "@/helpers/shared/cache"
 
 const departmentErrors = new PrismaErrorHandler({
 	entity: "Department",

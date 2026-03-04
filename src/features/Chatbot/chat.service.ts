@@ -12,6 +12,9 @@ import { gemini } from "@/lib/gemini"
 import type { CreatorIdentifier, PromptInput, UserIdentifier } from "@/schema"
 import type { RequestLabels } from "@/features/chatbot/intent.service"
 
+type CompanySystemsResult = Awaited<ReturnType<typeof getCompanySystems>>
+type OwnSystemsResult = Awaited<ReturnType<typeof getOwnSystems>>
+
 const employeeAssistantErrors = new PrismaErrorHandler({
 	entity: "Chatbot",
 })
@@ -71,7 +74,7 @@ async function handleDepartmentSystems(user: UserIdentifier, prompt: PromptInput
 		`User Department: ${departmentName}`,
 		`User Department ID: ${departmentId}`,
 		`Visible Department/Public Systems Count: ${total}`,
-		...systems.map((system, index) => {
+		...systems.map((system: CompanySystemsResult["systems"][number], index: number) => {
 			const status = system.systemFlag.name
 			const isPublic = system.departmentMap.length === 0
 			const isVisibleToUserDepartment =
@@ -108,7 +111,7 @@ async function handlePersonalSystems(user: UserIdentifier, prompt: PromptInput):
 
 	const personalContext = [
 		`Personal Systems Count: ${total}`,
-		...systems.map((system, index) => {
+		...systems.map((system: OwnSystemsResult["systems"][number], index: number) => {
 			return `${index + 1}. ${system.name} | url: ${system.url} | description: ${system.description ?? "N/A"}`
 		}),
 	].join("\n")
@@ -177,12 +180,15 @@ async function handleStatusReport(user: UserIdentifier, prompt: PromptInput): Pr
 		getActiveSystemFlags(),
 	])
 
-	const systemsByStatus = systems.reduce<Record<string, string[]>>((acc, system) => {
-		const status = system.systemFlag.name
-		acc[status] = acc[status] ?? []
-		acc[status].push(system.name)
-		return acc
-	}, {})
+	const systemsByStatus = systems.reduce<Record<string, string[]>>(
+		(acc: Record<string, string[]>, system: CompanySystemsResult["systems"][number]) => {
+			const status = system.systemFlag.name
+			acc[status] = acc[status] ?? []
+			acc[status].push(system.name)
+			return acc
+		},
+		{}
+	)
 
 	const statusContext = [
 		`Status Report Scope: Visible department/public company systems`,

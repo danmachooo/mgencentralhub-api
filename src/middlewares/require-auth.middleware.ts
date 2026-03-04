@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth"
 import { asyncHandler } from "@/middlewares/async-handler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
-import { toFetchHeaders } from "@/helpers/shared/to-fetch-headers.helper"
+import { toFetchHeaders } from "@/helpers/shared"
 import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
 
 /**

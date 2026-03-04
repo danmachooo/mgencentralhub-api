@@ -24,7 +24,7 @@ import {
 	updatePersonalSystem,
 } from "@/features/systems/personal-systems/personal-system.repo"
 import { deleteFile, uploadFile } from "@/features/storage/storage.service"
-import { withResolvedImage, withResolvedImages } from "@/helpers/shared/storage-presenter.helper"
+import { withResolvedImage, withResolvedImages } from "@/helpers/shared"
 import {
 	invalidatePersonalFavoriteCache,
 	invalidatePersonalSystemCache,
@@ -34,7 +34,7 @@ import {
 	withOwnDeletedSystemListCache,
 	withOwnSystemByIdCache,
 	withOwnSystemListCache,
-} from "@/helpers/shared/cache/personal-system-cache.helper"
+} from "@/helpers/shared/cache"
 
 const personalSystemErrors = new PrismaErrorHandler({
 	entity: "Personal System",

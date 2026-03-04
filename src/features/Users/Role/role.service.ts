@@ -17,7 +17,7 @@ import {
 	withActiveRolesCache,
 	withInactiveRolesCache,
 	withRoleByIdCache,
-} from "@/helpers/shared/cache/role-cache.helper"
+} from "@/helpers/shared/cache"
 
 const roleErrors = new PrismaErrorHandler({
 	entity: "Role",

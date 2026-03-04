@@ -27,7 +27,7 @@ import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/get-prisma-pagination.helper"
 import { deleteFile, uploadFile } from "@/features/storage/storage.service"
-import { withResolvedImages, withResolvedImage } from "@/helpers/shared/storage-presenter.helper"
+import { withResolvedImages, withResolvedImage } from "@/helpers/shared"
 import {
 	invalidateFavoriteCache,
 	invalidateSystemCollectionCaches,
@@ -38,7 +38,7 @@ import {
 	withFavoriteSystemStatusCache,
 	withSystemByIdCache,
 	withSystemListCache,
-} from "@/helpers/shared/cache/system-cache.helper"
+} from "@/helpers/shared/cache"
 
 const systemErrors = new PrismaErrorHandler({
 	entity: "System",

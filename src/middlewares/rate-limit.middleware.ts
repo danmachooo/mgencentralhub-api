@@ -1,5 +1,5 @@
 import { AppError } from "@/errors"
-import { isIpBlocked, blockIp, getRateLimitIdentity, getRequestIp, type RateLimitIdentity } from "@/helpers/shared/rate-limit"
+import { isIpBlocked, blockIp, getRateLimitIdentity, getRequestIp, type RateLimitIdentity } from "@/helpers/shared"
 import { redis } from "@/lib/redis"
 import { logger } from "@/lib/logger"
 import { asyncHandler } from "@/middlewares/async-handler.middleware"

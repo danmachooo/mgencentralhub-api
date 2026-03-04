@@ -22,7 +22,7 @@ import {
 	withActiveSystemFlagsCache,
 	withInactiveSystemFlagsCache,
 	withSystemFlagByIdCache,
-} from "@/helpers/shared/cache/system-flag-cache.helper"
+} from "@/helpers/shared/cache"
 
 const systemFlagErrors = new PrismaErrorHandler({
 	entity: "System Flag",

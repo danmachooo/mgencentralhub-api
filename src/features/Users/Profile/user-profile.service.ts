@@ -7,7 +7,7 @@ import {
 } from "@/features/users/profile/user-profile.repo"
 import { getPrismaPagination, PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
-import { invalidateUserProfileListCache, withUserProfileListCache } from "@/helpers/shared/cache/user-profile-cache.helper"
+import { invalidateUserProfileListCache, withUserProfileListCache } from "@/helpers/shared/cache"
 
 const userProfileErrors = new PrismaErrorHandler({
 	entity: "User Profile",

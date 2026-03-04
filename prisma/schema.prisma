@@ -32,6 +32,11 @@ model User {
   @@map("user")
 }
 
+enum ChatbotMessageRole {
+  user
+  assistant
+}
+
 model Session {
   id        String   @id
   expiresAt DateTime
@@ -248,11 +253,14 @@ model UserFavoritePersonalSystem {
 model ChatbotMessage {
   id        String   @id @default(uuid())
   userId    String
-  role      String
+  role      ChatbotMessageRole
   content   String
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
 
   @@map("chatbot_message")
 }

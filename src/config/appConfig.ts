@@ -54,6 +54,13 @@ export const appConfig = {
 			tenantId: env.AZURE_AD_TENANT_ID,
 			redirectUri: env.AZURE_AD_REDIRECT_URI,
 		},
+		/**
+		 * Google SSO credentials
+		 */
+		google: {
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET
+		}
 	},
 	frontend: {
 		url: env.FRONTEND_URL,

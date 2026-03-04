@@ -27,6 +27,10 @@ const envSchema = z
 		AZURE_AD_TENANT_ID: z.string().min(1),
 		AZURE_AD_REDIRECT_URI: z.string().min(1),
 
+		// GOOGLE SSO
+		GOOGLE_CLIENT_SECRET: z.string().min(1),
+		GOOGLE_CLIENT_ID: z.string().min(1),
+
 		//SUPABASE S3
 		SUPABASE_URL: z.string().min(1),
 		SUPABASE_ENDPOINT: z.string().min(1),

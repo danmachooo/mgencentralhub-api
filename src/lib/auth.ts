@@ -5,13 +5,13 @@ import { appConfig } from "@/config/appConfig"
 
 const backendURL = appConfig.app.url
 const frontendURL = appConfig.frontend.url
-const baseUrl = appConfig.app.url
+const betterAuthUrl = appConfig.auth.url
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
-	baseURL: baseUrl,
+	baseURL: betterAuthUrl,
 	trustedOrigins: [backendURL, frontendURL],
 	emailAndPassword: {
 		enabled: true,
@@ -25,5 +25,11 @@ export const auth = betterAuth({
 			authority: "https://login.microsoftonline.com",
 			prompt: "select_account",
 		},
+		google: {
+			clientId: appConfig.auth.google.clientId,
+			clientSecret: appConfig.auth.google.clientSecret,
+			prompt: "select_account consent",
+			accessType: "offline",
+		}
 	},
 })

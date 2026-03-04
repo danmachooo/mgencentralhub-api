@@ -8,7 +8,7 @@ import {
 	restoreCompanySystemHandler,
 	softDeleteCompanySystemHandler,
 	updateCompanySystemHandler,
-} from "@/features/Systems/system.controller"
+} from "@/features/systems/system.controller"
 import { Router } from "express"
 import { requireRole } from "@/middlewares/rbac.middleware"
 import { uploadMiddleware } from "@/middlewares/upload.middleware"

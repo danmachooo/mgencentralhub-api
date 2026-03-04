@@ -6,7 +6,7 @@ import { mockAdmin, mockEmployee } from "../helpers/mock-user"
 const SYSTEM_ID = "33333333-3333-4333-8333-333333333333"
 const STATUS_ID = "44444444-4444-4444-8444-444444444444"
 
-vi.mock("@/features/Systems/system.service", () => ({
+vi.mock("@/features/systems/system.service", () => ({
 	getCompanySystems: vi.fn().mockResolvedValue({ systems: [], total: 0 }),
 	getCompanySystemById: vi.fn().mockResolvedValue({ system: { id: SYSTEM_ID, image: null } }),
 	getDeletedCompanySystems: vi.fn(async (_req?: unknown, res?: Response) => {
@@ -26,7 +26,7 @@ vi.mock("@/features/Systems/system.service", () => ({
 	hardDeleteCompanySystem: vi.fn().mockResolvedValue({ id: SYSTEM_ID }),
 }))
 
-vi.mock("@/features/Systems/PersonalSystems/personalSystem.service", () => ({
+vi.mock("@/features/systems/personal-systems/personalSystem.service", () => ({
 	getPersonalSystems: vi.fn().mockResolvedValue({ systems: [], total: 0 }),
 	getPersonalSystemById: vi.fn().mockResolvedValue({ id: "ps-1", image: null }),
 	getDeletedPersonalSystems: vi.fn().mockResolvedValue({ systems: [], total: 0 }),
@@ -37,7 +37,7 @@ vi.mock("@/features/Systems/PersonalSystems/personalSystem.service", () => ({
 	hardDeletePersonalSystem: vi.fn().mockResolvedValue({ id: "ps-1" }),
 }))
 
-vi.mock("@/features/Systems/SystemFlags/systemFlag.service", () => ({
+vi.mock("@/features/systems/system-flags/systemFlag.service", () => ({
 	getActiveSystemFlags: vi.fn().mockResolvedValue({ flags: [], total: 0 }),
 	getInactiveSystemFlags: vi.fn().mockResolvedValue({ flags: [], total: 0 }),
 	getActiveSystemFlagById: vi.fn().mockResolvedValue({ id: "flag-1" }),

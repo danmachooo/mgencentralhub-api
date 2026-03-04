@@ -14,7 +14,7 @@ import {
 	getFavoriteSystems,
 	getFavoriteCompanySystemById,
 	createManyCompanySystems,
-} from "@/features/Systems/system.service"
+} from "@/features/systems/system.service"
 import {
 	createManySystemSchema,
 	createSystemSchema,

@@ -6,7 +6,7 @@ import type {
 	SystemQueryInput,
 	UpdateSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/Users/profile/user-profile.service"
+import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
 import {
 	createManySystem,
 	createSystem,
@@ -22,7 +22,7 @@ import {
 	softDeleteSystem,
 	updateOnlySystemImage,
 	updateSystem,
-} from "@/features/Systems/system.repo"
+} from "@/features/systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/get-prisma-pagination.helper"

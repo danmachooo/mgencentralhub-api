@@ -1,4 +1,4 @@
-import { createManySystem } from "@/features/Systems/system.repo"
+import { createManySystem } from "@/features/systems/system.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { logger, prisma } from "@/lib"
 import type { CreateManySystemInput } from "@/schema"

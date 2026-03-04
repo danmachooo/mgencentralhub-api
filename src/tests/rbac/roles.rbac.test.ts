@@ -5,7 +5,7 @@ import { mockAdmin, mockEmployee } from "../helpers/mock-user"
 
 const ROLE_ID = "11111111-1111-4111-8111-111111111111"
 
-vi.mock("@/features/Users/Role/role.service", () => ({
+vi.mock("@/features/users/role/role.service", () => ({
 	getActiveUserRoles: vi.fn().mockResolvedValue({ roles: [], total: 0 }),
 	getInactiveUserRoles: vi.fn().mockResolvedValue({ roles: [], total: 0 }),
 	getActiveUserRoleById: vi.fn().mockResolvedValue({ id: ROLE_ID }),

@@ -1,7 +1,7 @@
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { CreateManySystemFlagInput } from "@/schema"
 import { logger, prisma } from "@/lib"
-import { createManyFlags } from "@/features/Systems/system-flags/flag.service"
+import { createManyFlags } from "@/features/systems/system-flags/flag.service"
 
 const bootFlagErrors = new PrismaErrorHandler({
 	entity: "System Flags",

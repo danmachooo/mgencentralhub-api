@@ -8,7 +8,7 @@ import {
 	restoreSystemFlag,
 	softDeleteSystemFlag,
 	updateSystemFlag,
-} from "@/features/Systems/system-flags/flag.repo"
+} from "@/features/systems/system-flags/flag.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type {
 	CreateManySystemFlagInput,

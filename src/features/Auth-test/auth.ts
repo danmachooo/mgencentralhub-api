@@ -4,7 +4,7 @@ import { signInSchema, signUpSchema } from "@/features/auth-test/schema"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/http-context.type"
 import type { IncomingHttpHeaders } from "http"
-import { createUser } from "@/features/Users/profile/user-profile.service"
+import { createUser } from "@/features/users/profile/user-profile.service"
 
 type User = {
 	name: string

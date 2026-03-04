@@ -8,7 +8,7 @@ import {
 	restoreUserRoleHandler,
 	softDeleteUserRoleHandler,
 	updateUserRoleHandler,
-} from "@/features/Users/role/role.controller"
+} from "@/features/users/role/role.controller"
 import { requireRole } from "@/middlewares"
 import { Router } from "express"
 

@@ -1,4 +1,4 @@
-import { getUsersHandler, updateUserHandler } from "@/features/Users/profile/user-profile.controller"
+import { getUsersHandler, updateUserHandler } from "@/features/users/profile/user-profile.controller"
 import { requireRole } from "@/middlewares"
 import { Router } from "express"
 

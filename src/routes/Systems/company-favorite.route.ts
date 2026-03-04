@@ -2,7 +2,7 @@ import {
 	getFavoriteCompanySystemsHandler,
 	toggleFavoriteSystemHandler,
 	getFavoriteCompanySystemByIdHandler,
-} from "@/features/Systems/system.controller"
+} from "@/features/systems/system.controller"
 import { Router } from "express"
 
 const router = Router()

@@ -5,7 +5,7 @@ import type {
 	PersonalSystemQueryInput,
 	UpdatePersonalSystemInput,
 } from "@/schema"
-import { getUserAccessContext } from "@/features/Users/profile/user-profile.service"
+import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import type { Prisma } from "@prisma/client"
 import { getPrismaPagination } from "@/helpers/prisma/get-prisma-pagination.helper"
@@ -22,7 +22,7 @@ import {
 	softDeletePersonalSystem,
 	updateOnlyPersonalSystemImage,
 	updatePersonalSystem,
-} from "@/features/Systems/personal-systems/personal-system.repo"
+} from "@/features/systems/personal-systems/personal-system.repo"
 import { deleteFile, uploadFile } from "@/features/storage/storage.service"
 import { withResolvedImage, withResolvedImages } from "@/helpers/shared/storage-presenter.helper"
 import {

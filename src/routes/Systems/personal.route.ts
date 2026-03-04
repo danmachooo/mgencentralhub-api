@@ -7,7 +7,7 @@ import {
 	restorePersonalSystemHandler,
 	softDeletePersonalSystemHandler,
 	updatePersonalSystemHandler,
-} from "@/features/Systems/personal-systems/personal-system.controller"
+} from "@/features/systems/personal-systems/personal-system.controller"
 
 import { uploadMiddleware } from "@/middlewares/upload.middleware"
 import FavoriteRouter from "@/routes/systems/personal-favorite.route"

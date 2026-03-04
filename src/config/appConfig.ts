@@ -59,8 +59,8 @@ export const appConfig = {
 		 */
 		google: {
 			clientId: env.GOOGLE_CLIENT_ID,
-			clientSecret: env.GOOGLE_CLIENT_SECRET
-		}
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
+		},
 	},
 	frontend: {
 		url: env.FRONTEND_URL,

@@ -30,6 +30,6 @@ export const auth = betterAuth({
 			clientSecret: appConfig.auth.google.clientSecret,
 			prompt: "select_account consent",
 			accessType: "offline",
-		}
+		},
 	},
 })

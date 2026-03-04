@@ -1,3 +1,4 @@
+import { logger } from "@/lib"
 import "dotenv/config"
 import { z } from "zod"
 
@@ -90,10 +91,10 @@ function validateEnv() {
 	const parsed = envSchema.safeParse(process.env)
 
 	if (!parsed.success) {
-		console.error("Invalid environment variables:")
+		logger.error("Invalid environment variables:")
 
 		parsed.error.issues.forEach(issue => {
-			console.error(`  ${issue.path.join(".")}: ${issue.message}`)
+			logger.error(`  ${issue.path.join(".")}: ${issue.message}`)
 		})
 
 		// Fail fast — app should not run with invalid config

@@ -5,7 +5,7 @@ import { mockAdmin, mockEmployee } from "../helpers/mock-user"
 
 const DEPARTMENT_ID = "22222222-2222-4222-8222-222222222222"
 
-vi.mock("@/features/Departments/department.service", () => ({
+vi.mock("@/features/departments/department.service", () => ({
 	getCompanyDepartments: vi.fn().mockResolvedValue({ departments: [], total: 0 }),
 	getCompanyDepartmentbyId: vi.fn().mockResolvedValue({ id: DEPARTMENT_ID }),
 	getInactiveDepartments: vi.fn().mockResolvedValue({ departments: [], total: 0 }),

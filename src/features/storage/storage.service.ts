@@ -4,7 +4,7 @@ import { randomUUID } from "crypto"
 import { PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { appConfig } from "@/config/app-config"
-import { s3Client } from "@/lib"
+import { logger, s3Client } from "@/lib"
 
 const MIME_TO_EXT: Record<string, string> = {
 	"image/png": ".png",
@@ -61,7 +61,7 @@ export async function deleteFile(key: string | null | undefined): Promise<void> 
 			await fs.unlink(fullPath)
 		}
 	} catch (err) {
-		console.warn(`[storage] Failed to delete file (${key}):`, err)
+		logger.warn(`[storage] Failed to delete file (${key}):`, err)
 	}
 }
 

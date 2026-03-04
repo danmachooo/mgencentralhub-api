@@ -10,7 +10,7 @@ export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 
 	const { users, total } = await getUserInfo(query)
 
-	sendPaginatedResponse(http, { data: users, total }, query, "Users has been retrieved.")
+	return sendPaginatedResponse(http, { data: users, total }, query, "Users has been retrieved.")
 })
 
 export const updateUserHandler = asyncHandler(async (http: HttpContext) => {

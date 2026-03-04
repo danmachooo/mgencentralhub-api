@@ -92,7 +92,6 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
 			stack: errObj.stack,
 			url: req.url,
 			method: req.method,
-			body: req.body,
 			params: req.params,
 			query: req.query,
 		})

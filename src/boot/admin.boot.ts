@@ -2,16 +2,23 @@ import { createUser } from "@/features/Users/Profile/userProfile.service"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { auth, logger, prisma } from "@/lib"
 import { APIError } from "better-auth/api"
+import { appConfig } from "@/config/appConfig"
 
 const adminBootErrors = new PrismaErrorHandler({
 	entity: "User Profile",
 })
 
 export async function createAdminBoot() {
+	const adminConfig = appConfig.bootstrap.admin
+	if (!adminConfig.name || !adminConfig.email || !adminConfig.password) {
+		logger.warn("Bootstrap admin config is incomplete. Skipping admin bootstrap.")
+		return
+	}
+
 	const result = await adminBootErrors.exec(() =>
 		prisma.userProfile.findMany({
 			select: { userId: true },
-			where: { role: { name: "ADMIN" } },
+			where: { role: { name: adminConfig.roleName } },
 		})
 	)
 
@@ -22,7 +29,7 @@ export async function createAdminBoot() {
 	const adminRole = await adminBootErrors.exec(() =>
 		prisma.role.findFirst({
 			where: {
-				name: "ADMIN",
+				name: adminConfig.roleName,
 			},
 			select: {
 				id: true,
@@ -38,7 +45,7 @@ export async function createAdminBoot() {
 	const department = await adminBootErrors.exec(() =>
 		prisma.department.findFirst({
 			where: {
-				name: "Software Development",
+				name: adminConfig.departmentName,
 			},
 			select: {
 				id: true,
@@ -52,9 +59,9 @@ export async function createAdminBoot() {
 	}
 
 	const userInfo = {
-		name: "Super Idol",
-		email: "johnpauldanmachi@gmail.com",
-		password: "mgen@admin123",
+		name: adminConfig.name,
+		email: adminConfig.email,
+		password: adminConfig.password,
 		roleId: adminRole.id,
 		departmentId: department.id,
 	}
@@ -89,5 +96,5 @@ export async function createAdminBoot() {
 
 	await adminBootErrors.exec(() => createUser(data))
 
-	logger.info("Initial user has been created. :)", userInfo)
+	logger.info("Initial bootstrap admin user has been created.")
 }

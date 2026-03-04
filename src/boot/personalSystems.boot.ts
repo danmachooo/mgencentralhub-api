@@ -2,20 +2,22 @@ import { createManyPersonalSystem } from "@/features/Systems/PersonalSystems/per
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { prisma, logger } from "@/lib"
 import type { CreateManyPersonalSystemInput } from "@/schema"
+import { appConfig } from "@/config/appConfig"
 
 const bootPersonalSystemErrors = new PrismaErrorHandler({
 	entity: "Personal System",
 })
 
-const CREATOR_NAME = "Super Idol"
-
 export async function createManyPersonalSystemBoot() {
+	const creatorName = appConfig.bootstrap.admin.name
+	if (!creatorName) return
+
 	// Get an admin to be a creator reference
 	const creator = await bootPersonalSystemErrors.exec(() =>
 		prisma.userProfile.findFirst({
 			where: {
 				user: {
-					name: CREATOR_NAME,
+					name: creatorName,
 				},
 			},
 			select: {

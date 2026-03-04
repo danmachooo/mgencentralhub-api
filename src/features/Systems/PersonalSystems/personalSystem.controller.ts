@@ -150,7 +150,7 @@ export const softDeletePersonalSystemHandler = asyncHandler(async (http: HttpCon
 
 	await softDeleteOwnSystem(system, creator)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
 		message: "Personal System has been deleted.",
 	})
@@ -162,8 +162,8 @@ export const hardDeletePersonalSystemHandler = asyncHandler(async (http: HttpCon
 
 	await hardDeleteOwnSystem(system, creator)
 
-	return http.res.status(410).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "Personal System has been deleted.",
+		message: "Personal System has been permanently deleted.",
 	})
 })

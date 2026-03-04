@@ -64,9 +64,9 @@ export const restoreCompanyDepartmentHandler = asyncHandler(async (http: HttpCon
 
 	await restoreCompanyDepartment(department)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "Department has been deleted",
+		message: "Department has been restored.",
 	})
 })
 
@@ -75,9 +75,9 @@ export const softDeleteCompanyDepartmentHandler = asyncHandler(async (http: Http
 
 	await softDeleteCompanyDepartment(department)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "Department has been deleted",
+		message: "Department has been deleted.",
 	})
 })
 
@@ -86,9 +86,9 @@ export const hardDeleteCompanyDepartmentHandler = asyncHandler(async (http: Http
 
 	await hardDeleteCompanyDepartment(department)
 
-	return http.res.status(410).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "Department has been deleted",
+		message: "Department has been permanently deleted.",
 	})
 })
 

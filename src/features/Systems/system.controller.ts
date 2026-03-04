@@ -116,7 +116,7 @@ export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 
 	await softDeleteCompanySystem(system)
 
-	return http.res.status(404).json({
+	return http.res.status(200).json({
 		success: true,
 		message: "System has been deleted.",
 	})
@@ -127,9 +127,9 @@ export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 
 	await hardDeleteCompanySystem(system)
 
-	return http.res.status(410).json({
+	return http.res.status(200).json({
 		success: true,
-		message: "System has been deleted.",
+		message: "System has been permanently deleted.",
 	})
 })
 
@@ -137,7 +137,7 @@ export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) =
 	const query = systemQuerySchema.parse(http.req.query)
 	const { role, department } = http.req.user
 
-	const departmentId = role.name === "admin" ? null : (department?.id ?? "NO_DEPARTMENT")
+	const departmentId = role.name.toUpperCase() === "ADMIN" ? null : (department?.id ?? "NO_DEPARTMENT")
 
 	const { systems, total } = await getCompanySystems(query, departmentId)
 

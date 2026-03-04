@@ -4,6 +4,10 @@ import { ForbiddenError } from "@/errors"
 
 type AllowedRole = "ADMIN" | "EMPLOYEE"
 
+function isAllowedRole(role: string): role is AllowedRole {
+	return role === "ADMIN" || role === "EMPLOYEE"
+}
+
 /**
  * Restricts access to the specified roles.
  * req.user must already be populated by requireAuth.
@@ -14,9 +18,9 @@ type AllowedRole = "ADMIN" | "EMPLOYEE"
  */
 export const requireRole = (...roles: AllowedRole[]) =>
 	asyncHandler(async (http: HttpContext) => {
-		const userRole = http.req.user.role.name.toUpperCase() as AllowedRole
+		const userRole = http.req.user.role.name.toUpperCase()
 
-		if (!roles.includes(userRole)) {
+		if (!isAllowedRole(userRole) || !roles.includes(userRole)) {
 			throw new ForbiddenError("You do not have permission to perform this action.")
 		}
 

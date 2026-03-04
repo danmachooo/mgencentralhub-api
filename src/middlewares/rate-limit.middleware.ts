@@ -1,94 +1,80 @@
 import { AppError } from "@/errors"
+import { isIpBlocked, blockIp, getRateLimitIdentity, getRequestIp, type RateLimitIdentity } from "@/helpers/shared/rate-limit"
+import { redis } from "@/lib/redis"
+import { logger } from "@/lib/logger"
 import { asyncHandler } from "@/middlewares/async-handler.middleware"
-import type { Request } from "express"
 
 type RateLimitOptions = {
 	windowMs: number
 	max: number
 	message?: string
 	keyPrefix?: string
+	identity?: RateLimitIdentity
+	setHeaders?: boolean
+	blockDurationMs?: number
 }
 
-type Bucket = {
-	count: number
-	resetAt: number
-}
-
-const buckets = new Map<string, Bucket>()
-const MAX_BUCKETS = 50_000
-const PRUNE_INTERVAL_MS = 30_000
-let lastPruneAt = 0
-
-function pruneExpiredBuckets(now: number) {
-	for (const [key, bucket] of buckets) {
-		if (bucket.resetAt <= now) {
-			buckets.delete(key)
-		}
+function getWindowKey(keyPrefix: string, subject: string, windowMs: number, now: number) {
+	const slot = Math.floor(now / windowMs)
+	return {
+		key: `rate-limit:window:${keyPrefix}:${subject}:${slot}`,
+		resetAtMs: (slot + 1) * windowMs,
 	}
-}
-
-function pruneExpiredBucketsIfNeeded(now: number) {
-	if (now - lastPruneAt < PRUNE_INTERVAL_MS) return
-	pruneExpiredBuckets(now)
-	lastPruneAt = now
-}
-
-function evictOldestBucket() {
-	let oldestKey: string | undefined
-	let oldestResetAt = Number.POSITIVE_INFINITY
-
-	for (const [key, bucket] of buckets) {
-		if (bucket.resetAt < oldestResetAt) {
-			oldestResetAt = bucket.resetAt
-			oldestKey = key
-		}
-	}
-
-	if (oldestKey) {
-		buckets.delete(oldestKey)
-	}
-}
-
-function getClientKey(req: Request, keyPrefix: string): string {
-	const userKey = req.user.userId
-	const ipKey = req.ip
-	return `${keyPrefix}:${userKey}:${ipKey}`
 }
 
 export const rateLimit = (options: RateLimitOptions) =>
-	asyncHandler(http => {
-		const now = Date.now()
-		pruneExpiredBucketsIfNeeded(now)
-
+	asyncHandler(async http => {
 		const keyPrefix = options.keyPrefix ?? "global"
-		const key = getClientKey(http.req, keyPrefix)
-		const existing = buckets.get(key)
+		const identity = options.identity ?? "user_or_ip"
+		const setHeaders = options.setHeaders ?? true
+		const now = Date.now()
+		const subject = getRateLimitIdentity(http.req, identity)
+		const ip = getRequestIp(http.req)
 
-		if (!existing || existing.resetAt <= now) {
-			buckets.set(key, {
-				count: 1,
-				resetAt: now + options.windowMs,
-			})
-			return http.next()
-		}
-
-		if (existing.count >= options.max) {
-			const retryAfterSeconds = Math.ceil((existing.resetAt - now) / 1000)
-			http.res.setHeader("Retry-After", String(retryAfterSeconds))
-
-			throw new AppError(429, options.message ?? "Too many requests. Please try again later.", {
-				retryAfterSeconds,
-			})
-		}
-
-		existing.count += 1
-		buckets.set(key, existing)
-
-		if (buckets.size > MAX_BUCKETS) {
-			pruneExpiredBuckets(now)
-			if (buckets.size > MAX_BUCKETS) {
-				evictOldestBucket()
+		try {
+			if (options.blockDurationMs && (identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")) {
+				const blocked = await isIpBlocked(keyPrefix, ip)
+				if (blocked) {
+					throw new AppError(429, options.message ?? "Too many requests. Please try again later.", {
+						reason: "ip_blocked",
+					})
+				}
 			}
+
+			const { key, resetAtMs } = getWindowKey(keyPrefix, subject, options.windowMs, now)
+			const totalInWindow = await redis.incr(key)
+
+			if (totalInWindow === 1) {
+				const ttlSeconds = Math.max(1, Math.ceil(options.windowMs / 1000))
+				await redis.expire(key, ttlSeconds)
+			}
+
+			const retryAfterSeconds = Math.max(1, Math.ceil((resetAtMs - now) / 1000))
+			const remaining = Math.max(options.max - totalInWindow, 0)
+
+			if (setHeaders) {
+				http.res.setHeader("X-RateLimit-Limit", String(options.max))
+				http.res.setHeader("X-RateLimit-Remaining", String(remaining))
+				http.res.setHeader("X-RateLimit-Reset", String(Math.floor(resetAtMs / 1000)))
+			}
+
+			if (totalInWindow > options.max) {
+				http.res.setHeader("Retry-After", String(retryAfterSeconds))
+
+				if (options.blockDurationMs && (identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")) {
+					await blockIp(keyPrefix, ip, options.blockDurationMs)
+				}
+
+				throw new AppError(429, options.message ?? "Too many requests. Please try again later.", {
+					retryAfterSeconds,
+				})
+			}
+		} catch (error) {
+			if (error instanceof AppError) throw error
+			logger.error("Rate limiter failed. Allowing request to proceed.", {
+				keyPrefix,
+				error,
+			})
 		}
 
 		http.next()

@@ -13,6 +13,8 @@ router.post(
 		max: 20,
 		message: "Too many chatbot requests. Please try again in a minute.",
 		keyPrefix: "chatbot:ask",
+		identity: "user_and_ip",
+		blockDurationMs: 5 * 60 * 1000,
 	}),
 	chatbotHandler
 )

@@ -25,7 +25,6 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
 		],
 	})
 
-	const label = result.text?.trim().toUpperCase() as RequestLabels
 
 	const validLabels: RequestLabels[] = [
 		"PUBLIC_INFO",
@@ -36,5 +35,7 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
 		"UNKNOWN",
 	]
 
-	return validLabels.includes(label) ? label : "UNKNOWN"
+	const raw = result.text?.trim().toUpperCase()
+
+	return validLabels.includes(raw as RequestLabels) ? (raw as RequestLabels) : "UNKNOWN"
 }

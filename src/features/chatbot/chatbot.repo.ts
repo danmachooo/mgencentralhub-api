@@ -7,7 +7,7 @@ export async function fetchRecentConversations(user: UserIdentifier) {
 			userId: user.id,
 		},
 		orderBy: {
-			createdAt: "asc",
+			createdAt: "desc",
 		},
 		take: 6,
 	})

@@ -4,7 +4,7 @@ import path from "path"
 
 const MAX_SIZE_BYTES = 2 * 1024 * 1024 // 2MB
 
-const ALLOWED_MIME_TYPES = new Set(["image/png", "image/jpeg", "image/webp", "image/svg+xml"])
+const ALLOWED_MIME_TYPES = new Set(["image/png", "image/jpeg", "image/webp"])
 
 const MIME_TO_EXT: Record<string, string> = {
 	"image/png": ".png",

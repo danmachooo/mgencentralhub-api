@@ -6,7 +6,7 @@ export const BaseQuerySchema = z.object({
 	limit: z.coerce.number().int().positive().max(100).default(10),
 	sortOrder: z.enum(["asc", "desc"]).default("desc"),
 	search: z.string().optional(),
-})
+}).strict()
 
 /**
  * 2. The Factory Function

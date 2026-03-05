@@ -214,7 +214,7 @@ model PersonalSystem {
   owner     User                         @relation("PersonalSystemOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
   favorites UserFavoritePersonalSystem[]
 
-  @@unique([ownerUserId, url, name])
+  @@unique([ownerUserId, name])
   @@index([ownerUserId])
   @@index([deletedAt])
   @@map("personal_systems")

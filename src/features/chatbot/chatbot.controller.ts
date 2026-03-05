@@ -13,6 +13,9 @@ export const chatbotHandler = asyncHandler(async (http: HttpContext) => {
 
 	return http.res.status(200).json({
 		success: true,
-		data: response,
+		message: "Chat response generated.",
+		data: {
+			response
+		},
 	})
 })

@@ -20,7 +20,7 @@ export const auth = betterAuth({
 			return await redis.get(key)
 		},
 		set: async (key, value, ttl) => {
-			ttl ? await redis.set(key, value, {ex: ttl}) : await redis.set(key,value)
+			return ttl ? await redis.set(key, value, {ex: ttl}) : await redis.set(key,value)
 		},
 		delete: async (key) => {
 			await redis.del(key)

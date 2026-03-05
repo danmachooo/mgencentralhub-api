@@ -1,64 +1,23 @@
-import { saveMessage } from "@/features/chatbot/chatbot.repo"
-import { PrismaErrorHandler } from "@/helpers/prisma"
-import { classifyIntent } from "@/features/chatbot/intent.service"
-import { getRecentConversations } from "@/features/chatbot/memory.service"
-import { chatWithGemini } from "@/features/chatbot/ai.service"
-import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
-import { getCompanySystems } from "@/features/systems/system.service"
+import { appConfig } from "@/config/app-config"
+import { ValidationError } from "@/errors"
+import { gemini } from "@/lib/gemini"
+import { chatWithGemini } from "@/features/chatbot/services/ai.service"
+import { getRecentConversations } from "@/features/chatbot/services/memory.service"
 import { getOwnSystems } from "@/features/systems/personal-systems/personal-system.service"
 import { getActiveSystemFlags } from "@/features/systems/system-flags/flag.service"
-import { appConfig } from "@/config/app-config"
-import { gemini } from "@/lib/gemini"
-import type { CreatorIdentifier, PromptInput, UserIdentifier } from "@/schema"
-import type { RequestLabels } from "@/features/chatbot/intent.service"
+import { getCompanySystems } from "@/features/systems/system.service"
+import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
+import type { UserIdentifier, PromptInput, CreatorIdentifier } from "@/schema"
 
 type CompanySystemsResult = Awaited<ReturnType<typeof getCompanySystems>>
 type OwnSystemsResult = Awaited<ReturnType<typeof getOwnSystems>>
 
-const employeeAssistantErrors = new PrismaErrorHandler({
-	entity: "Chatbot",
-})
-
-export async function employeeAssistant(user: UserIdentifier, prompt: PromptInput) {
-	await employeeAssistantErrors.exec(() => saveMessage(user, prompt, "user"))
-
-	const intent: RequestLabels = await classifyIntent(prompt)
-
-	let responseText = ""
-
-	switch (intent) {
-		case "PUBLIC_INFO":
-			responseText = await handlePublicInfo(user, prompt)
-			break
-		case "DEPARTMENT_SYSTEM":
-			responseText = await handleDepartmentSystems(user, prompt)
-			break
-		case "PERSONAL_SYSTEM":
-			responseText = await handlePersonalSystems(user, prompt)
-			break
-		case "STATUS_REPORT":
-			responseText = await handleStatusReport(user, prompt)
-			break
-		case "UNKNOWN":
-			responseText = await handleUnknownIntent(user, prompt)
-			break
-		case "EVENT":
-			responseText = "Event intent is currently not supported by this assistant."
-			break
-	}
-
-	await employeeAssistantErrors.exec(() => saveMessage(user, { message: responseText }, "assistant"))
-
-	return responseText
-}
-
-async function handleDepartmentSystems(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+export async function handleDepartmentSystems(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
 	const profile = await getUserAccessContext(user)
 	if (!profile.department) {
-		throw new Error("User department is required for department system intent.")
+		throw new ValidationError("User department is required for department system intent.")
 	}
-
 	const query = {
 		page: 1,
 		limit: 20,
@@ -96,7 +55,7 @@ async function handleDepartmentSystems(user: UserIdentifier, prompt: PromptInput
 	})
 }
 
-async function handlePersonalSystems(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+export async function handlePersonalSystems(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
 
 	const query = {
@@ -122,7 +81,7 @@ async function handlePersonalSystems(user: UserIdentifier, prompt: PromptInput):
 		userMessage: prompt.message,
 	})
 }
-async function handlePublicInfo(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+export async function handlePublicInfo(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
 
 	const contents = [
@@ -159,11 +118,11 @@ ${prompt.message}
 	return response.text ?? "I don't know based on the available public information."
 }
 
-async function handleStatusReport(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+export async function handleStatusReport(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
 	const profile = await getUserAccessContext(user)
 	if (!profile.department) {
-		throw new Error("User department is required for status report intent.")
+		throw new ValidationError("User department is required for status report intent.")
 	}
 
 	const query = {
@@ -207,7 +166,7 @@ async function handleStatusReport(user: UserIdentifier, prompt: PromptInput): Pr
 	})
 }
 
-async function handleUnknownIntent(user: UserIdentifier, prompt: PromptInput): Promise<string> {
+export async function handleUnknownIntent(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
 
 	return chatWithGemini({

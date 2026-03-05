@@ -11,7 +11,6 @@ export async function fetchRecentConversations(user: UserIdentifier) {
 		},
 		take: 6,
 	})
-
 	return messages
 }
 

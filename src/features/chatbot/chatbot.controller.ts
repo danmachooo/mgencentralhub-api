@@ -1,4 +1,4 @@
-import { employeeAssistant } from "@/features/chatbot/chat.service"
+import { employeeAssistant } from "@/features/chatbot/chat.orchestrator"
 import { asyncHandler } from "@/middlewares"
 import { promptSchema, userIdentifierSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"

@@ -4,7 +4,7 @@ import helmet from "helmet"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "@/lib"
 import routes from "@/routes"
-import { errorHandler, notFoundHandler, rateLimit } from "@/middlewares"
+import { errorHandler, notFoundHandler } from "@/middlewares"
 import { appConfig } from "@/config/app-config"
 import path from "path"
 

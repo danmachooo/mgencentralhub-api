@@ -159,8 +159,8 @@ model System {
   departmentMap SystemDepartmentMap[]
   favorites     UserFavoriteSystem[]
 
-  @@unique([url, name])
   @@unique([name])
+  @@unique([url])
   @@index([creatorId])
   @@index([statusId])
   @@index([deletedAt])
@@ -214,7 +214,8 @@ model PersonalSystem {
   owner     User                         @relation("PersonalSystemOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
   favorites UserFavoritePersonalSystem[]
 
-  @@unique([ownerUserId, name])
+  @@unique([ownerUserId, url])
+  @@unique([name])
   @@index([ownerUserId])
   @@index([deletedAt])
   @@map("personal_systems")

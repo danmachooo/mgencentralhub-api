@@ -3,7 +3,7 @@ import cors from "cors"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "@/lib"
 import routes from "@/routes"
-import { errorHandler, notFoundHandler } from "@/middlewares"
+import { errorHandler, notFoundHandler, rateLimit } from "@/middlewares"
 import { appConfig } from "@/config/app-config"
 import path from "path"
 
@@ -39,6 +39,7 @@ app.get("/", (_, res) => {
 	})
 })
 app.use("/api/auth", toNodeHandler(auth))
+
 app.use("/api", routes)
 
 // route not found handler

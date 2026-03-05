@@ -159,7 +159,7 @@ model System {
   departmentMap SystemDepartmentMap[]
   favorites     UserFavoriteSystem[]
 
-  @@unique([url])
+  @@unique([url, name])
   @@unique([name])
   @@index([creatorId])
   @@index([statusId])
@@ -214,7 +214,7 @@ model PersonalSystem {
   owner     User                         @relation("PersonalSystemOwner", fields: [ownerUserId], references: [id], onDelete: Cascade)
   favorites UserFavoritePersonalSystem[]
 
-  @@unique([ownerUserId, url])
+  @@unique([ownerUserId, url, name])
   @@index([ownerUserId])
   @@index([deletedAt])
   @@map("personal_systems")
@@ -251,16 +251,15 @@ model UserFavoritePersonalSystem {
 // Chatbot
 
 model ChatbotMessage {
-  id        String   @id @default(uuid())
+  id        String             @id @default(uuid())
   userId    String
   role      ChatbotMessageRole
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime           @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
   @@index([createdAt])
-
   @@map("chatbot_message")
 }

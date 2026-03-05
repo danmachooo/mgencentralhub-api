@@ -1,5 +1,6 @@
 import express from "express"
 import cors from "cors"
+import helmet from "helmet"
 import { toNodeHandler } from "better-auth/node"
 import { auth } from "@/lib"
 import routes from "@/routes"
@@ -7,11 +8,13 @@ import { errorHandler, notFoundHandler, rateLimit } from "@/middlewares"
 import { appConfig } from "@/config/app-config"
 import path from "path"
 
-const app = express()
-
 const frontendURL = appConfig.frontend.url
 const backendURL = appConfig.app.url
 const storageMode = appConfig.storage.mode
+
+const app = express()
+
+app.set("trust proxy", 1) // REQUIRED BEHIND RENDER / CLOUDFLARE
 
 // Define cors
 app.use(
@@ -22,6 +25,14 @@ app.use(
 		allowedHeaders: ["Content-Type", "Authorization"],
 	})
 )
+
+// Define Helmet
+app.use(helmet({
+	contentSecurityPolicy: false,
+	crossOriginEmbedderPolicy: false
+}))
+
+
 
 // Body parsers
 app.use(express.json())

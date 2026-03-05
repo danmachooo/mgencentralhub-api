@@ -1,4 +1,4 @@
-import { employeeAssistant } from "@/features/chatbot/chat.service"
+import { employeeAssistant } from "@/features/chatbot/chat.orchestrator"
 import { asyncHandler } from "@/middlewares"
 import { promptSchema, userIdentifierSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"
@@ -13,6 +13,9 @@ export const chatbotHandler = asyncHandler(async (http: HttpContext) => {
 
 	return http.res.status(200).json({
 		success: true,
-		message: response,
+		message: "Chat response generated.",
+		data: {
+			response
+		},
 	})
 })

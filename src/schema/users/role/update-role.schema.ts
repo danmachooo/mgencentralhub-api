@@ -1,6 +1,3 @@
-import { z } from "zod"
+import { createRoleSchema } from "@/schema/users/role/create-role.schema"
 
-export const updateRoleSchema = z.object({
-	name: z.string().min(1).optional(),
-	description: z.string().min(1).optional(),
-})
+export const updateRoleSchema = createRoleSchema.partial

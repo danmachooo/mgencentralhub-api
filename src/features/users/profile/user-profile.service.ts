@@ -35,18 +35,8 @@ export async function getUserInfo(query: UserProfileQuery) {
 		},
 		...(query.search && {
 			OR: [
-				{
-					user: {
-						name: {
-							contains: query.search,
-							mode: "insensitive",
-						},
-						email: {
-							contains: query.search,
-							mode: "insensitive",
-						},
-					},
-				},
+				{user: { name: { contains: query.search, mode: "insensitive"}}},
+				{user: { email: { contains: query.search, mode: "insensitive"}}}
 			],
 		}),
 	}

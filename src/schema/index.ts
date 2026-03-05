@@ -12,7 +12,7 @@ export * from "@/schema/systems/create-many-system.schema"
 export * from "@/schema/systems/personal/create-personal-system.schema"
 export * from "@/schema/systems/personal/create-many-personal-system.schema"
 export * from "@/schema/systems/personal/update-personal-system.schema"
-export * from "@/schema/systems/personal/personal-system-identifier.schema" //uncomment after defining
+export * from "@/schema/systems/personal/personal-system-identifier.schema" 
 export * from "@/schema/systems/personal/personal-system-query.schema"
 
 // Export here all System Flags schema

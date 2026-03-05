@@ -1,5 +1,3 @@
-import { z } from "zod"
+import { userIdentifierSchema } from "@/schema/users/user-identifier.schema"
 
-export const creatorIdentifierSchema = z.object({
-	id: z.string().min(1),
-})
+export const creatorIdentifierSchema = userIdentifierSchema

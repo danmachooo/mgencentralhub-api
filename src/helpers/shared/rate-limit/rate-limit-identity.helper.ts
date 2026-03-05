@@ -8,15 +8,12 @@ function normalizeIp(rawIp: string | undefined) {
 }
 
 function getOptionalUserId(req: Request) {
-	const requestRecord = req as unknown as Record<string, unknown>
-	const rawUser = requestRecord.user
+	const user = req.user
+	const userId = user.userId
 
-	if (!rawUser || typeof rawUser !== "object") return undefined
+	if (typeof userId !== "string" || userId.length === 0) return undefined
 
-	const rawUserId = (rawUser as Record<string, unknown>).userId
-	if (typeof rawUserId !== "string" || rawUserId.length === 0) return undefined
-
-	return rawUserId
+	return userId
 }
 
 export function getRequestIp(req: Request) {

@@ -58,10 +58,8 @@ export async function createManyPersonalSystem(creatorId: string, systemsData: C
 				name: s.name,
 				description: s.description,
 				url: s.url,
-				image: s.image,
 				ownerUserId: creatorId,
 			})),
-			skipDuplicates: true,
 		})
 	})
 }

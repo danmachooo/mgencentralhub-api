@@ -1,6 +1,3 @@
-import { z } from "zod"
+import { createDepartmentSchema } from "@/schema/departments/create-department.schema";
 
-export const updateDepartmentSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1).optional(),
-})
+export const updateDepartmentSchema = createDepartmentSchema.partial()

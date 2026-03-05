@@ -1,7 +1,3 @@
-import { z } from "zod"
+import { createUserProfileSchema } from "@/schema/users/profile/create-user-profile.schema"
 
-export const updateUserProfileSchema = z.object({
-	name: z.string().optional(),
-	roleId: z.uuid().optional(),
-	departmentId: z.uuid().optional(),
-})
+export const updateUserProfileSchema = createUserProfileSchema.partial()

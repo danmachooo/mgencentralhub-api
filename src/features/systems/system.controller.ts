@@ -93,7 +93,9 @@ export const isFavoriteSystemHandler = asyncHandler(async (http: HttpContext) =>
 
 	return http.res.status(200).json({
 		success: true,
-		favorited,
+		data: {
+			favorited
+		},
 	})
 })
 

@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 // 1. The Base Pagination Schema (Shared by everyone)
-export const BaseQuerySchema = z.object({
+export const BaseQuerySchema = z.strictObject({
 	page: z.coerce.number().int().positive().default(1),
 	limit: z.coerce.number().int().positive().max(100).default(10),
 	sortOrder: z.enum(["asc", "desc"]).default("desc"),

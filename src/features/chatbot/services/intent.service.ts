@@ -35,7 +35,10 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
 		"UNKNOWN",
 	]
 
+
+	const isLabel = (v: string): v is RequestLabels => validLabels.includes(v as RequestLabels)
+
 	const raw = result.text?.trim().toUpperCase()
 
-	return validLabels.includes(raw as RequestLabels) ? (raw as RequestLabels) : "UNKNOWN"
+	return raw && isLabel(raw) ? raw : "UNKNOWN"
 }

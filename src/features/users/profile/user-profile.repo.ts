@@ -61,29 +61,31 @@ export async function createUserProfile(userProfile: CreateUserProfileInput) {
 }
 
 export async function updateUserProfile(id: string, userProfile: UpdateUserProfileInput) {
-	if (userProfile.name) {
-		await prisma.user.update({
-			where: {
-				id,
-			},
-			data: {
-				name: userProfile.name,
-			},
-		})
-	}
+	return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+		if(userProfile.name) {
+			await tx.user.update({
+				where: {
+					id
+				}, 
+				data: {
+					name: userProfile.name
+				}
+			})
+		}
 
-	return await prisma.userProfile.update({
-		where: {
-			userId: id,
-		},
-		data: {
-			roleId: userProfile.roleId,
-			departmentId: userProfile.departmentId,
-		},
-		select: {
-			updatedAt: true,
-			userId: true,
-		},
+		return tx.userProfile.update({
+			where: {
+				userId: id
+			}, 
+			data: {
+				roleId: userProfile.roleId,
+				departmentId: userProfile.departmentId
+			},
+			select: {
+				updatedAt: true,
+				userId: true
+			}
+		})
 	})
 }
 

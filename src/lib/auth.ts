@@ -30,12 +30,12 @@ export const auth = betterAuth({
 	advanced: {
 		ipAddress: {
 			ipv6Subnet: 64,
-			ipAddressHeaders: ["x-forwared-for"]
+			ipAddressHeaders: ["x-forwarded-for"]
 		}
 	},
 
 	rateLimit: {
-		enabled: appConfig.app.nodeEnv === "production",
+		enabled: appConfig.app.nodeEnv !== "development",
 		window: 60,
 		max: 100
 

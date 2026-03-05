@@ -11,4 +11,4 @@ export const updateSystemSchema = z.object({
 		.optional(),
 	statusId: z.uuid().optional(),
 	departmentIds: z.array(z.uuid()).optional(),
-})
+}).strict()

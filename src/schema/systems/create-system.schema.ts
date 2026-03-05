@@ -9,4 +9,4 @@ export const createSystemSchema = z.object({
 	}),
 	statusId: z.uuid().min(1),
 	departmentIds: z.array(z.uuid()).optional(),
-})
+}).strict()

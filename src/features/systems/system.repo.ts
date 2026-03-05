@@ -75,7 +75,6 @@ export async function createManySystem(id: string, systemsData: CreateManySystem
 			select: {
 				id: true, name: true
 			},
-			skipDuplicates: true,
 		})
 
 		// Map the retrieved IDs back to their corresponding department IDs

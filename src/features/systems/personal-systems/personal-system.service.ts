@@ -83,19 +83,20 @@ export async function updateOwnSystem(
 	data: UpdatePersonalSystemInput,
 	file: Express.Multer.File | null
 ) {
-	await listPersonalSystemById(creator.id, system.id)
+	const exisiting = await listPersonalSystemById(creator.id, system.id)
 
 	return personalSystemErrors.exec(async () => {
 		const updated = await updatePersonalSystem(system.id, creator.id, data, null)
-
-		let imageKey: string | null = null
-
+		
 		if (file) {
-			imageKey = await uploadFile(file, "personal_systems")
-		}
+			const imageKey = await uploadFile(file, "personal_systems")
 
-		if (imageKey) {
+			const oldImageKey = exisiting.image
 			await updateOnlyPersonalSystemImage(updated.id, creator.id, imageKey)
+
+			if(oldImageKey) {
+				await deleteFile(oldImageKey)
+			}
 		}
 		await invalidatePersonalSystemCache(creator.id, updated.id)
 		return updated

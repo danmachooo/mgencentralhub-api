@@ -1,5 +1,3 @@
-import { z } from "zod"
+import { entityIdentifierSchema } from "@/schema/shared/entity-identifier.schema"
 
-export const systemIdentifierSchema = z.object({
-	id: z.uuid().min(1),
-})
+export const systemIdentifierSchema = entityIdentifierSchema

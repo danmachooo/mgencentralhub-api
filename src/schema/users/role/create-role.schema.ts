@@ -1,6 +1,3 @@
-import { z } from "zod"
+import { entityBaseSchema } from "@/schema/shared/entity-base.schema"
 
-export const createRoleSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1),
-}).strict()
+export const createRoleSchema = entityBaseSchema

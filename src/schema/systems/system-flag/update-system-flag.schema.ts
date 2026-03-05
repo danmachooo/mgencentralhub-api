@@ -1,6 +1,4 @@
+import { createSystemFlagSchema } from "@/schema/systems/system-flag/create-system-flag.schema"
 import { z } from "zod"
 
-export const updateSystemFlagSchema = z.object({
-	name: z.string().min(1).optional(),
-	description: z.string().min(1).optional(),
-})
+export const updateSystemFlagSchema = createSystemFlagSchema.partial()

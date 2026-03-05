@@ -1,6 +1,6 @@
-import { z } from "zod"
+import { entityBaseSchema } from "@/schema/shared/entity-base.schema"
+import {z} from "zod"
 
-export const createDepartmentSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1).optional(),
-}).strict()
+export const createDepartmentSchema = entityBaseSchema.extend({
+	name: z.string().min(2).max(30)
+})

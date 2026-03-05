@@ -1,11 +1,6 @@
-import { z } from "zod"
+import { createPersonalSystemSchema } from "@/schema/systems/personal/create-personal-system.schema"
 
-export const updatePersonalSystemSchema = z.object({
-	name: z.string().min(1),
-	description: z.string().min(1),
-	image: z.string().min(1),
-	url: z.url({
-		protocol: /^https$/,
-		error: "URL must be https.",
-	}),
+export const updatePersonalSystemSchema = createPersonalSystemSchema.partial().omit({
+	image: true
 })
+

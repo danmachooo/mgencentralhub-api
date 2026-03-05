@@ -8,4 +8,4 @@ export const createPersonalSystemSchema = z.object({
 		protocol: /^https$/,
 		error: "URL must be https.",
 	}),
-})
+}).strict()

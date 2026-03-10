@@ -1,5 +1,5 @@
 import { uniqueBy } from "@/helpers/shared/unique-by.helper"
-import { CreateSystemInput } from "@/schema"
+import type { CreateSystemInput } from "@/schema"
 import { createSystemSchema } from "@/schema/systems/create-system.schema"
 import z from "zod"
 

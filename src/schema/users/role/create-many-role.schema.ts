@@ -1,5 +1,5 @@
 import { uniqueBy } from "@/helpers/shared/unique-by.helper"
-import { CreateRoleInput } from "@/schema"
+import { type CreateRoleInput } from "@/schema"
 import { createRoleSchema } from "@/schema/users/role/create-role.schema"
 import { z }from "zod"
 

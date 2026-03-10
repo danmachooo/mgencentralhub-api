@@ -27,6 +27,10 @@ const USER_SHAPE: Prisma.UserProfileSelect = {
 	},
 }
 
+export async function getUserProfileRecord(user: UserIdentifier) {
+	return prisma.userProfile.findUniqueOrThrow({ where: { userId: user.id } })
+}
+
 export async function getUserContext(user: UserIdentifier) {
 	return prisma.userProfile.findUniqueOrThrow({
 		where: {

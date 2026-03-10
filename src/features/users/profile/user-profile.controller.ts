@@ -1,4 +1,4 @@
-import { getUserInfo, updateUser } from "@/features/users/profile/user-profile.service"
+import { getUserInfo, getUserProfile, updateUser } from "@/features/users/profile/user-profile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
 import { userIdentifierSchema, userProfileQuerySchema } from "@/schema"
@@ -11,6 +11,15 @@ export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 	const { users, total } = await getUserInfo(query)
 
 	return sendPaginatedResponse(http, { data: users, total }, query, "Users has been retrieved.")
+})
+
+export const getUserProfileHandler = asyncHandler(async (http: HttpContext) => {
+	const profile = await getUserProfile({ id: http.req.user.userId })
+	return http.res.status(200).json({
+		data: { profile },
+		message: "User profile found.",
+		success: true,
+	})
 })
 
 export const updateUserHandler = asyncHandler(async (http: HttpContext) => {

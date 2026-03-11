@@ -4,6 +4,8 @@ import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
 import { toFetchHeaders } from "@/helpers/shared"
 import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
+import { logger } from "@/lib"
+import { fromNodeHeaders } from "better-auth/node"
 
 /**
  * Authentication middleware that enforces a valid user session.
@@ -31,10 +33,10 @@ import { getUserAccessContext } from "@/features/users/profile/user-profile.serv
  * @returns A JSON 401 response if unauthorized, otherwise calls `next()`.
  */
 export const requireAuth = asyncHandler(async (http: HttpContext) => {
-	const session = await auth.api.getSession({
-		headers: toFetchHeaders(http.req.headers),
-	})
 
+	const session = await auth.api.getSession({
+		headers: fromNodeHeaders(http.req.headers)
+	})
 	if (!session?.user) {
 		throw new UnauthorizedError("User is unauthorized.")
 	}

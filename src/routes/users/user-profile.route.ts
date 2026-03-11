@@ -9,7 +9,7 @@ const router = Router()
 
 router.get("/", requireRole("ADMIN"),getUsersHandler)
 router.patch("/:id",requireRole("ADMIN"), updateUserHandler)
-router.get("/profile",requireRole("ADMIN"), getUserProfileHandler)
+router.get("/profile", getUserProfileHandler)
 
 
 // Plug onboard router

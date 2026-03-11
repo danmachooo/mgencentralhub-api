@@ -23,16 +23,6 @@ import { getUserAccessContext } from "@/features/users/profile/user-profile.serv
  * - `req.user` is populated with `{ id: string }`
  * - Request continues to the next middleware/handler
  *
- * Example usage:
- * ```ts
- * router.get(
- *   "/teams/:teamId",
- *   requireAuth,
- *   asyncHandler(async ({ req, res }) => {
- *     res.json({ userId: req.user.id });
- *   }),
- * );
- * ```
  *
  * @param req - Express request object.
  * @param res - Express response object.
@@ -49,9 +39,20 @@ export const requireAuth = asyncHandler(async (http: HttpContext) => {
 		throw new UnauthorizedError("User is unauthorized.")
 	}
 
-	const profile = await getUserAccessContext({ id: session.user.id })
+	const user = await getUserAccessContext(session.user)
 
-	// Attach full profile (userId, role, department) for downstream use
-	http.req.user = profile
+
+	// Attach full user (userId, role, department) for downstream use
+	http.req.user = {
+		id: user.id,
+		role: {
+			id: user.profile?.roleId as string,
+			name: user.profile?.role.name as string
+		},
+		department: {
+			id: user.profile?.roleId as string,
+			name: user.profile?.role.name as string
+		}
+	}
 	http.next()
 })

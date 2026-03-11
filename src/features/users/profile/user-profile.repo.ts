@@ -40,25 +40,18 @@ export async function getUserFromSelf(user: UserIdentifier) {
 }
 
 export async function getUserContext(user: UserIdentifier) {
-	return prisma.userProfile.findUniqueOrThrow({
+	return prisma.user.findUniqueOrThrow({
 		where: {
-			userId: user.id,
+			id: user.id,
 		},
-		select: {
-			userId: true,
-			role: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-			department: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-		},
+		include: {
+			profile: {
+				include: {
+					role: true,
+					department: true
+				}
+			}
+		}
 	})
 }
 

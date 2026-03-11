@@ -14,7 +14,7 @@ export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 })
 
 export const getUserProfileHandler = asyncHandler(async (http: HttpContext) => {
-	const profile = await getUserProfile({ id: http.req.user.userId })
+	const profile = await getUserProfile(http.req.user)
 	return http.res.status(200).json({
 		data: { profile },
 		message: "User profile found.",

@@ -31,6 +31,10 @@ export const auth = betterAuth({
 		ipAddress: {
 			ipv6Subnet: 64,
 			ipAddressHeaders: ["x-forwarded-for"]
+		},
+		defaultCookieAttributes: {
+			sameSite: "none",
+			secure: true
 		}
 	},
 

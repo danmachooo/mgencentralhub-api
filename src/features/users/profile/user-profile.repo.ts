@@ -35,7 +35,7 @@ export async function getUserFromSelf(user: UserIdentifier) {
 	return prisma.user.findUniqueOrThrow({
 		where: {
 			id: user.id
-		}
+		},
 	})
 }
 

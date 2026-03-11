@@ -17,7 +17,7 @@ export const setOnboardStatusController = asyncHandler(async (http: HttpContext)
 })
 
 export const getOnboardStatusController = asyncHandler(async (http: HttpContext) => {
-    const user = userIdentifierSchema.parse(http.req.body);
+    const user = userIdentifierSchema.parse(http.req.user);
 
     const onboarded = await onBoardOrchestrator("get", user);
 

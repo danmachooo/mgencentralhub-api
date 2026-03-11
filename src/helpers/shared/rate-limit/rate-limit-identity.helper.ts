@@ -8,8 +8,7 @@ function normalizeIp(rawIp: string | undefined) {
 }
 
 function getOptionalUserId(req: Request) {
-	const user = req.user
-	const userId = user.userId
+	const userId = req.user.userId
 
 	if (typeof userId !== "string" || userId.length === 0) return undefined
 

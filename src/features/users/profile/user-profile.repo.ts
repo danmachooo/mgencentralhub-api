@@ -31,6 +31,14 @@ export async function getUserProfileRecord(user: UserIdentifier) {
 	return prisma.userProfile.findUniqueOrThrow({ where: { userId: user.id } })
 }
 
+export async function getUserFromSelf(user: UserIdentifier) {
+	return prisma.user.findUniqueOrThrow({
+		where: {
+			id: user.id
+		}
+	})
+}
+
 export async function getUserContext(user: UserIdentifier) {
 	return prisma.userProfile.findUniqueOrThrow({
 		where: {

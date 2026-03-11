@@ -2,6 +2,7 @@ import type { CreateUserProfileInput, UpdateUserProfileInput, UserIdentifier, Us
 import {
 	createUserProfile,
 	getUserContext,
+	getUserFromSelf,
 	getUserProfileRecord,
 	getUsers,
 	updateUserProfile,
@@ -14,6 +15,10 @@ const userProfileErrors = new PrismaErrorHandler({
 	entity: "User Profile",
 	notFoundMessage: "User profile not found.",
 })
+
+export async function getUserRecord(user: UserIdentifier) {
+	return userProfileErrors.exec(() => getUserFromSelf(user))
+}
 
 export async function getUserProfile(user: UserIdentifier) {
 	return userProfileErrors.exec(() => getUserProfileRecord(user))

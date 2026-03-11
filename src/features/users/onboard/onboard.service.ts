@@ -1,4 +1,5 @@
 import { updateOnboard, getOnboard } from "@/features/users/onboard/onboard.repo";
+import { getUserFromSelf } from "@/features/users/profile/user-profile.repo";
 import { getUserAccessContext } from "@/features/users/profile/user-profile.service";
 import { PrismaErrorHandler } from "@/helpers/prisma";
 import { logger } from "@/lib";
@@ -11,15 +12,15 @@ const withOnboardErrors = new PrismaErrorHandler({
 type Action = "get" | "set"
 
 export async function onBoardOrchestrator(action: Action, user: UserIdentifier) {
-    const ctx = await getUserAccessContext(user);
+    const ctx = await getUserFromSelf(user);
 
     return withOnboardErrors.exec(async () => {
 
         switch(action) {
             case "get":
-                return await getOnboard(ctx.userId);
+                return await getOnboard(ctx.id);
             case "set":
-                return updateOnboard(ctx.userId)
+                return updateOnboard(ctx.id)
             default:
                 logger.error("Invalid Action.", {
                     action

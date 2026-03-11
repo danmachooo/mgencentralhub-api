@@ -3,10 +3,6 @@ import z from "zod"
 
 export const updateUserProfileSchema = createUserProfileSchema
 	.partial()
-	.omit({
-		roleId: true
-	})
 	.extend({
 		name: z.string().min(1).max(30)
 	})
-

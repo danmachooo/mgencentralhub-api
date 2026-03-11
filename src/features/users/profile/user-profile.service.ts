@@ -28,7 +28,7 @@ export async function getUserAccessContext(user: UserIdentifier) {
 	return userProfileErrors.exec(() => getUserContext(user))
 }
 
-export async function createUser(userProfile: CreateUserProfileInput) {
+export async function createUser(userProfile: Omit<CreateUserProfileInput, "roleId">) {
 	return userProfileErrors.exec(async () => {
 		const created = await createUserProfile(userProfile)
 		await invalidateUserProfileListCache()

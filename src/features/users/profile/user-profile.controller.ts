@@ -1,7 +1,7 @@
-import { getUserInfo, getUserProfile, updateUser } from "@/features/users/profile/user-profile.service"
+import { createUser, getUserInfo, getUserProfile, updateUser } from "@/features/users/profile/user-profile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
-import { userIdentifierSchema, userProfileQuerySchema } from "@/schema"
+import { CreateUserProfileInput, UserIdentifier, userIdentifierSchema, userProfileQuerySchema } from "@/schema"
 import { updateUserProfileSchema } from "@/schema/users/profile/update-user-profile.schema"
 import type { HttpContext } from "@/types/shared"
 
@@ -11,6 +11,19 @@ export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 	const { users, total } = await getUserInfo(query)
 
 	return sendPaginatedResponse(http, { data: users, total }, query, "Users has been retrieved.")
+})
+
+export const createUserHandler = asyncHandler(async (http: HttpContext) => {
+	const user: UserIdentifier = userIdentifierSchema.parse(http.req.user);
+
+
+	const created = await createUser(user)
+
+	return http.res.status(201).json({
+		success: true,
+		message: "User has been created.",
+		data: created
+	})
 })
 
 export const getUserProfileHandler = asyncHandler(async (http: HttpContext) => {

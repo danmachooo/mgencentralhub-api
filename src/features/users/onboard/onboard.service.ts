@@ -2,7 +2,7 @@ import { updateOnboard, getOnboard } from "@/features/users/onboard/onboard.repo
 import {  getUserRecord } from "@/features/users/profile/user-profile.service";
 import { PrismaErrorHandler } from "@/helpers/prisma";
 import { logger } from "@/lib";
-import { UserIdentifier } from "@/schema";
+import type { UserIdentifier } from "@/schema";
 
 const withOnboardErrors = new PrismaErrorHandler({
     entity: "User"

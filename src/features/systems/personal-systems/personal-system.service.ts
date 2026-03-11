@@ -56,7 +56,7 @@ export async function createOwnSystem(
 	const ctx = await getUserAccessContext(creator)
 
 	return personalSystemErrors.exec(async () => {
-		const created = await createPersonalSystem(ctx.userId, data, null)
+		const created = await createPersonalSystem(ctx.id, data, null)
 
 		let imageKey: string | null = null
 
@@ -64,15 +64,15 @@ export async function createOwnSystem(
 			try {
 				imageKey = await uploadFile(file, "personal_systems")
 			} catch (uploadErr) {
-				await hardDeletePersonalSystem(ctx.userId, created.id)
+				await hardDeletePersonalSystem(ctx.id, created.id)
 				throw uploadErr
 			}
 		}
 
 		if (imageKey) {
-			await updateOnlyPersonalSystemImage(created.id, ctx.userId, imageKey)
+			await updateOnlyPersonalSystemImage(created.id, ctx.id, imageKey)
 		}
-		await invalidatePersonalSystemCollectionCaches(ctx.userId)
+		await invalidatePersonalSystemCollectionCaches(ctx.id)
 
 		return created
 	})

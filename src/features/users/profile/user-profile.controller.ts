@@ -1,7 +1,8 @@
 import { createUser, getUserInfo, getUserProfile, updateUser } from "@/features/users/profile/user-profile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
 import { asyncHandler } from "@/middlewares"
-import { CreateUserProfileInput, UserIdentifier, userIdentifierSchema, userProfileQuerySchema } from "@/schema"
+import type { UserIdentifier} from "@/schema";
+import { userIdentifierSchema, userProfileQuerySchema } from "@/schema"
 import { updateUserProfileSchema } from "@/schema/users/profile/update-user-profile.schema"
 import type { HttpContext } from "@/types/shared"
 

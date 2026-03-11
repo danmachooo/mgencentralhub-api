@@ -139,7 +139,7 @@ export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) =
 	const query = systemQuerySchema.parse(http.req.query)
 	const { role, department } = http.req.user
 
-	const departmentId = role.name.toUpperCase() === "ADMIN" ? null : (department?.id ?? "NO_DEPARTMENT")
+	const departmentId = role?.name.toUpperCase() === "ADMIN" ? null : (department?.id ?? "NO_DEPARTMENT")
 
 	const { systems, total } = await getCompanySystems(query, departmentId)
 

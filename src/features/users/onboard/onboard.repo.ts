@@ -1,5 +1,4 @@
 import { prisma } from "@/lib";
-import { UserIdentifier } from "@/schema";
 
 export async function updateOnboard(userId: string) {
     const onboarded = await prisma.user.update({

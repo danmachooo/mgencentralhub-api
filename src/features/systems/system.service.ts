@@ -60,7 +60,7 @@ export async function createCompanySystem(
 	const ctx = await getUserAccessContext(creator)
 
 	return systemErrors.exec(async () => {
-		const created = await createSystem(ctx.userId, data, null)
+		const created = await createSystem(ctx.id, data, null)
 
 		let imageKey: string | null = null
 		if (file) {
@@ -83,7 +83,7 @@ export async function createCompanySystem(
 export async function createManyCompanySystems(creator: CreatorIdentifier, data: CreateManySystemInput) {
 	const ctx = await getUserAccessContext(creator)
 	return systemErrors.exec(async () => {
-		const created = await createManySystem(ctx.userId, data)
+		const created = await createManySystem(ctx.id, data)
 		await invalidateSystemCollectionCaches()
 		return created
 	})

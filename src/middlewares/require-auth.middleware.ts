@@ -2,9 +2,7 @@ import { auth } from "@/lib/auth"
 import { asyncHandler } from "@/middlewares/async-handler.middleware"
 import type { HttpContext } from "@/types/shared"
 import { UnauthorizedError } from "@/errors"
-import { toFetchHeaders } from "@/helpers/shared"
 import { getUserAccessContext } from "@/features/users/profile/user-profile.service"
-import { logger } from "@/lib"
 import { fromNodeHeaders } from "better-auth/node"
 
 /**
@@ -14,12 +12,6 @@ import { fromNodeHeaders } from "better-auth/node"
  * - Validate the incoming request session
  * - Extract the authenticated user ID
  * - Attach the user to `req.user` for downstream handlers
- *
- * Behavior:
- * - Converts Express headers into Fetch-compatible headers
- *   using {@link toFetchHeaders}
- * - Calls Better Auth's `getSession` API
- * - Responds with HTTP 401 if authentication fails
  *
  * On success:
  * - `req.user` is populated with `{ id: string }`

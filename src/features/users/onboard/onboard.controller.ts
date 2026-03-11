@@ -1,7 +1,7 @@
 import { onBoardOrchestrator } from "@/features/users/onboard/onboard.service";
 import { asyncHandler } from "@/middlewares";
 import { userIdentifierSchema } from "@/schema";
-import { HttpContext } from "@/types/shared";
+import type { HttpContext } from "@/types/shared";
 
 
 export const setOnboardStatusController = asyncHandler(async (http: HttpContext) => {

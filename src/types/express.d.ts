@@ -5,11 +5,11 @@ declare global {
 		interface Request {
 			user: {
 				id: string
-				role: {
+				role?: {
 					id: string
 					name: string
 				}
-				department: {
+				department?: {
 					id: string
 					name: string
 				} | null // employee may not have a department

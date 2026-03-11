@@ -61,7 +61,11 @@ export async function createUserProfile(data: Omit<CreateUserProfileInput, "role
 }
 
 export async function getUserProfileRecord(user: UserIdentifier) {
-	return prisma.userProfile.findUniqueOrThrow({ where: { userId: user.id } })
+	return prisma.userProfile.findUniqueOrThrow({
+		 where: { userId: user.id }, include: {
+		role: true,
+		department: true
+	} })
 }
 
 export async function getUserFromSelf(user: UserIdentifier) {

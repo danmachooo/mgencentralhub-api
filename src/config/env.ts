@@ -10,6 +10,10 @@ const envSchema = z
 
 		// ENVIRONMENT
 		NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+
+		// ALLOWED CORS
+		ALLOWED_CORS_ORIGIN: z.string().min(1),
+
 		ENABLE_BOOTSTRAP: z.coerce.boolean().default(false),
 
 		// NEON (CLOUD)
@@ -64,7 +68,7 @@ const envSchema = z
 
 		if (!val.BOOTSTRAP_ADMIN_NAME) {
 			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
+				code: "custom",
 				path: ["BOOTSTRAP_ADMIN_NAME"],
 				message: "Required when ENABLE_BOOTSTRAP is true",
 			})
@@ -72,7 +76,7 @@ const envSchema = z
 
 		if (!val.BOOTSTRAP_ADMIN_EMAIL) {
 			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
+				code: "custom",
 				path: ["BOOTSTRAP_ADMIN_EMAIL"],
 				message: "Required when ENABLE_BOOTSTRAP is true",
 			})
@@ -80,7 +84,7 @@ const envSchema = z
 
 		if (!val.BOOTSTRAP_ADMIN_PASSWORD) {
 			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
+				code: "custom",
 				path: ["BOOTSTRAP_ADMIN_PASSWORD"],
 				message: "Required when ENABLE_BOOTSTRAP is true",
 			})

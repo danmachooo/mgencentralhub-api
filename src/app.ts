@@ -11,6 +11,7 @@ import path from "path"
 const frontendURL = appConfig.frontend.url
 const backendURL = appConfig.app.url
 const storageMode = appConfig.storage.mode
+const allowedCorsOrigin = appConfig.app.allowedCorsOrigin
 
 const app = express()
 
@@ -19,7 +20,7 @@ app.set("trust proxy", 1) // REQUIRED BEHIND RENDER / CLOUDFLARE
 // Define cors
 app.use(
 	cors({
-		origin: [frontendURL, backendURL],
+		origin: allowedCorsOrigin.split("|"),
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],

@@ -6,11 +6,10 @@ import OnboardRouter from "@/routes/users/onboard.route"
 
 const router = Router()
 
-router.use(requireRole("ADMIN"))
 
-router.get("/", getUsersHandler)
-router.patch("/:id", updateUserHandler)
-router.get("/profile", getUserProfileHandler)
+router.get("/", requireRole("ADMIN"),getUsersHandler)
+router.patch("/:id",requireRole("ADMIN"), updateUserHandler)
+router.get("/profile",requireRole("ADMIN"), getUserProfileHandler)
 
 
 // Plug onboard router

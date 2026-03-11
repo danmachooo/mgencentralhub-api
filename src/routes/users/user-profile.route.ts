@@ -1,4 +1,4 @@
-import { getUserProfileHandler, getUsersHandler, updateUserHandler } from "@/features/users/profile/user-profile.controller"
+import { createUserHandler, getUserProfileHandler, getUsersHandler, updateUserHandler } from "@/features/users/profile/user-profile.controller"
 import { requireRole } from "@/middlewares"
 import { Router } from "express"
 
@@ -8,6 +8,7 @@ const router = Router()
 
 
 router.get("/", requireRole("ADMIN"),getUsersHandler)
+router.post("/", createUserHandler)
 router.patch("/:id",requireRole("ADMIN"), updateUserHandler)
 router.get("/profile", getUserProfileHandler)
 

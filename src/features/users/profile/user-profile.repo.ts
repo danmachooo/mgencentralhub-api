@@ -29,50 +29,53 @@ const USER_SHAPE: Prisma.UserProfileSelect = {
 
 export async function createUserProfile(data: CreateUserProfileInput) {
 	return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-		let profile = await tx.userProfile.findUnique({
+		const existingProfile = await tx.userProfile.findUnique({
 			where: {
-				userId: data.id
-			}
+				userId: data.id,
+			},
 		})
-		if(!profile) {
-			const roleId = data.roleId
-				? data.roleId
-				: (
-					await tx.role.findUniqueOrThrow({
-						where: {
-							name: "EMPLOYEE",
-						},
-						select: {
-							id: true
-						}
-					})
-				).id
-
-			profile = await tx.userProfile.create({
-				data:{
-					userId: data.id,
-					roleId,
-					departmentId: data.departmentId,
-				}
-			})
+		if (!existingProfile) {
+			return existingProfile
 		}
 
-		return profile
+		let roleId = data.roleId
+
+		if (!roleId) {
+			const defaultRole = await tx.role.findUniqueOrThrow({
+				where: { name: "EMPLOYEE" },
+				select: { id: true },
+			})
+			roleId = defaultRole.id
+		}
+
+		return await tx.userProfile.create({
+			data: {
+				userId: data.id,
+				roleId,
+				departmentId: data.departmentId,
+			},
+			include: {
+				role: true,
+				department: true,
+			},
+		})
 	})
 }
 
 export async function getUserProfileRecord(user: UserIdentifier) {
 	return await prisma.userProfile.findUniqueOrThrow({
-		 where: { userId: user.id }, include: {
-		role: true,
-		department: true
-	} })
+		where: { userId: user.id },
+		include: {
+			role: true,
+			department: true,
+		},
+	})
 }
 
 export async function getUserFromSelf(user: UserIdentifier) {
 	return await prisma.user.findUniqueOrThrow({
 		where: {
-			id: user.id
+			id: user.id,
 		},
 	})
 }
@@ -86,39 +89,38 @@ export async function getUserContext(user: UserIdentifier) {
 			profile: {
 				include: {
 					role: true,
-					department: true
-				}
-			}
-		}
+					department: true,
+				},
+			},
+		},
 	})
 }
 
-
 export async function updateUserProfile(id: string, userProfile: UpdateUserProfileInput) {
 	return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-		if(userProfile.name) {
+		if (userProfile.name) {
 			await tx.user.update({
 				where: {
-					id
-				}, 
+					id,
+				},
 				data: {
-					name: userProfile.name
-				}
+					name: userProfile.name,
+				},
 			})
 		}
 
 		return tx.userProfile.update({
 			where: {
-				userId: id
-			}, 
+				userId: id,
+			},
 			data: {
 				roleId: userProfile.roleId,
-				departmentId: userProfile.departmentId
+				departmentId: userProfile.departmentId,
 			},
 			select: {
 				updatedAt: true,
-				userId: true
-			}
+				userId: true,
+			},
 		})
 	})
 }

@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth"
 import { toFetchHeaders } from "@/helpers/shared"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
 import { signInSchema, signUpSchema } from "@/features/auth-test/schema"
 import { asyncHandler } from "@/middlewares"
 import type { HttpContext } from "@/types/shared/http-context.type"
@@ -69,10 +70,7 @@ export const signUpHandler = asyncHandler(async (http: HttpContext) => {
 		roleId,
 	})
 
-	return http.res.status(201).json({
-		success: true,
-		message: "User has been registered.",
-	})
+	return sendResponse(http.res, 201, "User has been registered.")
 })
 
 export const signInHandler = asyncHandler(async (http: HttpContext) => {
@@ -89,18 +87,10 @@ export const signInHandler = asyncHandler(async (http: HttpContext) => {
 		http.res.append("set-cookie", setCookie)
 	}
 
-	return http.res.status(200).json({
-		success: true,
-		message: "User is logged in..",
-		data: response,
-	})
+	return sendResponse(http.res, 200, "User is logged in..", response)
 })
 
 export const getSessionHandler = asyncHandler(async (http: HttpContext) => {
 	const session = await getSession(http.req.headers)
-	return http.res.status(200).json({
-		success: true,
-		message: "Current Session has been retrieved",
-		session,
-	})
+	return sendResponse(http.res, 200, "Current Session has been retrieved", { session })
 })

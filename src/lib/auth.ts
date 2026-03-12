@@ -16,33 +16,32 @@ export const auth = betterAuth({
 	trustedOrigins: [backendURL, frontendURL],
 
 	secondaryStorage: {
-		get: async (key) => {
+		get: async key => {
 			return await redis.get(key)
 		},
 		set: async (key, value, ttl) => {
-			return ttl ? await redis.set(key, value, {ex: ttl}) : await redis.set(key,value)
+			return ttl ? await redis.set(key, value, { ex: ttl }) : await redis.set(key, value)
 		},
-		delete: async (key) => {
+		delete: async key => {
 			await redis.del(key)
-		}
+		},
 	},
 
 	advanced: {
 		ipAddress: {
 			ipv6Subnet: 64,
-			ipAddressHeaders: ["x-forwarded-for"]
+			ipAddressHeaders: ["x-forwarded-for"],
 		},
 		defaultCookieAttributes: {
 			sameSite: "none",
-			secure: true
-		}
+			secure: true,
+		},
 	},
 
 	rateLimit: {
 		enabled: appConfig.app.nodeEnv !== "development",
 		window: 60,
-		max: 100
-
+		max: 100,
 	},
 
 	emailAndPassword: {

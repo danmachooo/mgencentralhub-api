@@ -25,7 +25,6 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
 		],
 	})
 
-
 	const validLabels: RequestLabels[] = [
 		"PUBLIC_INFO",
 		"EVENT",
@@ -34,7 +33,6 @@ export async function classifyIntent(prompt: PromptInput): Promise<RequestLabels
 		"STATUS_REPORT",
 		"UNKNOWN",
 	]
-
 
 	const isLabel = (v: string): v is RequestLabels => validLabels.includes(v as RequestLabels)
 

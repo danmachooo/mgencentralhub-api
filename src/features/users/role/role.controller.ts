@@ -10,6 +10,7 @@ import {
 	updateUserRole,
 } from "@/features/users/role/role.service"
 import { asyncHandler } from "@/middlewares"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
 import { createManyRoleSchema, createRoleSchema, updateRoleSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"
 import { roleIdentifierSchema } from "@/schema/users/role/role-identifier.schema"
@@ -19,13 +20,7 @@ export const createUserRoleHandler = asyncHandler(async (http: HttpContext) => {
 
 	const roleCreated = await createUserRole(role)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "Role has been created.",
-		data: {
-			roleCreated,
-		},
-	})
+	return sendResponse(http.res, 201, "Role has been created.", { roleCreated })
 })
 
 export const createManyUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -33,13 +28,7 @@ export const createManyUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	const rolesCreated = await createManyUserRoles(roles)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Roles has been created.",
-		data: {
-			rolesCreated,
-		},
-	})
+	return sendResponse(http.res, 200, "Roles has been created.", { rolesCreated })
 })
 
 export const updateUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -48,13 +37,7 @@ export const updateUserRoleHandler = asyncHandler(async (http: HttpContext) => {
 
 	const roleUpdated = await updateUserRole(role, body)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Role has been updated.",
-		data: {
-			roleUpdated,
-		},
-	})
+	return sendResponse(http.res, 200, "Role has been updated.", { roleUpdated })
 })
 
 export const softDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -62,10 +45,7 @@ export const softDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await softDeleteUserRole(role)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Role has been deleted.",
-	})
+	return sendResponse(http.res, 200, "Role has been deleted.")
 })
 
 export const restoreUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -73,13 +53,7 @@ export const restoreUserRoleHandler = asyncHandler(async (http: HttpContext) => 
 
 	const restoredRole = await restoreUserRole(role)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Role has been restored.",
-		data: {
-			restoredRole,
-		},
-	})
+	return sendResponse(http.res, 200, "Role has been restored.", { restoredRole })
 })
 
 export const hardDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -87,23 +61,13 @@ export const hardDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await hardDeleteUserRole(role)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Role has been permanently deleted.",
-	})
+	return sendResponse(http.res, 200, "Role has been permanently deleted.")
 })
 
 export const getActiveUserRolesHandler = asyncHandler(async (http: HttpContext) => {
 	const { roles, total } = await getActiveUserRoles()
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Active roles has been retrieved.",
-		data: {
-			roles,
-			total,
-		},
-	})
+	return sendResponse(http.res, 200, "Active roles has been retrieved.", { roles, total })
 })
 
 export const getActiveUserRoleByIdHandler = asyncHandler(async (http: HttpContext) => {
@@ -111,24 +75,11 @@ export const getActiveUserRoleByIdHandler = asyncHandler(async (http: HttpContex
 
 	const role = await getActiveUserRoleById(_role)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Active Role has been retrieved.",
-		data: {
-			role,
-		},
-	})
+	return sendResponse(http.res, 200, "Active Role has been retrieved.", { role })
 })
 
 export const getInactiveUserRolesHandler = asyncHandler(async (http: HttpContext) => {
 	const { roles, total } = await getInactiveUserRoles()
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Inactive roles has been retrieved.",
-		data: {
-			roles,
-			total,
-		},
-	})
+	return sendResponse(http.res, 200, "Inactive roles has been retrieved.", { roles, total })
 })

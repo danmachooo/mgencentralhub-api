@@ -2,4 +2,7 @@ import z from "zod"
 import { type CreatePersonalSystemInput, createPersonalSystemSchema } from "@/schema"
 import { uniqueBy } from "@/helpers/shared/unique-by.helper"
 
-export const createManyPersonalSystemSchema = z.array(createPersonalSystemSchema).min(1).superRefine(uniqueBy<CreatePersonalSystemInput>("name", true))
+export const createManyPersonalSystemSchema = z
+	.array(createPersonalSystemSchema)
+	.min(1)
+	.superRefine(uniqueBy<CreatePersonalSystemInput>("name", true))

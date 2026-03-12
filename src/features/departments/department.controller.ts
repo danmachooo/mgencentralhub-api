@@ -15,19 +15,14 @@ import { departmentIdentifierSchema } from "@/schema/departments/department-iden
 import type { HttpContext } from "@/types/shared"
 import { departmentQuerySchema } from "@/schema/departments/department-query.schema"
 import { sendPaginatedResponse } from "@/helpers/shared"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
 
 export const createCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const body = createDepartmentSchema.parse(http.req.body)
 
 	const createdDepartment = await createCompanyDepartment(body)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "Department has been created.",
-		data: {
-			id: createdDepartment.id,
-		},
-	})
+	return sendResponse(http.res, 201, "Department has been created.", createdDepartment)
 })
 
 export const createManyCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -35,13 +30,7 @@ export const createManyCompanyDepartmentHandler = asyncHandler(async (http: Http
 
 	const createdDepartments = await createManyCompanyDepartment(body)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "Department has been created.",
-		data: {
-			createdDepartments,
-		},
-	})
+	return sendResponse(http.res, 201, "Departments has been created.", createdDepartments)
 })
 
 export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -50,46 +39,30 @@ export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) =>
 
 	const updatedDepartment = await updateCompanyDepartment(department, body)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Department has been updated.",
-		data: {
-			id: updatedDepartment.id,
-		},
-	})
+	return sendResponse(http.res, 200, "Department has been updated.", updatedDepartment)
 })
 
 export const restoreCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const department = departmentIdentifierSchema.parse(http.req.params)
 
-	await restoreCompanyDepartment(department)
+	const restored = await restoreCompanyDepartment(department)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Department has been restored.",
-	})
+	return sendResponse(http.res, 200, "Department has been restored", restored)
 })
 
 export const softDeleteCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const department = departmentIdentifierSchema.parse(http.req.params)
 
-	await softDeleteCompanyDepartment(department)
+	const softDeleted = await softDeleteCompanyDepartment(department)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Department has been deleted.",
-	})
+	return sendResponse(http.res, 200, "Department has been deleted.", softDeleted)
 })
 
 export const hardDeleteCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const department = departmentIdentifierSchema.parse(http.req.params)
 
-	await hardDeleteCompanyDepartment(department)
-
-	return http.res.status(200).json({
-		success: true,
-		message: "Department has been permanently deleted.",
-	})
+	const hardDeleted = await hardDeleteCompanyDepartment(department)
+	return sendResponse(http.res, 200, "Department has been permanently deleted.", hardDeleted)
 })
 
 export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContext) => {
@@ -109,15 +82,9 @@ export const getSoftDeletedCompanyDepartmentsHandler = asyncHandler(async (http:
 })
 
 export const getCompanyDepartmentbyIdHandler = asyncHandler(async (http: HttpContext) => {
-	const { id } = departmentIdentifierSchema.parse(http.req.params)
+	const _department = departmentIdentifierSchema.parse(http.req.params)
 
-	const department = await getCompanyDepartmentbyId({ id })
+	const department = await getCompanyDepartmentbyId(_department)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Department has been retrieved.",
-		data: {
-			department,
-		},
-	})
+	return sendResponse(http.res, 200, "Department has been retrieved.", department)
 })

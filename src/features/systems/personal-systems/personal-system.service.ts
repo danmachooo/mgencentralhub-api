@@ -87,14 +87,14 @@ export async function updateOwnSystem(
 
 	return personalSystemErrors.exec(async () => {
 		const updated = await updatePersonalSystem(system.id, creator.id, data, null)
-		
+
 		if (file) {
 			const imageKey = await uploadFile(file, "personal_systems")
 
 			const oldImageKey = exisiting.image
 			await updateOnlyPersonalSystemImage(updated.id, creator.id, imageKey)
 
-			if(oldImageKey) {
+			if (oldImageKey) {
 				await deleteFile(oldImageKey)
 			}
 		}

@@ -8,8 +8,6 @@ import { errorHandler, notFoundHandler } from "@/middlewares"
 import { appConfig } from "@/config/app-config"
 import path from "path"
 
-const frontendURL = appConfig.frontend.url
-const backendURL = appConfig.app.url
 const storageMode = appConfig.storage.mode
 const allowedCorsOrigin = appConfig.app.allowedCorsOrigin
 
@@ -28,12 +26,12 @@ app.use(
 )
 
 // Define Helmet
-app.use(helmet({
-	contentSecurityPolicy: false,
-	crossOriginEmbedderPolicy: false
-}))
-
-
+app.use(
+	helmet({
+		contentSecurityPolicy: false,
+		crossOriginEmbedderPolicy: false,
+	})
+)
 
 // Body parsers
 app.use(express.json())

@@ -32,7 +32,10 @@ export const rateLimit = (options: RateLimitOptions) =>
 		const ip = getRequestIp(http.req)
 
 		try {
-			if (options.blockDurationMs && (identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")) {
+			if (
+				options.blockDurationMs &&
+				(identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")
+			) {
 				const blocked = await isIpBlocked(keyPrefix, ip)
 				if (blocked) {
 					throw new AppError(429, options.message ?? "Too many requests. Please try again later.", {
@@ -61,7 +64,10 @@ export const rateLimit = (options: RateLimitOptions) =>
 			if (totalInWindow > options.max) {
 				http.res.setHeader("Retry-After", String(retryAfterSeconds))
 
-				if (options.blockDurationMs && (identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")) {
+				if (
+					options.blockDurationMs &&
+					(identity === "ip" || identity === "user_or_ip" || identity === "user_and_ip")
+				) {
 					await blockIp(keyPrefix, ip, options.blockDurationMs)
 				}
 

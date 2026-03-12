@@ -13,7 +13,7 @@ export const appConfig = {
 
 		/** Current runtime environment (development | production | test) */
 		nodeEnv: env.NODE_ENV,
-		allowedCorsOrigin: env.ALLOWED_CORS_ORIGIN
+		allowedCorsOrigin: env.ALLOWED_CORS_ORIGIN,
 	},
 	/**
 	 * Bootstrap configuration

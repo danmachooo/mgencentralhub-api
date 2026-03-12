@@ -101,7 +101,7 @@ export async function updateCompanySystem(
 		if (file) {
 			// Upload image first
 			const newImageKey = await uploadFile(file, "systems")
-			
+
 			// Keep track of old image
 			const oldImageKey = existing.image
 
@@ -109,10 +109,9 @@ export async function updateCompanySystem(
 			await updateOnlySystemImage(updated.id, newImageKey)
 
 			// Then delete the old one
-			if(oldImageKey) {
+			if (oldImageKey) {
 				await deleteFile(existing.image)
 			}
-
 		}
 		await invalidateSystemCache(updated.id)
 		return updated
@@ -148,6 +147,7 @@ export async function softDeleteCompanySystem(system: SystemIdentifier) {
 	return systemErrors.exec(async () => {
 		const _system = await softDeleteSystem(system.id)
 		await invalidateSystemCache(_system.id)
+		return _system
 	})
 }
 

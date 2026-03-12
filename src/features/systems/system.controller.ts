@@ -24,6 +24,7 @@ import {
 	updateSystemSchema,
 } from "@/schema"
 import { sendPaginatedResponse } from "@/helpers/shared"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
 
 export const createCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const creator = creatorIdentifierSchema.parse(http.req.user)
@@ -33,13 +34,7 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 	const systemCreated = await createCompanySystem(creator, body, file)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "System has been created.",
-		data: {
-			systemCreated,
-		},
-	})
+	return sendResponse(http.res, 201, "System has been created.", systemCreated)
 })
 
 export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -48,13 +43,7 @@ export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpCon
 
 	const systemsCreated = await createManyCompanySystems(creator, body)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "Systems has been created.",
-		data: {
-			systemsCreated,
-		},
-	})
+	return sendResponse(http.res, 201, "Systems has been created.", systemsCreated)
 })
 
 export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -64,25 +53,21 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 	const systemUpdated = await updateCompanySystem(system, body, file)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been updated.",
-		data: {
-			systemUpdated,
-		},
-	})
+	return sendResponse(http.res, 200, "System has been updated.", systemUpdated)
 })
 
 export const toggleFavoriteSystemHandler = asyncHandler(async (http: HttpContext) => {
 	const user = creatorIdentifierSchema.parse(http.req.user)
 	const system = systemIdentifierSchema.parse(http.req.params)
 
-	const { favorited } = await toggleFavoriteSystem(user, system)
+	const systemFavorite = await toggleFavoriteSystem(user, system)
 
-	return http.res.status(200).json({
-		success: true,
-		message: favorited ? "Added to favorites." : "Removed from favorites",
-	})
+	return sendResponse(
+		http.res,
+		200,
+		systemFavorite.favorited ? "Added to favorites" : "Removed from favorites",
+		systemFavorite
+	)
 })
 
 export const isFavoriteSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -91,11 +76,8 @@ export const isFavoriteSystemHandler = asyncHandler(async (http: HttpContext) =>
 
 	const favorited = await checkIfSystemIsFavorite(user, system)
 
-	return http.res.status(200).json({
-		success: true,
-		data: {
-			favorited
-		},
+	return sendResponse(http.res, 200, "System favorite status has been retrieved successfully.", {
+		isFavorite: favorited,
 	})
 })
 
@@ -104,35 +86,23 @@ export const restoreCompanySystemHandler = asyncHandler(async (http: HttpContext
 
 	const { restored } = await restoreCompanySystem(system)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been restored.",
-		data: {
-			restored,
-		},
-	})
+	return sendResponse(http.res, 200, "System has been restored.", restored)
 })
 
 export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = systemIdentifierSchema.parse(http.req.params)
 
-	await softDeleteCompanySystem(system)
+	const softDeleted = await softDeleteCompanySystem(system)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been deleted.",
-	})
+	return sendResponse(http.res, 200, "System has been deleted.", softDeleted)
 })
 
 export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
 	const system = systemIdentifierSchema.parse(http.req.params)
 
-	await hardDeleteCompanySystem(system)
+	const hardDeleted = await hardDeleteCompanySystem(system)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been permanently deleted.",
-	})
+	return sendResponse(http.res, 200, "System has been permanently deleted.", hardDeleted)
 })
 
 export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -158,13 +128,7 @@ export const getFavoriteCompanySystemsHandler = asyncHandler(async (http: HttpCo
 export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
 	const systemParam = systemIdentifierSchema.parse(http.req.params)
 	const { system } = await getCompanySystemById(systemParam)
-	return http.res.status(200).json({
-		success: true,
-		message: "System has been retrieved.",
-		data: {
-			system,
-		},
-	})
+	return sendResponse(http.res, 200, "System has been retrieved.", { system })
 })
 
 export const getFavoriteCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
@@ -173,13 +137,7 @@ export const getFavoriteCompanySystemByIdHandler = asyncHandler(async (http: Htt
 
 	const { favorite } = await getFavoriteCompanySystemById(user, system)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "Favorite System has been retrieved.",
-		data: {
-			favorite,
-		},
-	})
+	return sendResponse(http.res, 200, "Favorite System has been retrieved.", { favorite })
 })
 
 export const getDeletedCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {

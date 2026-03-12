@@ -8,9 +8,7 @@ import { appConfig } from "@/config/app-config"
 
 const router = Router()
 
-
-
-if(appConfig.app.nodeEnv === "development") {
+if (appConfig.app.nodeEnv === "development") {
 	router.get("/redis-test", async (_req, res) => {
 		await redis.set("health:test", "ok", { ex: 60 })
 		const value = await redis.get("health:test")
@@ -73,6 +71,5 @@ router.get("/", (_req, res) => {
 		message: "OK",
 	})
 })
-
 
 export default router

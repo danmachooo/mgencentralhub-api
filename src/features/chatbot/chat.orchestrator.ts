@@ -1,10 +1,15 @@
 import { saveMessage } from "@/features/chatbot/chatbot.repo"
 import { PrismaErrorHandler } from "@/helpers/prisma"
 import { classifyIntent } from "@/features/chatbot/services/intent.service"
-import { handlePublicInfo, handleDepartmentSystems, handlePersonalSystems, handleStatusReport, handleUnknownIntent } from "@/features/chatbot/services/chat.service"
-import type {  PromptInput, UserIdentifier } from "@/schema"
+import {
+	handlePublicInfo,
+	handleDepartmentSystems,
+	handlePersonalSystems,
+	handleStatusReport,
+	handleUnknownIntent,
+} from "@/features/chatbot/services/chat.service"
+import type { PromptInput, UserIdentifier } from "@/schema"
 import type { RequestLabels } from "@/features/chatbot/services/intent.service"
-
 
 const employeeAssistantErrors = new PrismaErrorHandler({
 	entity: "Chatbot",

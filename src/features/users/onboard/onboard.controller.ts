@@ -1,29 +1,21 @@
-import { onBoardOrchestrator } from "@/features/users/onboard/onboard.service";
-import { asyncHandler } from "@/middlewares";
-import { userIdentifierSchema } from "@/schema";
-import type { HttpContext } from "@/types/shared";
-
+import { onBoardOrchestrator } from "@/features/users/onboard/onboard.service"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
+import { asyncHandler } from "@/middlewares"
+import { userIdentifierSchema } from "@/schema"
+import type { HttpContext } from "@/types/shared"
 
 export const setOnboardStatusController = asyncHandler(async (http: HttpContext) => {
-    const user = userIdentifierSchema.parse(http.req.body);
+	const user = userIdentifierSchema.parse(http.req.body)
 
-    const onboarded = await onBoardOrchestrator("set", user);
+	const onboarded = await onBoardOrchestrator("set", user)
 
-    return http.res.status(200).json({
-        success: true,
-        message: "User has been onboarded",
-        data: onboarded
-    })
+	return sendResponse(http.res, 200, "User has been onboarded", onboarded)
 })
 
 export const getOnboardStatusController = asyncHandler(async (http: HttpContext) => {
-    const user = userIdentifierSchema.parse(http.req.user);
+	const user = userIdentifierSchema.parse(http.req.user)
 
-    const onboarded = await onBoardOrchestrator("get", user);
+	const onboarded = await onBoardOrchestrator("get", user)
 
-    return http.res.status(200).json({
-        success: true,
-        message: "User's onboard status has been fetched.",
-        data: onboarded
-    })
+	return sendResponse(http.res, 200, "User's onboard status has been fetched.", onboarded)
 })

@@ -73,7 +73,8 @@ export async function createManySystem(id: string, systemsData: CreateManySystem
 				creatorId: id,
 			})),
 			select: {
-				id: true, name: true
+				id: true,
+				name: true,
 			},
 		})
 

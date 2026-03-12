@@ -14,7 +14,7 @@ type OwnSystemsResult = Awaited<ReturnType<typeof getOwnSystems>>
 
 export async function handleDepartmentSystems(user: UserIdentifier, prompt: PromptInput): Promise<string> {
 	const conversation = await getRecentConversations(user)
-	const {profile} = await getUserAccessContext(user)
+	const { profile } = await getUserAccessContext(user)
 	if (!profile?.department) {
 		throw new ValidationError("User department is required for department system intent.")
 	}

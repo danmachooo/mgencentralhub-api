@@ -1,7 +1,8 @@
 import { createUser, getUserInfo, getUserProfile, updateUser } from "@/features/users/profile/user-profile.service"
 import { sendPaginatedResponse } from "@/helpers/shared"
+import { sendResponse } from "@/helpers/shared/send-response.helper"
 import { asyncHandler } from "@/middlewares"
-import type { UserIdentifier} from "@/schema";
+import type { UserIdentifier } from "@/schema"
 import { userIdentifierSchema, userProfileQuerySchema } from "@/schema"
 import { updateUserProfileSchema } from "@/schema/users/profile/update-user-profile.schema"
 import type { HttpContext } from "@/types/shared"
@@ -15,25 +16,16 @@ export const getUsersHandler = asyncHandler(async (http: HttpContext) => {
 })
 
 export const createUserHandler = asyncHandler(async (http: HttpContext) => {
-	const user: UserIdentifier = userIdentifierSchema.parse(http.req.user);
-
+	const user: UserIdentifier = userIdentifierSchema.parse(http.req.user)
 
 	const created = await createUser(user)
 
-	return http.res.status(201).json({
-		success: true,
-		message: "User has been created.",
-		data: created
-	})
+	return sendResponse(http.res, 201, "User has been created.", created)
 })
 
 export const getUserProfileHandler = asyncHandler(async (http: HttpContext) => {
 	const profile = await getUserProfile(http.req.user)
-	return http.res.status(200).json({
-		data: { profile },
-		message: "User profile found.",
-		success: true,
-	})
+	return sendResponse(http.res, 200, "User profile found.", { profile })
 })
 
 export const updateUserHandler = asyncHandler(async (http: HttpContext) => {
@@ -42,11 +34,5 @@ export const updateUserHandler = asyncHandler(async (http: HttpContext) => {
 
 	const updatedUser = await updateUser(user, body)
 
-	return http.res.status(200).json({
-		success: true,
-		message: "User profile has been updated.",
-		data: {
-			updatedUser,
-		},
-	})
+	return sendResponse(http.res, 200, "User profile has been updated.", { updatedUser })
 })

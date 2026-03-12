@@ -10,5 +10,5 @@ export const chatbotHandler = asyncHandler(async (http: HttpContext) => {
 
 	const response = await employeeAssistant(user, prompt)
 
-	return sendResponse(http.res, 200, "Chat response generated.", response)
+	return sendResponse(http.res, true, 200, "Chat response generated.", response)
 })

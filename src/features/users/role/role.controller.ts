@@ -20,7 +20,7 @@ export const createUserRoleHandler = asyncHandler(async (http: HttpContext) => {
 
 	const roleCreated = await createUserRole(role)
 
-	return sendResponse(http.res, 201, "Role has been created.", { roleCreated })
+	return sendResponse(http.res, true, 201, "Role has been created.", { roleCreated })
 })
 
 export const createManyUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -28,7 +28,7 @@ export const createManyUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	const rolesCreated = await createManyUserRoles(roles)
 
-	return sendResponse(http.res, 200, "Roles has been created.", { rolesCreated })
+	return sendResponse(http.res, true, 200, "Roles has been created.", { rolesCreated })
 })
 
 export const updateUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -37,7 +37,7 @@ export const updateUserRoleHandler = asyncHandler(async (http: HttpContext) => {
 
 	const roleUpdated = await updateUserRole(role, body)
 
-	return sendResponse(http.res, 200, "Role has been updated.", { roleUpdated })
+	return sendResponse(http.res, true, 200, "Role has been updated.", { roleUpdated })
 })
 
 export const softDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -45,7 +45,7 @@ export const softDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await softDeleteUserRole(role)
 
-	return sendResponse(http.res, 200, "Role has been deleted.")
+	return sendResponse(http.res, true, 200, "Role has been deleted.")
 })
 
 export const restoreUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -53,7 +53,7 @@ export const restoreUserRoleHandler = asyncHandler(async (http: HttpContext) => 
 
 	const restoredRole = await restoreUserRole(role)
 
-	return sendResponse(http.res, 200, "Role has been restored.", { restoredRole })
+	return sendResponse(http.res, true, 200, "Role has been restored.", { restoredRole })
 })
 
 export const hardDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) => {
@@ -61,13 +61,13 @@ export const hardDeleteUserRoleHandler = asyncHandler(async (http: HttpContext) 
 
 	await hardDeleteUserRole(role)
 
-	return sendResponse(http.res, 200, "Role has been permanently deleted.")
+	return sendResponse(http.res, true, 200, "Role has been permanently deleted.")
 })
 
 export const getActiveUserRolesHandler = asyncHandler(async (http: HttpContext) => {
 	const { roles, total } = await getActiveUserRoles()
 
-	return sendResponse(http.res, 200, "Active roles has been retrieved.", { roles, total })
+	return sendResponse(http.res, true, 200, "Active roles has been retrieved.", { roles, total })
 })
 
 export const getActiveUserRoleByIdHandler = asyncHandler(async (http: HttpContext) => {
@@ -75,11 +75,11 @@ export const getActiveUserRoleByIdHandler = asyncHandler(async (http: HttpContex
 
 	const role = await getActiveUserRoleById(_role)
 
-	return sendResponse(http.res, 200, "Active Role has been retrieved.", { role })
+	return sendResponse(http.res, true, 200, "Active Role has been retrieved.", { role })
 })
 
 export const getInactiveUserRolesHandler = asyncHandler(async (http: HttpContext) => {
 	const { roles, total } = await getInactiveUserRoles()
 
-	return sendResponse(http.res, 200, "Inactive roles has been retrieved.", { roles, total })
+	return sendResponse(http.res, true, 200, "Inactive roles has been retrieved.", { roles, total })
 })

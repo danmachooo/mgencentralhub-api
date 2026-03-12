@@ -34,7 +34,7 @@ export const createCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 	const systemCreated = await createCompanySystem(creator, body, file)
 
-	return sendResponse(http.res, 201, "System has been created.", systemCreated)
+	return sendResponse(http.res, true, 201, "System has been created.", systemCreated)
 })
 
 export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -43,7 +43,7 @@ export const createManyCompanySystemsHandler = asyncHandler(async (http: HttpCon
 
 	const systemsCreated = await createManyCompanySystems(creator, body)
 
-	return sendResponse(http.res, 201, "Systems has been created.", systemsCreated)
+	return sendResponse(http.res, true, 201, "Systems has been created.", systemsCreated)
 })
 
 export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -53,7 +53,7 @@ export const updateCompanySystemHandler = asyncHandler(async (http: HttpContext)
 
 	const systemUpdated = await updateCompanySystem(system, body, file)
 
-	return sendResponse(http.res, 200, "System has been updated.", systemUpdated)
+	return sendResponse(http.res, true, 200, "System has been updated.", systemUpdated)
 })
 
 export const toggleFavoriteSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -64,6 +64,7 @@ export const toggleFavoriteSystemHandler = asyncHandler(async (http: HttpContext
 
 	return sendResponse(
 		http.res,
+		true,
 		200,
 		systemFavorite.favorited ? "Added to favorites" : "Removed from favorites",
 		systemFavorite
@@ -76,7 +77,7 @@ export const isFavoriteSystemHandler = asyncHandler(async (http: HttpContext) =>
 
 	const favorited = await checkIfSystemIsFavorite(user, system)
 
-	return sendResponse(http.res, 200, "System favorite status has been retrieved successfully.", {
+	return sendResponse(http.res, true, 200, "System favorite status has been retrieved successfully.", {
 		isFavorite: favorited,
 	})
 })
@@ -86,7 +87,7 @@ export const restoreCompanySystemHandler = asyncHandler(async (http: HttpContext
 
 	const { restored } = await restoreCompanySystem(system)
 
-	return sendResponse(http.res, 200, "System has been restored.", restored)
+	return sendResponse(http.res, true, 200, "System has been restored.", restored)
 })
 
 export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -94,7 +95,7 @@ export const softDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 
 	const softDeleted = await softDeleteCompanySystem(system)
 
-	return sendResponse(http.res, 200, "System has been deleted.", softDeleted)
+	return sendResponse(http.res, true, 200, "System has been deleted.", softDeleted)
 })
 
 export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -102,7 +103,7 @@ export const hardDeleteCompanySystemHandler = asyncHandler(async (http: HttpCont
 
 	const hardDeleted = await hardDeleteCompanySystem(system)
 
-	return sendResponse(http.res, 200, "System has been permanently deleted.", hardDeleted)
+	return sendResponse(http.res, true, 200, "System has been permanently deleted.", hardDeleted)
 })
 
 export const getCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -128,7 +129,7 @@ export const getFavoriteCompanySystemsHandler = asyncHandler(async (http: HttpCo
 export const getCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
 	const systemParam = systemIdentifierSchema.parse(http.req.params)
 	const { system } = await getCompanySystemById(systemParam)
-	return sendResponse(http.res, 200, "System has been retrieved.", { system })
+	return sendResponse(http.res, true, 200, "System has been retrieved.", { system })
 })
 
 export const getFavoriteCompanySystemByIdHandler = asyncHandler(async (http: HttpContext) => {
@@ -137,7 +138,7 @@ export const getFavoriteCompanySystemByIdHandler = asyncHandler(async (http: Htt
 
 	const { favorite } = await getFavoriteCompanySystemById(user, system)
 
-	return sendResponse(http.res, 200, "Favorite System has been retrieved.", { favorite })
+	return sendResponse(http.res, true, 200, "Favorite System has been retrieved.", { favorite })
 })
 
 export const getDeletedCompanySystemsHandler = asyncHandler(async (http: HttpContext) => {

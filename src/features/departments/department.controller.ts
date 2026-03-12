@@ -22,7 +22,7 @@ export const createCompanyDepartmentHandler = asyncHandler(async (http: HttpCont
 
 	const createdDepartment = await createCompanyDepartment(body)
 
-	return sendResponse(http.res, 201, "Department has been created.", createdDepartment)
+	return sendResponse(http.res, true, 201, "Department has been created.", createdDepartment)
 })
 
 export const createManyCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -30,7 +30,7 @@ export const createManyCompanyDepartmentHandler = asyncHandler(async (http: Http
 
 	const createdDepartments = await createManyCompanyDepartment(body)
 
-	return sendResponse(http.res, 201, "Departments has been created.", createdDepartments)
+	return sendResponse(http.res, true, 201, "Departments has been created.", createdDepartments)
 })
 
 export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -39,7 +39,7 @@ export const updateDepartmentHandler = asyncHandler(async (http: HttpContext) =>
 
 	const updatedDepartment = await updateCompanyDepartment(department, body)
 
-	return sendResponse(http.res, 200, "Department has been updated.", updatedDepartment)
+	return sendResponse(http.res, true, 200, "Department has been updated.", updatedDepartment)
 })
 
 export const restoreCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -47,7 +47,7 @@ export const restoreCompanyDepartmentHandler = asyncHandler(async (http: HttpCon
 
 	const restored = await restoreCompanyDepartment(department)
 
-	return sendResponse(http.res, 200, "Department has been restored", restored)
+	return sendResponse(http.res, true, 200, "Department has been restored", restored)
 })
 
 export const softDeleteCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
@@ -55,14 +55,14 @@ export const softDeleteCompanyDepartmentHandler = asyncHandler(async (http: Http
 
 	const softDeleted = await softDeleteCompanyDepartment(department)
 
-	return sendResponse(http.res, 200, "Department has been deleted.", softDeleted)
+	return sendResponse(http.res, true, 200, "Department has been deleted.", softDeleted)
 })
 
 export const hardDeleteCompanyDepartmentHandler = asyncHandler(async (http: HttpContext) => {
 	const department = departmentIdentifierSchema.parse(http.req.params)
 
 	const hardDeleted = await hardDeleteCompanyDepartment(department)
-	return sendResponse(http.res, 200, "Department has been permanently deleted.", hardDeleted)
+	return sendResponse(http.res, true, 200, "Department has been permanently deleted.", hardDeleted)
 })
 
 export const getCompanyDepartmentsHandler = asyncHandler(async (http: HttpContext) => {
@@ -86,5 +86,5 @@ export const getCompanyDepartmentbyIdHandler = asyncHandler(async (http: HttpCon
 
 	const department = await getCompanyDepartmentbyId(_department)
 
-	return sendResponse(http.res, 200, "Department has been retrieved.", department)
+	return sendResponse(http.res, true, 200, "Department has been retrieved.", department)
 })

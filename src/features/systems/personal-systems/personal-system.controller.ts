@@ -31,7 +31,7 @@ export const createPersonalSystemHandler = asyncHandler(async (http: HttpContext
 
 	const systemCreated = await createOwnSystem(creator, body, file)
 
-	return sendResponse(http.res, 201, "Personal System has been created.", { systemCreated })
+	return sendResponse(http.res, true, 201, "Personal System has been created.", { systemCreated })
 })
 
 export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -42,7 +42,7 @@ export const updatePersonalSystemHandler = asyncHandler(async (http: HttpContext
 
 	const systemUpdated = await updateOwnSystem(system, creator, body, file)
 
-	return sendResponse(http.res, 200, "Personal System has been updated.", { systemUpdated })
+	return sendResponse(http.res, true, 200, "Personal System has been updated.", { systemUpdated })
 })
 
 export const toggleFavoritePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -51,7 +51,7 @@ export const toggleFavoritePersonalSystemHandler = asyncHandler(async (http: Htt
 
 	const { favorited } = await toggleFavoritePersonalSystem(creator, system)
 
-	return sendResponse(http.res, 200, favorited ? "Added to favorites." : "Removed from favorites")
+	return sendResponse(http.res, true, 200, favorited ? "Added to favorites." : "Removed from favorites")
 })
 
 export const restorePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -60,7 +60,7 @@ export const restorePersonalSystemHandler = asyncHandler(async (http: HttpContex
 
 	const restoredSystem = await restoreOwnSystem(system, creator)
 
-	return sendResponse(http.res, 200, "Personal System has been restored.", { restoredSystem })
+	return sendResponse(http.res, true, 200, "Personal System has been restored.", { restoredSystem })
 })
 
 export const getPersonalSystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -91,7 +91,7 @@ export const getPersonalSystemByIdHandler = asyncHandler(async (http: HttpContex
 
 	const system = await getOwnSystemById(_system, creator)
 
-	return sendResponse(http.res, 200, "Personal System has been retrieved.", { system })
+	return sendResponse(http.res, true, 200, "Personal System has been retrieved.", { system })
 })
 
 export const getFavoritePersonalSystemByIdHandler = asyncHandler(async (http: HttpContext) => {
@@ -100,7 +100,7 @@ export const getFavoritePersonalSystemByIdHandler = asyncHandler(async (http: Ht
 
 	const favorite = await getFavoriteOwnSystemById(creator, system)
 
-	return sendResponse(http.res, 200, "Favorite System has been retrieved.", { favorite })
+	return sendResponse(http.res, true, 200, "Favorite System has been retrieved.", { favorite })
 })
 
 export const getDeletedPersonalSystemsHandler = asyncHandler(async (http: HttpContext) => {
@@ -118,7 +118,7 @@ export const softDeletePersonalSystemHandler = asyncHandler(async (http: HttpCon
 
 	await softDeleteOwnSystem(system, creator)
 
-	return sendResponse(http.res, 200, "Personal System has been deleted.")
+	return sendResponse(http.res, true, 200, "Personal System has been deleted.")
 })
 
 export const hardDeletePersonalSystemHandler = asyncHandler(async (http: HttpContext) => {
@@ -127,5 +127,5 @@ export const hardDeletePersonalSystemHandler = asyncHandler(async (http: HttpCon
 
 	await hardDeleteOwnSystem(system, creator)
 
-	return sendResponse(http.res, 200, "Personal System has been permanently deleted.")
+	return sendResponse(http.res, true, 200, "Personal System has been permanently deleted.")
 })

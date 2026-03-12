@@ -9,7 +9,7 @@ export const setOnboardStatusController = asyncHandler(async (http: HttpContext)
 
 	const onboarded = await onBoardOrchestrator("set", user)
 
-	return sendResponse(http.res, 200, "User has been onboarded", onboarded)
+	return sendResponse(http.res, true, 200, "User has been onboarded", onboarded)
 })
 
 export const getOnboardStatusController = asyncHandler(async (http: HttpContext) => {
@@ -17,5 +17,5 @@ export const getOnboardStatusController = asyncHandler(async (http: HttpContext)
 
 	const onboarded = await onBoardOrchestrator("get", user)
 
-	return sendResponse(http.res, 200, "User's onboard status has been fetched.", onboarded)
+	return sendResponse(http.res, true, 200, "User's onboard status has been fetched.", onboarded)
 })

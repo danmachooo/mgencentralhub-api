@@ -70,7 +70,7 @@ export const signUpHandler = asyncHandler(async (http: HttpContext) => {
 		roleId,
 	})
 
-	return sendResponse(http.res, 201, "User has been registered.")
+	return sendResponse(http.res, true, 201, "User has been registered.")
 })
 
 export const signInHandler = asyncHandler(async (http: HttpContext) => {
@@ -87,10 +87,10 @@ export const signInHandler = asyncHandler(async (http: HttpContext) => {
 		http.res.append("set-cookie", setCookie)
 	}
 
-	return sendResponse(http.res, 200, "User is logged in..", response)
+	return sendResponse(http.res, true, 200, "User is logged in..", response)
 })
 
 export const getSessionHandler = asyncHandler(async (http: HttpContext) => {
 	const session = await getSession(http.req.headers)
-	return sendResponse(http.res, 200, "Current Session has been retrieved", { session })
+	return sendResponse(http.res, true, 200, "Current Session has been retrieved", { session })
 })

@@ -20,12 +20,12 @@ export const createUserHandler = asyncHandler(async (http: HttpContext) => {
 
 	const created = await createUser(user)
 
-	return sendResponse(http.res, 201, "User has been created.", created)
+	return sendResponse(http.res, true, 201, "User has been created.", created)
 })
 
 export const getUserProfileHandler = asyncHandler(async (http: HttpContext) => {
 	const profile = await getUserProfile(http.req.user)
-	return sendResponse(http.res, 200, "User profile found.", { profile })
+	return sendResponse(http.res, true, 200, "User profile found.", { profile })
 })
 
 export const updateUserHandler = asyncHandler(async (http: HttpContext) => {
@@ -34,5 +34,5 @@ export const updateUserHandler = asyncHandler(async (http: HttpContext) => {
 
 	const updatedUser = await updateUser(user, body)
 
-	return sendResponse(http.res, 200, "User profile has been updated.", { updatedUser })
+	return sendResponse(http.res, true, 200, "User profile has been updated.", { updatedUser })
 })

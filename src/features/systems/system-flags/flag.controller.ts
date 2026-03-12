@@ -20,7 +20,7 @@ export const createSystemFlagHandler = asyncHandler(async (http: HttpContext) =>
 
 	const systemFlagCreated = await createFlag(systemFlag)
 
-	return sendResponse(http.res, 201, "A new system flag has been created.", { systemFlagCreated })
+	return sendResponse(http.res, true, 201, "A new system flag has been created.", { systemFlagCreated })
 })
 
 export const createManySystemFlagHandler = asyncHandler(async (http: HttpContext) => {
@@ -28,7 +28,7 @@ export const createManySystemFlagHandler = asyncHandler(async (http: HttpContext
 
 	const systemFlagsCreated = await createManyFlags(systemFlags)
 
-	return sendResponse(http.res, 201, "New systems flags has been created.", { systemFlagsCreated })
+	return sendResponse(http.res, true, 201, "New systems flags has been created.", { systemFlagsCreated })
 })
 
 export const updateSystemFlagHandler = asyncHandler(async (http: HttpContext) => {
@@ -37,7 +37,7 @@ export const updateSystemFlagHandler = asyncHandler(async (http: HttpContext) =>
 
 	const systemFlagUpdated = await updateFlag(flag, systemFlag)
 
-	return sendResponse(http.res, 200, "System flag has been updated.", { systemFlagUpdated })
+	return sendResponse(http.res, true, 200, "System flag has been updated.", { systemFlagUpdated })
 })
 
 export const softDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext) => {
@@ -45,7 +45,7 @@ export const softDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext
 
 	await softDeleteFlag(flag)
 
-	return sendResponse(http.res, 200, "A system flag has been deleted.")
+	return sendResponse(http.res, true, 200, "A system flag has been deleted.")
 })
 
 export const hardDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext) => {
@@ -53,7 +53,7 @@ export const hardDeleteSystemFlagHandler = asyncHandler(async (http: HttpContext
 
 	await hardDeleteFlag(flag)
 
-	return sendResponse(http.res, 200, "A system flag has been permanently deleted.")
+	return sendResponse(http.res, true, 200, "A system flag has been permanently deleted.")
 })
 
 export const restoreSystemFlagHandler = asyncHandler(async (http: HttpContext) => {
@@ -61,24 +61,24 @@ export const restoreSystemFlagHandler = asyncHandler(async (http: HttpContext) =
 
 	const restoredFlag = await restoreFlag(flag)
 
-	return sendResponse(http.res, 200, "A system flag has been restored.", restoredFlag)
+	return sendResponse(http.res, true, 200, "A system flag has been restored.", restoredFlag)
 })
 
 export const getActiveSystemFlagsHandler = asyncHandler(async (http: HttpContext) => {
 	const { flags, total } = await getActiveSystemFlags()
 
-	return sendResponse(http.res, 200, "Active flags has been retrieved.", { flags, total })
+	return sendResponse(http.res, true, 200, "Active flags has been retrieved.", { flags, total })
 })
 
 export const getActiveSystemFlagsByIdHandler = asyncHandler(async (http: HttpContext) => {
 	const { id } = systemFlagIdentifierSchema.parse(http.req.params)
 	const flag = await getActiveSystemFlagById({ id })
 
-	return sendResponse(http.res, 200, "Active flag has been retrieved.", { flag })
+	return sendResponse(http.res, true, 200, "Active flag has been retrieved.", { flag })
 })
 
 export const getInActiveSystemFlagsHandler = asyncHandler(async (http: HttpContext) => {
 	const flag = await getInactiveSystemFlags()
 
-	return sendResponse(http.res, 200, "Inactive flag has been retrieved.", { flag })
+	return sendResponse(http.res, true, 200, "Inactive flag has been retrieved.", { flag })
 })

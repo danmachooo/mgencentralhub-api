@@ -5,7 +5,7 @@ import { userIdentifierSchema } from "@/schema"
 import type { HttpContext } from "@/types/shared"
 
 export const setOnboardStatusController = asyncHandler(async (http: HttpContext) => {
-	const user = userIdentifierSchema.parse(http.req.body)
+	const user = userIdentifierSchema.parse(http.req.user)
 
 	const onboarded = await onBoardOrchestrator("set", user)
 

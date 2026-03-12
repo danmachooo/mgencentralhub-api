@@ -18,6 +18,7 @@ function isAllowedRole(role: string): role is AllowedRole {
  */
 export const requireRole = (...roles: AllowedRole[]) =>
 	asyncHandler(async (http: HttpContext) => {
+
 		const userRole = http.req.user.role?.name.toUpperCase()
 
 		if(!userRole) throw new UnauthorizedError("You have no role.")

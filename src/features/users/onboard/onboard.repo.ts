@@ -8,8 +8,12 @@ export async function updateOnboard(userId: string) {
         data: {
             onboard: true
         },
-        select: {
-            onboard: true
+        include: {
+            profile: {
+                include: {
+                    role: true
+                }
+            }
         }
     })
 
